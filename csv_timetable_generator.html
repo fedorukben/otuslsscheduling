@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV Course Timetable Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .controls {
+            padding: 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .upload-section {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .file-input {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .file-input-label {
+            background: #007bff;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .file-input-label:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        .course-filter {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .course-filter input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 25px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .course-filter input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .view-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: relative;
+            width: 50px;
+            height: 24px;
+            background-color: #ccc;
+            border-radius: 24px;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            border-radius: 50%;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: #007bff;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .toggle-label {
+            font-size: 14px;
+            color: #495057;
+        }
+
+        /* Preset Dropdown Styles */
+        .preset-dropdown {
+            position: relative;
+        }
+
+        .dropdown-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-toggle {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 180px;
+            justify-content: space-between;
+        }
+
+        .dropdown-toggle:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+
+        .dropdown-arrow {
+            transition: transform 0.3s;
+            font-size: 12px;
+        }
+
+        .dropdown-toggle.active .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: none;
+            margin-top: 5px;
+            min-width: 280px;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-header {
+            padding: 15px 20px 10px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .clear-all-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .clear-all-btn:hover {
+            background: #c82333;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: background 0.2s;
+            gap: 12px;
+            border: none;
+            font-size: 14px;
+            color: #495057;
+        }
+
+        .dropdown-item:hover {
+            background: #f8f9fa;
+        }
+
+        .dropdown-item:last-child {
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+        }
+
+        .preset-checkbox {
+            display: none;
+        }
+
+        .checkmark {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #dee2e6;
+            border-radius: 4px;
+            position: relative;
+            flex-shrink: 0;
+            transition: all 0.3s;
+        }
+
+        .preset-checkbox:checked + .checkmark {
+            background: #007bff;
+            border-color: #007bff;
+        }
+
+        .preset-checkbox:checked + .checkmark::after {
+            content: '✓';
+            color: white;
+            font-size: 12px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: bold;
+        }
+
+        /* Compact View Styles */
+        .compact-view .schedule-cell {
+            height: 25px;
+            padding: 1px;
+        }
+
+        .compact-view .class-block {
+            padding: 1px 3px;
+            font-size: 10px;
+            margin: 0;
+            border-radius: 2px;
+            text-align: center;
+            font-weight: bold;
+            line-height: 1.4;
+            min-height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .compact-view .class-info {
+            display: none;
+        }
+
+        .compact-view .time-slot {
+            padding: 4px;
+            font-size: 10px;
+        }
+
+        .compact-view .day-header {
+            padding: 6px;
+            font-size: 12px;
+        }
+
+        .compact-view .time-header {
+            padding: 6px;
+            font-size: 12px;
+        }
+
+        .compact-view .timetable {
+            font-size: 10px;
+        }
+
+        .compact-view .class-block.continuation {
+            opacity: 1;
+            border-top: none;
+        }
+
+        .legend {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 15px;
+            background: white;
+            border: 2px solid #e9ecef;
+            font-weight: 500;
+        }
+
+        .color-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+        }
+
+        .timetable-container {
+            padding: 30px;
+            overflow-x: auto;
+        }
+
+        .timetable {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .time-header {
+            background: #2c3e50;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            padding: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .day-header {
+            background: #34495e;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            padding: 15px;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            min-width: 120px;
+        }
+
+        .time-slot {
+            background: #ecf0f1;
+            font-weight: 500;
+            text-align: center;
+            padding: 10px;
+            border-right: 2px solid #bdc3c7;
+            white-space: nowrap;
+            width: 100px;
+        }
+
+        .schedule-cell {
+            border: 1px solid #e9ecef;
+            height: 60px;
+            position: relative;
+            padding: 4px;
+            vertical-align: top;
+            width: 140px;
+        }
+
+        .class-block {
+            background: #3498db;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 8px;
+            margin: 2px 0;
+            font-size: 11px;
+            font-weight: 500;
+            line-height: 1.2;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .class-block:hover {
+            transform: scale(1.05);
+            z-index: 5;
+            position: relative;
+        }
+
+        .class-block.lecture {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        .class-block.tutorial,
+        .class-block.lab,
+        .class-block.seminar,
+        .class-block.practicum {
+            background: linear-gradient(135deg, #f1c40f, #f39c12);
+            color: #2c3e50;
+        }
+
+        .class-block.continuation {
+            opacity: 0.7;
+            border-top: 2px dashed rgba(255,255,255,0.5);
+        }
+
+        .class-info {
+            display: block;
+            font-size: 10px;
+            opacity: 0.9;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 60px;
+            color: #7f8c8d;
+            font-size: 18px;
+        }
+
+        .status {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            font-weight: 500;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .csv-preview {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            max-height: 200px;
+            overflow: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .upload-section {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 15px;
+            }
+            
+            .course-filter {
+                min-width: auto;
+            }
+            
+            .preset-dropdown {
+                align-self: center;
+            }
+            
+            .dropdown-toggle {
+                width: 100%;
+                max-width: 280px;
+            }
+            
+            .view-toggle {
+                justify-content: center;
+            }
+            
+            .legend {
+                justify-content: center;
+            }
+            
+            .day-header {
+                writing-mode: horizontal-tb;
+                text-orientation: initial;
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Course Timetable Generator</h1>
+            <p>Upload your CSV course data and create a beautiful visual timetable</p>
+        </div>
+
+        <div class="controls">
+            <div class="upload-section">
+                <div class="file-input-wrapper">
+                    <input type="file" id="csvFile" class="file-input" accept=".csv" />
+                    <label for="csvFile" class="file-input-label">📁 Upload CSV File</label>
+                </div>
+                <div class="course-filter">
+                    <input type="text" id="courseFilter" placeholder="Enter course codes (e.g., MATH1850U, CSCI1030U, BUSI2000U) - separate with commas" />
+                </div>
+                <div class="preset-dropdown">
+                    <div class="dropdown-container">
+                        <button type="button" class="dropdown-toggle" id="presetToggle">
+                            📚 Course Presets <span class="dropdown-arrow">▼</span>
+                        </button>
+                        <div class="dropdown-menu" id="presetMenu">
+                            <div class="dropdown-header">
+                                <span>Select Course Groups:</span>
+                                <button type="button" class="clear-all-btn" id="clearPresets">Clear All</button>
+                            </div>
+                            <label class="dropdown-item">
+                                <input type="checkbox" class="preset-checkbox" data-preset="firstYearScience">
+                                <span class="checkmark"></span>
+                                First Year General Science
+                            </label>
+                            <label class="dropdown-item">
+                                <input type="checkbox" class="preset-checkbox" data-preset="firstYearEngineering">
+                                <span class="checkmark"></span>
+                                First Year General Engineering
+                            </label>
+                            <label class="dropdown-item">
+                                <input type="checkbox" class="preset-checkbox" data-preset="firstYearCS">
+                                <span class="checkmark"></span>
+                                First Year Computer Science
+                            </label>
+                            <label class="dropdown-item">
+                                <input type="checkbox" class="preset-checkbox" data-preset="secondYearCS">
+                                <span class="checkmark"></span>
+                                Second Year Computer Science
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="view-toggle">
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="compactToggle">
+                        <span class="slider"></span>
+                        <span class="toggle-label">Compact View</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="color-dot" style="background: linear-gradient(135deg, #e74c3c, #c0392b);"></div>
+                    <span>Lectures</span>
+                </div>
+                <div class="legend-item">
+                    <div class="color-dot" style="background: linear-gradient(135deg, #f1c40f, #f39c12);"></div>
+                    <span>All Others (Tutorials, Labs, Seminars, etc.)</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="status"></div>
+        
+        <div class="timetable-container">
+            <div class="no-data" id="noData">
+                <h3>🎯 Ready to Create Your Timetable!</h3>
+                <p>Upload a CSV file with your course data to get started.</p>
+                <br>
+                <p><strong>Expected CSV format (your scheduling system):</strong></p>
+                <p>Headers: Subject, Course Number, Sec, Day, BTime, Duration, Room, Faculty Name</p>
+                <p><em>The tool will automatically combine Subject + Course Number (e.g., MATH + 101 = MATH101)</em></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let courseData = [];
+        let allCourses = [];
+
+        // Time slots (8 AM to 8 PM)
+        const timeSlots = [];
+        for (let hour = 8; hour <= 20; hour++) {
+            timeSlots.push(`${hour.toString().padStart(2, '0')}:00`);
+            if (hour < 20) {
+                timeSlots.push(`${hour.toString().padStart(2, '0')}:30`);
+            }
+        }
+
+        const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+
+        document.getElementById('csvFile').addEventListener('change', handleFileUpload);
+        document.getElementById('courseFilter').addEventListener('input', filterAndRenderTimetable);
+        document.getElementById('compactToggle').addEventListener('change', handleCompactToggle);
+        document.getElementById('presetToggle').addEventListener('click', handlePresetToggle);
+        document.getElementById('clearPresets').addEventListener('click', clearAllPresets);
+
+        // Add event listeners for preset checkboxes
+        document.querySelectorAll('.preset-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', handlePresetChange);
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('presetMenu');
+            const toggle = document.getElementById('presetToggle');
+            
+            if (!toggle.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.classList.remove('show');
+                toggle.classList.remove('active');
+            }
+        });
+
+        // Define course presets
+        const coursePresets = {
+            firstYearScience: [
+                'BIOL1000U', 'BIOL1010U', 'BIOL1020U', 'CHEM1010U', 'CHEM1020U', 
+                'CSCI1040U', 'MATH1000U', 'MATH1010U', 'MATH1020U', 'PHY1030U', 
+                'PHY1010U', 'PHY1020U'
+            ],
+            firstYearEngineering: [
+                'COMM1050U', 'ENGR1015U', 'MATH1010U', 'MATH1850U', 'PHY1010U', 
+                'CHEM1800U', 'ENGR1025U', 'ENGR1200U', 'MATH1020U', 'PHY1020U', 
+                'SSCI1470U'
+            ],
+            firstYearCS: [
+                'CSCI1030U', 'CSCI1060U', 'CSCI1061U', 'CSCI2050U', 'MATH1020U', 
+                'PHY1020U', 'CSCI2050U', 'CSCI1062U', 'CSCI1063U', 'MATH1000U', 
+                'MATH1010U', 'PHY1010U', 'PHY1030U'
+            ],
+            secondYearCS: [
+                'CSCI2000U', 'CSCI2010U', 'CSCI2020U', 'CSCI2040U', 'CSCI2072U', 
+                'CSCI2110U', 'MATH2050U', 'STAT2010U'
+            ]
+        };
+
+        function handlePresetToggle() {
+            const dropdown = document.getElementById('presetMenu');
+            const toggle = document.getElementById('presetToggle');
+            
+            dropdown.classList.toggle('show');
+            toggle.classList.toggle('active');
+        }
+
+        function handlePresetChange() {
+            updateCourseFilterFromPresets();
+        }
+
+        function clearAllPresets() {
+            // Uncheck all preset checkboxes
+            document.querySelectorAll('.preset-checkbox').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            
+            // Clear the course filter
+            document.getElementById('courseFilter').value = '';
+            
+            // Update the timetable
+            filterAndRenderTimetable();
+        }
+
+        function updateCourseFilterFromPresets() {
+            const selectedCourses = new Set();
+            
+            // Get all checked presets
+            document.querySelectorAll('.preset-checkbox:checked').forEach(checkbox => {
+                const presetName = checkbox.dataset.preset;
+                const courses = coursePresets[presetName] || [];
+                courses.forEach(course => selectedCourses.add(course));
+            });
+            
+            // Get manually entered courses from the input field
+            const manualInput = document.getElementById('courseFilter').value.trim();
+            const existingCourses = manualInput ? manualInput.split(/[,\s]+/)
+                .map(c => c.trim().toUpperCase())
+                .filter(c => c.length > 0) : [];
+            
+            // Check if the current input matches exactly what the presets would generate
+            const presetCoursesArray = Array.from(selectedCourses).sort();
+            const existingCoursesFromPresets = existingCourses.filter(course => 
+                presetCoursesArray.includes(course)
+            );
+            
+            // Only include manual courses that aren't from presets
+            const manualOnlyCourses = existingCourses.filter(course => 
+                !presetCoursesArray.includes(course)
+            );
+            
+            // Combine preset courses with manual-only courses
+            const allCourses = [...presetCoursesArray, ...manualOnlyCourses];
+            
+            // Update the input field
+            document.getElementById('courseFilter').value = allCourses.join(', ');
+            
+            // Update the timetable
+            filterAndRenderTimetable();
+        }
+
+        function handleCompactToggle() {
+            const container = document.querySelector('.timetable-container');
+            const isCompact = document.getElementById('compactToggle').checked;
+            
+            if (isCompact) {
+                container.classList.add('compact-view');
+            } else {
+                container.classList.remove('compact-view');
+            }
+            
+            // Re-render the timetable if data exists
+            if (courseData.length > 0) {
+                filterAndRenderTimetable();
+            }
+        }
+
+        function showStatus(message, isError = false) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = `<div class="status ${isError ? 'error' : 'success'}">${message}</div>`;
+            setTimeout(() => statusDiv.innerHTML = '', 5000);
+        }
+
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) {
+                console.log('No file selected');
+                return;
+            }
+
+            console.log('File selected:', file.name, 'Size:', file.size);
+
+            if (!file.name.toLowerCase().endsWith('.csv')) {
+                showStatus('Please upload a CSV file.', true);
+                return;
+            }
+
+            showStatus('Reading file...', false);
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                console.log('File loaded, content length:', e.target.result.length);
+                try {
+                    parseCSV(e.target.result);
+                } catch (error) {
+                    console.error('Parse error:', error);
+                    showStatus(`Error reading file: ${error.message}`, true);
+                }
+            };
+            
+            reader.onerror = function(e) {
+                console.error('FileReader error:', e);
+                showStatus('Error reading file. Please try again.', true);
+            };
+            
+            reader.readAsText(file);
+        }
+
+        function parseTime(timeStr) {
+            if (!timeStr) return null;
+            
+            // Handle 24-hour format without colon (e.g., "0940", "1410")
+            if (/^\d{4}$/.test(timeStr)) {
+                let hours = parseInt(timeStr.substring(0, 2));
+                let minutes = parseInt(timeStr.substring(2, 4));
+                
+                // Subtract 10 minutes from the start time
+                minutes -= 10;
+                if (minutes < 0) {
+                    minutes += 60;
+                    hours -= 1;
+                }
+                if (hours < 0) hours = 0;
+                
+                // Validate hours and minutes
+                if (hours >= 0 && hours <= 23 && minutes >= 0 && minutes <= 59) {
+                    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+                }
+                return null;
+            }
+            
+            // Handle times with colon and optional AM/PM
+            const timePattern = /(\d{1,2}):(\d{2})(?:\s*(AM|PM))?/i;
+            const match = timeStr.match(timePattern);
+            
+            if (!match) return null;
+            
+            let hours = parseInt(match[1]);
+            let minutes = parseInt(match[2]);
+            const ampm = match[3]?.toLowerCase();
+            
+            if (ampm === 'pm' && hours !== 12) hours += 12;
+            if (ampm === 'am' && hours === 12) hours = 0;
+            
+            // Subtract 10 minutes from the start time
+            minutes -= 10;
+            if (minutes < 0) {
+                minutes += 60;
+                hours -= 1;
+            }
+            if (hours < 0) hours = 0;
+            
+            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+        }
+
+        function addMinutes(timeStr, minutes) {
+            const [hours, mins] = timeStr.split(':').map(Number);
+            const totalMinutes = hours * 60 + mins + minutes;
+            const newHours = Math.floor(totalMinutes / 60);
+            const newMins = totalMinutes % 60;
+            return `${newHours.toString().padStart(2, '0')}:${newMins.toString().padStart(2, '0')}`;
+        }
+
+        function parseDuration(durationStr) {
+            if (!durationStr) return 60; // Default to 60 minutes
+            
+            // Handle HH:MM format (e.g., "01:30", "03:00")
+            if (durationStr.includes(':')) {
+                const parts = durationStr.split(':');
+                if (parts.length === 2) {
+                    const hours = parseInt(parts[0]) || 0;
+                    const minutes = parseInt(parts[1]) || 0;
+                    return hours * 60 + minutes;
+                }
+            }
+            
+            // Handle plain number (minutes)
+            const numericDuration = parseInt(durationStr);
+            if (!isNaN(numericDuration)) {
+                return numericDuration;
+            }
+            
+            return 60; // Default fallback
+        }
+
+        function normalizeType(type) {
+            const typeMap = {
+                'lec': 'lecture', 'lecture': 'lecture',
+                'tut': 'tutorial', 'tutorial': 'tutorial', 'tutorium': 'tutorial',
+                'lab': 'lab', 'laboratory': 'lab',
+                'sem': 'seminar', 'seminar': 'seminar',
+                'prac': 'practicum', 'practicum': 'practicum',
+                'rec': 'tutorial', 'recitation': 'tutorial',
+                'dis': 'tutorial', 'discussion': 'tutorial',
+                'wor': 'lab', 'workshop': 'lab',
+                // Add more mappings based on your "Sec" column values
+                '001': 'lecture', '002': 'lecture', '003': 'lecture',
+                'l01': 'lecture', 'l02': 'lecture', 'l03': 'lecture',
+                't01': 'tutorial', 't02': 'tutorial', 't03': 'tutorial',
+                'p01': 'lab', 'p02': 'lab', 'p03': 'lab'
+            };
+            return typeMap[type.toLowerCase()] || 'lecture';
+        }
+
+        function normalizeDay(day) {
+            const dayMap = {
+                // Single letter codes (your CSV format)
+                'm': 'Monday', 'monday': 'Monday',
+                't': 'Tuesday', 'tue': 'Tuesday', 'tues': 'Tuesday', 'tuesday': 'Tuesday',
+                'w': 'Wednesday', 'wed': 'Wednesday', 'wednesday': 'Wednesday',
+                'r': 'Thursday', 'thu': 'Thursday', 'thurs': 'Thursday', 'thursday': 'Thursday',
+                'f': 'Friday', 'fri': 'Friday', 'friday': 'Friday'
+            };
+            return dayMap[day.toLowerCase()] || day;
+        }
+
+        function detectColumns(headers) {
+            const map = {};
+            
+            // Map for your specific CSV format
+            const exactHeaders = {
+                'subject': 'course',           // Subject column
+                'sch': 'type',                 // Sch column has the actual type (LEC, TUT, LAB)
+                'day': 'day',                  // Day column
+                'btime': 'time',               // Begin time
+                'duration': 'duration',        // Duration column
+                'room': 'location',            // Room column
+                'faculty name': 'instructor'   // Faculty Name column
+            };
+
+            // Also need course number for full course code
+            for (let i = 0; i < headers.length; i++) {
+                const header = headers[i].toLowerCase().trim();
+                
+                if (exactHeaders[header]) {
+                    map[exactHeaders[header]] = i;
+                } else if (header === 'course number') {
+                    map['coursenumber'] = i;
+                } else if (header === 'section title') {
+                    map['sectiontitle'] = i;
+                }
+            }
+
+            return map;
+        }
+
+        function parseCSV(csvText) {
+            console.log('Starting CSV parse, text length:', csvText.length);
+            
+            const lines = csvText.trim().split('\n');
+            console.log('Number of lines:', lines.length);
+            
+            if (lines.length < 2) {
+                showStatus('CSV file appears to be empty or has no data rows.', true);
+                return;
+            }
+
+            // Show preview of first few lines
+            const preview = lines.slice(0, 3).join('\n');
+            console.log('CSV Preview:', preview);
+            
+            document.getElementById('status').innerHTML += 
+                `<div class="csv-preview"><strong>CSV Preview (first 3 lines):</strong><br>${preview.replace(/\n/g, '<br>')}</div>`;
+
+            const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+            console.log('Headers found:', headers.length);
+            console.log('Headers:', headers);
+            
+            const rows = lines.slice(1);
+            console.log('Data rows:', rows.length);
+
+            // Try to auto-detect column positions
+            const columnMap = detectColumns(headers);
+            console.log('Column mapping:', columnMap);
+            
+            if (!columnMap.course || !columnMap.day || !columnMap.time) {
+                const missing = [];
+                if (!columnMap.course) missing.push('Subject');
+                if (!columnMap.day) missing.push('Day');
+                if (!columnMap.time) missing.push('BTime');
+                
+                showStatus(`Could not detect required columns. Missing: ${missing.join(', ')}. Found columns: ${Object.keys(columnMap).join(', ')}`, true);
+                return;
+            }
+
+            courseData = [];
+            const uniqueCourses = new Set();
+            let processedRows = 0;
+            let skippedRows = 0;
+
+            rows.forEach((row, index) => {
+                const cells = parseCSVRow(row);
+                if (cells.length < headers.length) {
+                    skippedRows++;
+                    return;
+                }
+
+                try {
+                    const subject = cells[columnMap.course]?.trim();
+                    const courseNumber = cells[columnMap.coursenumber]?.trim();
+                    const sectionTitle = cells[columnMap.sectiontitle]?.trim();
+                    const type = cells[columnMap.type]?.trim() || 'LEC';
+                    const day = cells[columnMap.day]?.trim();
+                    const timeStr = cells[columnMap.time]?.trim();
+                    const durationStr = cells[columnMap.duration]?.trim();
+                    const duration = parseDuration(durationStr);
+                    const location = cells[columnMap.location]?.trim() || '';
+                    const instructor = cells[columnMap.instructor]?.trim() || '';
+
+                    // Debug first few rows
+                    if (index < 5) {
+                        console.log(`Row ${index + 2}:`, {
+                            subject, courseNumber, type: `"${type}"`, day, timeStr, 
+                            durationStr: `"${durationStr}"`, duration, location, instructor
+                        });
+                    }
+
+                    // Skip if essential fields are missing
+                    if (!subject || !day || !timeStr || day.toLowerCase() === 'tba') {
+                        skippedRows++;
+                        return;
+                    }
+
+                    // Create full course code
+                    const courseCode = courseNumber ? `${subject}${courseNumber}` : subject;
+
+                    const startTime = parseTime(timeStr);
+                    if (!startTime) {
+                        console.log(`Could not parse time: "${timeStr}" on row ${index + 2}`);
+                        skippedRows++;
+                        return;
+                    }
+
+                    const endTime = addMinutes(startTime, duration);
+                    
+                    courseData.push({
+                        course: courseCode.toUpperCase(),
+                        type: normalizeType(type),
+                        day: normalizeDay(day),
+                        startTime,
+                        endTime,
+                        duration,
+                        location,
+                        instructor,
+                        sectionTitle: sectionTitle || ''
+                    });
+
+                    uniqueCourses.add(courseCode.toUpperCase());
+                    processedRows++;
+                } catch (error) {
+                    console.warn(`Error parsing row ${index + 2}:`, error);
+                    skippedRows++;
+                }
+            });
+
+            allCourses = Array.from(uniqueCourses).sort();
+            
+            console.log(`Processed: ${processedRows}, Skipped: ${skippedRows}, Unique courses: ${allCourses.length}`);
+            console.log('All courses found:', allCourses);
+            console.log('Sample course data (first 5):', courseData.slice(0, 5));
+            
+            if (courseData.length === 0) {
+                showStatus('No valid course data found. Please check your CSV format and data.', true);
+                return;
+            }
+
+            showStatus(`Successfully loaded ${courseData.length} course entries for ${allCourses.length} courses. (Processed: ${processedRows}, Skipped: ${skippedRows})`);
+            filterAndRenderTimetable();
+        }
+
+        function parseCSVRow(row) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+            
+            for (let i = 0; i < row.length; i++) {
+                const char = row[i];
+                
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                    result.push(current);
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            
+            result.push(current);
+            return result.map(cell => cell.replace(/^"|"$/g, ''));
+        }
+
+        function filterAndRenderTimetable() {
+            const filterText = document.getElementById('courseFilter').value.trim().toUpperCase();
+            let filteredCourses = [];
+
+            console.log('Filter text:', `"${filterText}"`);
+            console.log('Available courses:', allCourses.slice(0, 10), '... and', allCourses.length - 10, 'more');
+
+            if (filterText) {
+                // Split by commas and/or spaces, then clean up
+                filteredCourses = filterText.split(/[,\s]+/)
+                    .map(c => c.trim())
+                    .filter(c => c.length > 0)
+                    .map(c => c.toUpperCase());
+                    
+                console.log('Parsed filter courses:', filteredCourses);
+            } else {
+                filteredCourses = allCourses;
+                console.log('Using all courses (no filter)');
+            }
+
+            const filteredData = courseData.filter(entry => {
+                if (filteredCourses.length === 0 || filteredCourses === allCourses) {
+                    return true; // Show all if no filter or showing all courses
+                }
+                
+                // Check if the course matches any of the filtered courses
+                const matches = filteredCourses.some(filterCourse => {
+                    // Try exact match first
+                    if (entry.course === filterCourse) return true;
+                    
+                    // Try partial match (course starts with filter)
+                    if (entry.course.startsWith(filterCourse)) return true;
+                    
+                    // Try contains match for broader matching
+                    if (entry.course.includes(filterCourse)) return true;
+                    
+                    return false;
+                });
+                
+                return matches;
+            });
+
+            console.log('Filtered data length:', filteredData.length);
+            if (filteredData.length > 0) {
+                console.log('Sample filtered courses:', [...new Set(filteredData.map(d => d.course))].slice(0, 5));
+            }
+
+            renderTimetable(filteredData);
+        }
+
+        function renderTimetable(data) {
+            console.log('Rendering timetable with data length:', data.length);
+            
+            const container = document.querySelector('.timetable-container');
+            const noDataDiv = document.getElementById('noData');
+
+            if (data.length === 0) {
+                console.log('No data to render');
+                container.innerHTML = '<div class="no-data"><h3>📋 No courses match your filter</h3><p>Try adjusting your course filter or upload a different CSV file.</p></div>';
+                return;
+            }
+
+            if (noDataDiv) noDataDiv.style.display = 'none';
+
+            console.log('Building schedule grid...');
+
+            // Create timetable structure
+            let html = '<table class="timetable"><thead><tr>';
+            html += '<th class="time-header">Time</th>';
+            
+            days.forEach(day => {
+                html += `<th class="day-header">${day}</th>`;
+            });
+            
+            html += '</tr></thead><tbody>';
+
+            // Create schedule grid
+            const schedule = {};
+            days.forEach(day => {
+                schedule[day] = {};
+                timeSlots.forEach(time => {
+                    schedule[day][time] = [];
+                });
+            });
+
+            // Populate schedule with course data
+            let placedCourses = 0;
+            data.forEach(entry => {
+                console.log('Processing entry:', entry);
+                
+                if (schedule[entry.day]) {
+                    const startSlot = findTimeSlot(entry.startTime);
+                    console.log(`Looking for time slot for ${entry.startTime}, found slot index: ${startSlot}`);
+                    
+                    if (startSlot !== -1) {
+                        // Calculate how many 30-minute slots this class spans
+                        const durationSlots = Math.ceil(entry.duration / 30);
+                        console.log(`Class duration: ${entry.duration} minutes = ${durationSlots} slots`);
+                        
+                        // Place the class in all time slots it spans
+                        for (let i = 0; i < durationSlots && (startSlot + i) < timeSlots.length; i++) {
+                            const timeKey = timeSlots[startSlot + i];
+                            console.log(`Placing ${entry.course} in ${entry.day} at ${timeKey} (slot ${i + 1} of ${durationSlots})`);
+                            
+                            if (schedule[entry.day][timeKey]) {
+                                // Create a copy of the entry with span info for styling
+                                const entryWithSpan = {
+                                    ...entry,
+                                    isFirstSlot: i === 0,
+                                    totalSlots: durationSlots,
+                                    slotIndex: i
+                                };
+                                schedule[entry.day][timeKey].push(entryWithSpan);
+                                if (i === 0) placedCourses++; // Only count once per class
+                            }
+                        }
+                    } else {
+                        console.log(`Could not find time slot for ${entry.startTime}`);
+                    }
+                } else {
+                    console.log(`Day ${entry.day} not found in schedule`);
+                }
+            });
+
+            console.log(`Placed ${placedCourses} courses in schedule`);
+
+            // Generate table rows
+            timeSlots.forEach(time => {
+                html += '<tr>';
+                html += `<td class="time-slot">${formatDisplayTime(time)}</td>`;
+                
+                days.forEach(day => {
+                    const classes = schedule[day][time] || [];
+                    html += '<td class="schedule-cell">';
+                    
+                    const isCompact = document.getElementById('compactToggle').checked;
+                    
+                    if (isCompact) {
+                        // In compact mode, group by type and show counts for ALL slots
+                        const typeGroups = {};
+                        
+                        classes.forEach(cls => {
+                            const type = cls.type;
+                            if (!typeGroups[type]) {
+                                typeGroups[type] = {
+                                    count: 0,
+                                    courses: [],
+                                    type: type,
+                                    hasFirstSlot: false
+                                };
+                            }
+                            typeGroups[type].count++;
+                            typeGroups[type].courses.push(cls.course);
+                            
+                            if (cls.isFirstSlot) {
+                                typeGroups[type].hasFirstSlot = true;
+                            }
+                        });
+                        
+                        // Render grouped types
+                        Object.values(typeGroups).forEach(group => {
+                            const typeClass = group.type;
+                            // Show count only for first slots, or when there are multiple classes
+                            const displayText = group.hasFirstSlot && group.count > 1 ? `(${group.count})` : '';
+                            const tooltipCourses = [...new Set(group.courses)].join(', '); // Remove duplicates
+                            
+                            html += `<div class="class-block ${typeClass}" title="${tooltipCourses}">`;
+                            html += displayText;
+                            html += '</div>';
+                        });
+                        
+                    } else {
+                        // Normal mode - show individual courses
+                        classes.forEach(cls => {
+                            const typeClass = cls.type;
+                            
+                            // Only show the full block for the first slot of multi-slot classes
+                            if (!cls.isFirstSlot) {
+                                // For continuation slots, show a subtle continuation indicator
+                                html += `<div class="class-block ${typeClass} continuation">`;
+                                html += `<span class="class-info">↑ ${cls.course}</span>`;
+                            } else {
+                                // For the first slot, show full info and adjust height for spanning
+                                const slotHeight = 60;
+                                const spanHeight = cls.totalSlots > 1 ? `height: ${cls.totalSlots * slotHeight - 8}px; z-index: 2; position: relative;` : '';
+                                html += `<div class="class-block ${typeClass}" style="${spanHeight}" title="${cls.course} - ${cls.type}${cls.sectionTitle ? ': ' + cls.sectionTitle : ''}${cls.location ? ' at ' + cls.location : ''}${cls.instructor ? ' with ' + cls.instructor : ''}">`;
+                                html += `<div>${cls.course}</div>`;
+                                html += `<span class="class-info">${cls.type.toUpperCase()}</span>`;
+                                
+                                if (cls.location) {
+                                    html += `<span class="class-info">${cls.location}</span>`;
+                                }
+                                if (cls.duration && cls.duration !== 60) {
+                                    html += `<span class="class-info">${cls.duration}min</span>`;
+                                }
+                            }
+                            html += '</div>';
+                        });
+                    }
+                    
+                    html += '</td>';
+                });
+                
+                html += '</tr>';
+            });
+
+            html += '</tbody></table>';
+            container.innerHTML = html;
+            
+            console.log('Timetable rendered successfully');
+        }
+
+        function findTimeSlot(time) {
+            return timeSlots.findIndex(slot => slot === time || slot >= time);
+        }
+
+        function formatDisplayTime(time) {
+            const [hours, minutes] = time.split(':').map(Number);
+            const period = hours >= 12 ? 'PM' : 'AM';
+            const displayHours = hours > 12 ? hours - 12 : (hours === 0 ? 12 : hours);
+            return `${displayHours}:${minutes.toString().padStart(2, '0')} ${period}`;
+        }
+    </script>
+</body>
+</html>
