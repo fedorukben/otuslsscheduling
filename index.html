@@ -2319,31 +2319,26 @@
                     const isCompact = document.getElementById('compactToggle').checked;
                     
                     if (isCompact) {
-                        // In compact mode, count ALL classes running during this time slot
-                        let lectureCount = 0;
-                        let nonLectureCount = 0;
-                        const lectureCourses = [];
-                        const nonLectureCourses = [];
+                        // In compact mode, count unique courses running during this time slot
+                        const lectureCoursesSet = new Set();
+                        const nonLectureCoursesSet = new Set();
                         
                         classes.forEach(cls => {
-                            // Count ALL classes (both first slots and continuations)
+                            // Count unique courses running at this time
                             if (cls.type === 'lecture') {
-                                lectureCount++;
-                                if (!lectureCourses.includes(cls.course)) {
-                                    lectureCourses.push(cls.course);
-                                }
+                                lectureCoursesSet.add(cls.course);
                             } else {
-                                nonLectureCount++;
-                                if (!nonLectureCourses.includes(cls.course)) {
-                                    nonLectureCourses.push(cls.course);
-                                }
+                                nonLectureCoursesSet.add(cls.course);
                             }
                         });
+                        
+                        const lectureCount = lectureCoursesSet.size;
+                        const nonLectureCount = nonLectureCoursesSet.size;
                         
                         // Render lecture group (red) - only if there are lectures
                         if (lectureCount > 0) {
                             const displayText = lectureCount > 1 ? `(${lectureCount})` : '';
-                            const tooltipCourses = [...new Set(lectureCourses)].join(', ');
+                            const tooltipCourses = Array.from(lectureCoursesSet).join(', ');
                             
                             html += `<div class="class-block lecture" title="Lectures: ${tooltipCourses}">`;
                             html += displayText;
@@ -2353,7 +2348,7 @@
                         // Render ALL non-lectures as one group (yellow) - only if there are non-lectures
                         if (nonLectureCount > 0) {
                             const displayText = nonLectureCount > 1 ? `(${nonLectureCount})` : '';
-                            const tooltipCourses = [...new Set(nonLectureCourses)].join(', ');
+                            const tooltipCourses = Array.from(nonLectureCoursesSet).join(', ');
                             
                             html += `<div class="class-block tutorial" title="Non-lectures: ${tooltipCourses}">`;
                             html += displayText;
