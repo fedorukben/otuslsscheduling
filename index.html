@@ -1596,19 +1596,24 @@
                     pdfHTML += `<td style="border: 1px solid black; padding: 2px; text-align: center; vertical-align: middle; height: ${isCompact ? '25px' : '35px'};">`;
                     
                     if (isCompact) {
-                        // Compact mode - group by lecture vs non-lecture
+                        // Compact mode - count ALL classes running during this time slot
                         let lectureCount = 0;
                         let nonLectureCount = 0;
                         const lectureCourses = [];
                         const nonLectureCourses = [];
                         
                         classes.forEach(cls => {
+                            // Count ALL classes (both first slots and continuations)
                             if (cls.type === 'lecture') {
                                 lectureCount++;
-                                lectureCourses.push(cls.course);
+                                if (!lectureCourses.includes(cls.course)) {
+                                    lectureCourses.push(cls.course);
+                                }
                             } else {
                                 nonLectureCount++;
-                                nonLectureCourses.push(cls.course);
+                                if (!nonLectureCourses.includes(cls.course)) {
+                                    nonLectureCourses.push(cls.course);
+                                }
                             }
                         });
                         
@@ -2314,25 +2319,24 @@
                     const isCompact = document.getElementById('compactToggle').checked;
                     
                     if (isCompact) {
-                        // In compact mode, group into exactly 2 categories: lectures vs ALL non-lectures
+                        // In compact mode, count ALL classes running during this time slot
                         let lectureCount = 0;
                         let nonLectureCount = 0;
                         const lectureCourses = [];
                         const nonLectureCourses = [];
-                        const continuationBars = [];
                         
                         classes.forEach(cls => {
-                            if (cls.isFirstSlot) {
-                                if (cls.type === 'lecture') {
-                                    lectureCount++;
+                            // Count ALL classes (both first slots and continuations)
+                            if (cls.type === 'lecture') {
+                                lectureCount++;
+                                if (!lectureCourses.includes(cls.course)) {
                                     lectureCourses.push(cls.course);
-                                } else {
-                                    nonLectureCount++;
-                                    nonLectureCourses.push(cls.course);
                                 }
                             } else {
-                                // Show continuation bars without counts
-                                continuationBars.push(cls);
+                                nonLectureCount++;
+                                if (!nonLectureCourses.includes(cls.course)) {
+                                    nonLectureCourses.push(cls.course);
+                                }
                             }
                         });
                         
@@ -2355,12 +2359,6 @@
                             html += displayText;
                             html += '</div>';
                         }
-                        
-                        // Render continuation bars (just colored bars, no text)
-                        continuationBars.forEach(cls => {
-                            const typeClass = cls.type;
-                            html += `<div class="class-block ${typeClass} continuation" title="${cls.course}"></div>`;
-                        });
                         
                     } else {
                         // Normal mode - show individual courses
