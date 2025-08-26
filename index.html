@@ -605,6 +605,392 @@
             box-shadow: 0 6px 20px rgba(0,123,255,0.4);
         }
 
+        /* Advanced Settings Styles */
+        .advanced-settings {
+            margin-top: 20px;
+            border: 2px solid #dee2e6;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .advanced-toggle {
+            background: linear-gradient(135deg, #17a2b8, #138496);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .advanced-toggle:hover {
+            background: linear-gradient(135deg, #138496, #117a8b);
+        }
+
+        .advanced-toggle.active {
+            background: linear-gradient(135deg, #138496, #117a8b);
+        }
+
+        .advanced-content {
+            background: white;
+            padding: 25px;
+            display: none;
+        }
+
+        .advanced-content.show {
+            display: block;
+        }
+
+        .advanced-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #e9ecef;
+        }
+
+        .advanced-section h4 {
+            color: #495057;
+            font-size: 16px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .advanced-section-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            align-items: start;
+        }
+
+        .score-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 15px;
+        }
+
+        .score-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .score-input-group label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .score-input-group input {
+            padding: 8px 10px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 13px;
+            transition: border-color 0.3s;
+            width: 100%;
+        }
+
+        .score-input-group input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            font-weight: 600;
+            color: #495057;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .time-range-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .time-range-group label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #6c757d;
+            white-space: nowrap;
+        }
+
+        .time-range-group select {
+            padding: 6px 8px;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            font-size: 13px;
+            transition: border-color 0.3s;
+        }
+
+        .time-range-group select:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .day-time-config {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .day-config {
+            background: white;
+            padding: 15px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+        }
+
+        .day-config h5 {
+            margin: 0 0 10px 0;
+            color: #495057;
+            font-size: 14px;
+        }
+
+        .reset-defaults-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+
+        .reset-defaults-btn:hover {
+            background: #5a6268;
+            transform: translateY(-1px);
+        }
+
+        .buffer-input-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .buffer-input-group input {
+            width: 80px;
+            padding: 8px 10px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 13px;
+            transition: border-color 0.3s;
+        }
+
+        .buffer-input-group input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .buffer-input-group label {
+            font-size: 13px;
+            color: #6c757d;
+        }
+
+        /* Info Box Styles */
+        .info-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            background: #007bff;
+            color: white;
+            border-radius: 50%;
+            font-size: 10px;
+            font-weight: bold;
+            cursor: help;
+            margin-left: 6px;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .info-tooltip {
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2c3e50;
+            color: white;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            line-height: 1.4;
+            white-space: normal;
+            width: 300px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            z-index: 9999;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .advanced-settings {
+            margin-top: 20px;
+            border: 2px solid #dee2e6;
+            border-radius: 15px;
+            overflow: visible;
+        }
+
+        .advanced-content .info-tooltip {
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            z-index: 10001;
+        }
+
+        .info-tooltip.adjust-position {
+            bottom: auto;
+            top: 125%;
+        }
+
+        .info-tooltip.adjust-position::after {
+            top: -5px;
+            bottom: auto;
+            border-top-color: transparent;
+            border-bottom-color: #2c3e50;
+        }
+
+        .info-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: #2c3e50;
+        }
+
+        .info-icon:hover .info-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .workshop-input-group .info-icon {
+            margin-left: 8px;
+            margin-top: 2px;
+        }
+
+        .priority-courses-section .info-icon {
+            margin-left: 8px;
+        }
+
+        /* Workshop Result Tooltip Styles */
+        .result-item {
+            padding: 15px;
+            background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+            border: 2px solid #e1bee7;
+            border-radius: 12px;
+            transition: transform 0.2s;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .workshop-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2c3e50;
+            color: white;
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-size: 12px;
+            line-height: 1.4;
+            white-space: nowrap;
+            max-width: 400px;
+            white-space: normal;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            z-index: 10000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            margin-bottom: 8px;
+        }
+
+        .workshop-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: #2c3e50;
+        }
+
+        .result-item:hover .workshop-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .conflict-list {
+            margin: 8px 0;
+        }
+
+        .conflict-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 3px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .conflict-item:last-child {
+            border-bottom: none;
+        }
+
+        .conflict-course {
+            font-weight: 600;
+        }
+
+        .conflict-type {
+            font-size: 11px;
+            opacity: 0.8;
+        }
+
+        .conflict-score {
+            background: rgba(255,255,255,0.2);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .no-conflicts {
+            color: #4CAF50;
+            font-weight: 600;
+            text-align: center;
+            font-style: italic;
+        }
+
         .workshop-results {
             background: white;
             padding: 25px;
@@ -952,7 +1338,7 @@
                     <label for="csvFile" class="file-input-label">📁 Upload CSV File</label>
                 </div>
                 <div class="course-filter">
-                    <input type="text" id="courseFilter" placeholder="Enter course codes (e.g., MATH1010U, CSCI1030U, BUSI2000U) - separate with commas" />
+                    <input type="text" id="courseFilter" placeholder="Enter course codes (e.g., MATH1010U, CSCI1030U) or CRNs (e.g., 44778, 71139) - separate with commas" />
                 </div>
                 <div class="preset-dropdown">
                     <div class="dropdown-container">
@@ -1043,7 +1429,11 @@
             <div class="workshop-controls">
                 <div class="workshop-row">
                     <div class="priority-courses-section">
-                        <label>Priority Courses (higher avoidance):</label>
+                        <label>Priority Courses (higher avoidance):
+                            <span class="info-icon">i
+                                <div class="info-tooltip">Courses selected here will have much higher conflict penalties, making the algorithm strongly avoid scheduling workshops during these times. Use for core courses or high-enrollment classes.</div>
+                            </span>
+                        </label>
                         <div class="priority-dropdown-container">
                             <button type="button" class="priority-dropdown-toggle" id="priorityToggle">
                                 📍 Select Priority Courses <span class="dropdown-arrow">▼</span>
@@ -1061,14 +1451,22 @@
                     </div>
                     
                     <div class="workshop-input-group">
-                        <label for="workshopDuration">Workshop Duration (minutes):</label>
+                        <label for="workshopDuration">Workshop Duration (minutes):
+                            <span class="info-icon">i
+                                <div class="info-tooltip">Length of your workshop in minutes. The algorithm will find time slots that can accommodate this full duration with minimal conflicts across all time slots.</div>
+                            </span>
+                        </label>
                         <input type="number" id="workshopDuration" min="30" max="300" step="30" value="60" />
                     </div>
                 </div>
                 
                 <div class="workshop-row">
                     <div class="workshop-input-group">
-                        <label for="earliestTime">Earliest Time:</label>
+                        <label for="earliestTime">Earliest Time:
+                            <span class="info-icon">i
+                                <div class="info-tooltip">The earliest time workshops can start. Use this to respect student schedules and avoid times when attendance would be poor.</div>
+                            </span>
+                        </label>
                         <select id="earliestTime">
                             <option value="08:00">8:00 AM</option>
                             <option value="08:30">8:30 AM</option>
@@ -1095,7 +1493,11 @@
                     </div>
                     
                     <div class="workshop-input-group">
-                        <label for="latestTime">Latest Time:</label>
+                        <label for="latestTime">Latest Time:
+                            <span class="info-icon">i
+                                <div class="info-tooltip">The latest time workshops can start. Note that your workshop must fit entirely before this time (duration is considered automatically).</div>
+                            </span>
+                        </label>
                         <select id="latestTime">
                             <option value="10:00">10:00 AM</option>
                             <option value="10:30">10:30 AM</option>
@@ -1123,6 +1525,200 @@
                     
                     <div class="workshop-input-group">
                         <button type="button" class="find-workshops-btn" id="findWorkshops">🔍 Find Best Workshop Times</button>
+                    </div>
+                </div>
+                
+                <div class="advanced-settings">
+                    <button type="button" class="advanced-toggle" id="advancedToggle">
+                        ⚙️ Advanced Settings <span class="dropdown-arrow">▼</span>
+                    </button>
+                    <div class="advanced-content" id="advancedContent">
+                        <!-- Conflict Score Settings -->
+                        <div class="advanced-section">
+                            <h4>📊 Conflict Score Values
+                                <span class="info-icon">i
+                                    <div class="info-tooltip">Lower scores are better. These values are added together for each conflicting course during your workshop time. Customize these to reflect the importance of avoiding different types of conflicts.</div>
+                                </span>
+                            </h4>
+                            <div class="score-grid">
+                                <div class="score-input-group">
+                                    <label>Non-priority Tutorial/Lab/Other:</label>
+                                    <input type="number" id="scoreNonPriorityOther" min="0" max="100" value="1" />
+                                </div>
+                                <div class="score-input-group">
+                                    <label>Non-priority Lecture:</label>
+                                    <input type="number" id="scoreNonPriorityLecture" min="0" max="100" value="5" />
+                                </div>
+                                <div class="score-input-group">
+                                    <label>Priority Tutorial/Lab/Other:</label>
+                                    <input type="number" id="scorePriorityOther" min="0" max="100" value="3" />
+                                </div>
+                                <div class="score-input-group">
+                                    <label>Priority Lecture:</label>
+                                    <input type="number" id="scorePriorityLecture" min="0" max="100" value="20" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Lunch Avoidance -->
+                        <div class="advanced-section">
+                            <h4>🍽️ Lunch Time Avoidance
+                                <span class="info-icon">i
+                                    <div class="info-tooltip">Adds penalty points for workshop times that overlap with typical lunch hours. Even online students often prefer to maintain regular meal schedules.</div>
+                                </span>
+                            </h4>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="avoidLunch">
+                                <label for="avoidLunch">Avoid scheduling during lunch hours</label>
+                            </div>
+                            <div class="time-range-group">
+                                <label>Lunch period:</label>
+                                <select id="lunchStartTime">
+                                    <option value="11:30">11:30 AM</option>
+                                    <option value="12:00" selected>12:00 PM</option>
+                                    <option value="12:30">12:30 PM</option>
+                                </select>
+                                <label>to</label>
+                                <select id="lunchEndTime">
+                                    <option value="13:00">1:00 PM</option>
+                                    <option value="13:30" selected>1:30 PM</option>
+                                    <option value="14:00">2:00 PM</option>
+                                </select>
+                                <label>Lunch penalty score:</label>
+                                <input type="number" id="lunchPenalty" min="0" max="1000" value="50" style="width: 80px; padding: 6px 8px; border: 2px solid #e9ecef; border-radius: 6px; font-size: 13px;" />
+                            </div>
+                        </div>
+
+                        <!-- Per-Day Time Settings -->
+                        <div class="advanced-section">
+                            <h4>📅 Day-Specific Time Ranges
+                                <span class="info-icon">i
+                                    <div class="info-tooltip">Set different available time windows for each day of the week. Useful if certain days have different course loads or student availability patterns.</div>
+                                </span>
+                            </h4>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="enableDaySpecific">
+                                <label for="enableDaySpecific">Use different time ranges for each day</label>
+                            </div>
+                            <div class="day-time-config" id="dayTimeConfig" style="display: none;">
+                                <div class="day-config">
+                                    <h5>Monday</h5>
+                                    <div class="time-range-group">
+                                        <select id="mondayStart">
+                                            <!-- Options will be populated by JS -->
+                                        </select>
+                                        <label>to</label>
+                                        <select id="mondayEnd">
+                                            <!-- Options will be populated by JS -->
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="day-config">
+                                    <h5>Tuesday</h5>
+                                    <div class="time-range-group">
+                                        <select id="tuesdayStart"></select>
+                                        <label>to</label>
+                                        <select id="tuesdayEnd"></select>
+                                    </div>
+                                </div>
+                                <div class="day-config">
+                                    <h5>Wednesday</h5>
+                                    <div class="time-range-group">
+                                        <select id="wednesdayStart"></select>
+                                        <label>to</label>
+                                        <select id="wednesdayEnd"></select>
+                                    </div>
+                                </div>
+                                <div class="day-config">
+                                    <h5>Thursday</h5>
+                                    <div class="time-range-group">
+                                        <select id="thursdayStart"></select>
+                                        <label>to</label>
+                                        <select id="thursdayEnd"></select>
+                                    </div>
+                                </div>
+                                <div class="day-config">
+                                    <h5>Friday</h5>
+                                    <div class="time-range-group">
+                                        <select id="fridayStart"></select>
+                                        <label>to</label>
+                                        <select id="fridayEnd"></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Extended Conflict Buffer -->
+                        <div class="advanced-section">
+                            <h4>🛡️ Conflict Buffers
+                                <span class="info-icon">i
+                                    <div class="info-tooltip">Adds time buffers before and after existing courses to prevent back-to-back scheduling. Helps students transition between activities and reduces stress from tight schedules.</div>
+                                </span>
+                            </h4>
+                            <p style="color: #6c757d; font-size: 13px; margin-bottom: 15px;">Add buffer time before/after existing classes to avoid back-to-back scheduling conflicts.</p>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="enableBuffer">
+                                <label for="enableBuffer">Enable conflict buffers</label>
+                            </div>
+                            <div class="advanced-section-grid">
+                                <div class="buffer-input-group">
+                                    <label>Before lectures:</label>
+                                    <input type="number" id="bufferBeforeLecture" min="0" max="120" step="30" value="0" />
+                                    <label>minutes</label>
+                                </div>
+                                <div class="buffer-input-group">
+                                    <label>After lectures:</label>
+                                    <input type="number" id="bufferAfterLecture" min="0" max="120" step="30" value="0" />
+                                    <label>minutes</label>
+                                </div>
+                                <div class="buffer-input-group">
+                                    <label>Before other classes:</label>
+                                    <input type="number" id="bufferBeforeOther" min="0" max="120" step="30" value="0" />
+                                    <label>minutes</label>
+                                </div>
+                                <div class="buffer-input-group">
+                                    <label>After other classes:</label>
+                                    <input type="number" id="bufferAfterOther" min="0" max="120" step="30" value="0" />
+                                    <label>minutes</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Enrollment-Based Weighting -->
+                        <div class="advanced-section">
+                            <h4>👥 Enrollment-Based Scoring
+                                <span class="info-icon">i
+                                    <div class="info-tooltip">Multiplies conflict scores by actual enrollment numbers from your CSV data. Higher enrollment courses get higher penalties, helping minimize impact on the most students.</div>
+                                </span>
+                            </h4>
+                            <p style="color: #6c757d; font-size: 13px; margin-bottom: 15px;">Weight conflicts based on actual student enrollment from CSV data to minimize impact on the most students.</p>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="enableEnrollmentWeighting">
+                                <label for="enableEnrollmentWeighting">Apply enrollment-based weighting</label>
+                            </div>
+                            <div class="advanced-section-grid">
+                                <div class="score-input-group">
+                                    <label>Fallback enrollment (1st year courses):</label>
+                                    <input type="number" id="baseEnrollmentFirst" min="10" max="500" value="200" />
+                                </div>
+                                <div class="score-input-group">
+                                    <label>Fallback enrollment (2nd+ year courses):</label>
+                                    <input type="number" id="baseEnrollmentUpper" min="10" max="500" value="100" />
+                                </div>
+                                <div class="score-input-group">
+                                    <label>Lecture enrollment multiplier (fallback):</label>
+                                    <input type="number" id="lectureEnrollmentMultiplier" min="0.1" max="5" step="0.1" value="1.0" />
+                                </div>
+                                <div class="score-input-group">
+                                    <label>Tutorial/Lab enrollment fraction (fallback):</label>
+                                    <input type="number" id="tutorialEnrollmentFraction" min="0.1" max="1" step="0.1" value="0.3" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="button" class="reset-defaults-btn" id="resetDefaults">
+                            🔄 Reset to Default Settings
+                        </button>
                     </div>
                 </div>
             </div>
@@ -1176,6 +1772,13 @@
         document.getElementById('clearPriority').addEventListener('click', clearAllPriority);
         document.getElementById('findWorkshops').addEventListener('click', findOptimalWorkshopTimes);
         document.getElementById('exportPdf').addEventListener('click', exportTimetablePDF);
+        document.getElementById('advancedToggle').addEventListener('click', handleAdvancedToggle);
+        document.getElementById('enableDaySpecific').addEventListener('change', handleDaySpecificToggle);
+        document.getElementById('resetDefaults').addEventListener('click', resetToDefaults);
+
+        // Initialize advanced settings
+        initializeAdvancedSettings();
+        initializeTooltipPositioning();
 
         // Add event listeners for preset checkboxes
         document.querySelectorAll('.preset-checkbox').forEach(checkbox => {
@@ -1271,6 +1874,219 @@
             });
         }
 
+        function initializeAdvancedSettings() {
+            // Populate day-specific time dropdowns
+            const dayNames = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+            dayNames.forEach(day => {
+                const startSelect = document.getElementById(day + 'Start');
+                const endSelect = document.getElementById(day + 'End');
+                
+                // Populate with time options
+                for (let hour = 8; hour <= 20; hour++) {
+                    ['00', '30'].forEach(minute => {
+                        if (hour === 20 && minute === '30') return; // Skip 8:30 PM
+                        const timeValue = `${hour.toString().padStart(2, '0')}:${minute}`;
+                        const timeDisplay = formatDisplayTime(timeValue);
+                        
+                        const startOption = new Option(timeDisplay, timeValue, false, timeValue === '08:00');
+                        const endOption = new Option(timeDisplay, timeValue, false, timeValue === '20:00');
+                        
+                        startSelect.appendChild(startOption);
+                        endSelect.appendChild(endOption);
+                    });
+                }
+            });
+        }
+
+        function handleAdvancedToggle() {
+            const content = document.getElementById('advancedContent');
+            const toggle = document.getElementById('advancedToggle');
+            
+            content.classList.toggle('show');
+            toggle.classList.toggle('active');
+            
+            const arrow = toggle.querySelector('.dropdown-arrow');
+            arrow.style.transform = content.classList.contains('show') ? 'rotate(180deg)' : 'rotate(0deg)';
+        }
+
+        function handleDaySpecificToggle() {
+            const isEnabled = document.getElementById('enableDaySpecific').checked;
+            const dayTimeConfig = document.getElementById('dayTimeConfig');
+            
+            dayTimeConfig.style.display = isEnabled ? 'grid' : 'none';
+        }
+
+        function resetToDefaults() {
+            // Reset conflict scores
+            document.getElementById('scoreNonPriorityOther').value = '1';
+            document.getElementById('scoreNonPriorityLecture').value = '5';
+            document.getElementById('scorePriorityOther').value = '3';
+            document.getElementById('scorePriorityLecture').value = '20';
+            
+            // Reset lunch settings
+            document.getElementById('avoidLunch').checked = false;
+            document.getElementById('lunchStartTime').value = '12:00';
+            document.getElementById('lunchEndTime').value = '13:30';
+            document.getElementById('lunchPenalty').value = '50';
+            
+            // Reset day-specific settings
+            document.getElementById('enableDaySpecific').checked = false;
+            handleDaySpecificToggle();
+            const dayNames = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+            dayNames.forEach(day => {
+                document.getElementById(day + 'Start').value = '08:00';
+                document.getElementById(day + 'End').value = '20:00';
+            });
+            
+            // Reset buffer settings
+            document.getElementById('enableBuffer').checked = false;
+            document.getElementById('bufferBeforeLecture').value = '0';
+            document.getElementById('bufferAfterLecture').value = '0';
+            document.getElementById('bufferBeforeOther').value = '0';
+            document.getElementById('bufferAfterOther').value = '0';
+            
+            // Reset enrollment settings
+            document.getElementById('enableEnrollmentWeighting').checked = false;
+            document.getElementById('baseEnrollmentFirst').value = '200';
+            document.getElementById('baseEnrollmentUpper').value = '100';
+            document.getElementById('lectureEnrollmentMultiplier').value = '1.0';
+            document.getElementById('tutorialEnrollmentFraction').value = '0.3';
+            
+            showStatus('Settings reset to defaults');
+        }
+
+        function initializeTooltipPositioning() {
+        // Add event listeners to all info icons to adjust tooltip positioning
+        document.querySelectorAll('.info-icon').forEach(icon => {
+            icon.addEventListener('mouseenter', function() {
+                const tooltip = this.querySelector('.info-tooltip');
+                if (tooltip) {
+                    // Remove any previous positioning classes
+                    tooltip.classList.remove('adjust-position');
+                    
+                    // Small delay to allow tooltip to render
+                    setTimeout(() => {
+                        const iconRect = this.getBoundingClientRect();
+                        const viewportHeight = window.innerHeight;
+                        
+                        // Check if tooltip would go off the top of the viewport
+                        if (iconRect.top < 150) {
+                            tooltip.classList.add('adjust-position');
+                        }
+                    }, 10);
+                }
+            });
+        });
+    }
+
+        function getAdvancedSettings() {
+            return {
+                scores: {
+                    nonPriorityOther: parseInt(document.getElementById('scoreNonPriorityOther').value) || 1,
+                    nonPriorityLecture: parseInt(document.getElementById('scoreNonPriorityLecture').value) || 5,
+                    priorityOther: parseInt(document.getElementById('scorePriorityOther').value) || 3,
+                    priorityLecture: parseInt(document.getElementById('scorePriorityLecture').value) || 20
+                },
+                lunch: {
+                    avoid: document.getElementById('avoidLunch').checked,
+                    startTime: document.getElementById('lunchStartTime').value,
+                    endTime: document.getElementById('lunchEndTime').value,
+                    penalty: parseInt(document.getElementById('lunchPenalty').value) || 50
+                },
+                daySpecific: {
+                    enabled: document.getElementById('enableDaySpecific').checked,
+                    times: {
+                        monday: {
+                            start: document.getElementById('mondayStart').value,
+                            end: document.getElementById('mondayEnd').value
+                        },
+                        tuesday: {
+                            start: document.getElementById('tuesdayStart').value,
+                            end: document.getElementById('tuesdayEnd').value
+                        },
+                        wednesday: {
+                            start: document.getElementById('wednesdayStart').value,
+                            end: document.getElementById('wednesdayEnd').value
+                        },
+                        thursday: {
+                            start: document.getElementById('thursdayStart').value,
+                            end: document.getElementById('thursdayEnd').value
+                        },
+                        friday: {
+                            start: document.getElementById('fridayStart').value,
+                            end: document.getElementById('fridayEnd').value
+                        }
+                    }
+                },
+                buffer: {
+                    enabled: document.getElementById('enableBuffer').checked,
+                    beforeLecture: parseInt(document.getElementById('bufferBeforeLecture').value) || 15,
+                    afterLecture: parseInt(document.getElementById('bufferAfterLecture').value) || 15,
+                    beforeOther: parseInt(document.getElementById('bufferBeforeOther').value) || 10,
+                    afterOther: parseInt(document.getElementById('bufferAfterOther').value) || 10
+                },
+                enrollment: {
+                    enabled: document.getElementById('enableEnrollmentWeighting').checked,
+                    baseFirst: parseInt(document.getElementById('baseEnrollmentFirst').value) || 200,
+                    baseUpper: parseInt(document.getElementById('baseEnrollmentUpper').value) || 100,
+                    lectureMultiplier: parseFloat(document.getElementById('lectureEnrollmentMultiplier').value) || 1.0,
+                    tutorialFraction: parseFloat(document.getElementById('tutorialEnrollmentFraction').value) || 0.3
+                }
+            };
+        }
+
+        function isFirstYearCourse(course) {
+            const match = course.match(/\d{4}/);
+            if (!match) return false;
+            const courseNumber = match[0];
+            return courseNumber.startsWith('1') || courseNumber.startsWith('0');
+        }
+
+        function estimateEnrollment(entry, settings) {
+            // This is now a fallback function when actual enrollment isn't available
+            const baseEnrollment = isFirstYearCourse(entry.course) ? 
+                settings.enrollment.baseFirst : settings.enrollment.baseUpper;
+            
+            if (entry.type === 'lecture') {
+                return Math.round(baseEnrollment * settings.enrollment.lectureMultiplier);
+            } else {
+                return Math.round(baseEnrollment * settings.enrollment.tutorialFraction);
+            }
+        }
+
+        function getActualEnrollment(entry) {
+            // Find matching course data with actual enrollment
+            const matchingEntries = courseData.filter(courseEntry => 
+                courseEntry.course === entry.course && 
+                courseEntry.type === entry.type &&
+                courseEntry.day === entry.day &&
+                courseEntry.startTime === entry.startTime
+            );
+            
+            if (matchingEntries.length > 0) {
+                // Use the 'Act' (actual enrollment) from the first matching entry
+                return matchingEntries[0].actualEnrollment || 0;
+            }
+            
+            // Fallback to estimation if no actual data found
+            return estimateEnrollment(entry, getAdvancedSettings());
+        }
+
+        function isInLunchPeriod(timeSlot, settings) {
+            if (!settings.lunch.avoid) return false;
+            
+            const lunchStart = timeSlots.indexOf(settings.lunch.startTime);
+            const lunchEnd = timeSlots.indexOf(settings.lunch.endTime);
+            const currentSlot = timeSlots.indexOf(timeSlot);
+            
+            return currentSlot >= lunchStart && currentSlot < lunchEnd;
+        }
+
+        function hasBufferConflict(day, timeSlot, settings, currentData) {
+            // This function is no longer used - buffer logic is now integrated into main conflict detection
+            return { hasConflict: false, details: [] };
+        }
+
         function populatePriorityCourses() {
             const priorityList = document.getElementById('priorityCoursesList');
             if (!priorityList) return;
@@ -1325,7 +2141,9 @@
                 .map(checkbox => checkbox.dataset.course);
         }
 
+        // Replace your existing calculateConflictScore function with this fixed version
         function calculateConflictScore(day, timeSlot) {
+            const settings = getAdvancedSettings();
             const currentData = courseData.filter(entry => {
                 // Filter to currently displayed courses
                 const filterText = document.getElementById('courseFilter').value.trim().toUpperCase();
@@ -1343,8 +2161,8 @@
                 const matches = filteredCourses.length === 0 || filteredCourses === allCourses || 
                     filteredCourses.some(filterCourse => {
                         return entry.course === filterCourse || 
-                               entry.course.startsWith(filterCourse) || 
-                               entry.course.includes(filterCourse);
+                            entry.course.startsWith(filterCourse) || 
+                            entry.course.includes(filterCourse);
                     });
 
                 return matches && entry.day === day;
@@ -1353,20 +2171,191 @@
             const priorityCourses = getPriorityCourses();
             let score = 0;
 
+            // Check for lunch period penalty
+            if (isInLunchPeriod(timeSlot, settings)) {
+                score += settings.lunch.penalty;
+            }
+
+            // Group courses by course+type to avoid counting multiple sections
+            const courseConflicts = new Map();
+            const currentSlotIndex = timeSlots.indexOf(timeSlot);
+
             currentData.forEach(entry => {
-                // Check if this course is running during this time slot
                 const entryStartSlot = findTimeSlot(entry.startTime);
                 const entryEndSlot = entryStartSlot + Math.ceil(entry.duration / 30) - 1;
-                const currentSlotIndex = timeSlots.indexOf(timeSlot);
+                
+                // Calculate buffer zones if enabled
+                let bufferedStartSlot = entryStartSlot;
+                let bufferedEndSlot = entryEndSlot;
+                
+                if (settings.buffer.enabled) {
+                    const bufferBefore = entry.type === 'lecture' ? 
+                        Math.ceil(settings.buffer.beforeLecture / 30) : 
+                        Math.ceil(settings.buffer.beforeOther / 30);
+                        
+                    const bufferAfter = entry.type === 'lecture' ? 
+                        Math.ceil(settings.buffer.afterLecture / 30) : 
+                        Math.ceil(settings.buffer.afterOther / 30);
+                        
+                    bufferedStartSlot = Math.max(0, entryStartSlot - bufferBefore);
+                    bufferedEndSlot = Math.min(timeSlots.length - 1, entryEndSlot + bufferAfter);
+                }
 
-                if (currentSlotIndex >= entryStartSlot && currentSlotIndex <= entryEndSlot) {
-                    const isPriority = priorityCourses.includes(entry.course);
-                    const isLecture = entry.type === 'lecture';
-
-                    if (isPriority) {
-                        score += isLecture ? 20 : 3;
+                // Check if current slot overlaps with buffered time range
+                if (currentSlotIndex >= bufferedStartSlot && currentSlotIndex <= bufferedEndSlot) {
+                    // Group by course+type to count each course only once
+                    const courseTypeKey = `${entry.course}-${entry.type}`;
+                    
+                    if (!courseConflicts.has(courseTypeKey)) {
+                        courseConflicts.set(courseTypeKey, {
+                            course: entry.course,
+                            type: entry.type,
+                            entries: [entry]
+                        });
                     } else {
-                        score += isLecture ? 5 : 1;  // Changed from 3 to 5 for non-priority lectures
+                        // Add to existing group but don't create duplicate
+                        courseConflicts.get(courseTypeKey).entries.push(entry);
+                    }
+                }
+            });
+
+            // Calculate score for each unique course+type combination
+            courseConflicts.forEach(conflictGroup => {
+                const isPriority = priorityCourses.includes(conflictGroup.course);
+                const isLecture = conflictGroup.type === 'lecture';
+
+                let baseScore;
+                if (isPriority) {
+                    baseScore = isLecture ? settings.scores.priorityLecture : settings.scores.priorityOther;
+                } else {
+                    baseScore = isLecture ? settings.scores.nonPriorityLecture : settings.scores.nonPriorityOther;
+                }
+
+                // Apply enrollment weighting if enabled
+                if (settings.enrollment.enabled) {
+                    // For multiple sections, sum enrollments
+                    let totalEnrollment = 0;
+                    conflictGroup.entries.forEach(entry => {
+                        const enrollment = getActualEnrollment(entry);
+                        totalEnrollment += enrollment;
+                    });
+                    
+                    if (totalEnrollment > 0) {
+                        const enrollmentMultiplier = totalEnrollment / 50;
+                        baseScore = Math.round(baseScore * enrollmentMultiplier);
+                    }
+                }
+
+                score += baseScore;
+            });
+
+            return score;
+        }
+
+        // Fixed version - counts each conflicting course only once per workshop
+        function calculateWorkshopConflictScore(day, startTime, duration) {
+            const settings = getAdvancedSettings();
+            const slotsNeeded = Math.ceil(duration / 30);
+            const startIndex = timeSlots.indexOf(startTime);
+            
+            // Get currently filtered data
+            const filterText = document.getElementById('courseFilter').value.trim().toUpperCase();
+            let filteredCourses = [];
+
+            if (filterText) {
+                filteredCourses = filterText.split(/[,\s]+/)
+                    .map(c => c.trim())
+                    .filter(c => c.length > 0)
+                    .map(c => c.toUpperCase());
+            } else {
+                filteredCourses = allCourses;
+            }
+
+            const currentData = courseData.filter(entry => {
+                const matches = filteredCourses.length === 0 || filteredCourses === allCourses || 
+                    filteredCourses.some(filterCourse => {
+                        return entry.course === filterCourse || 
+                            entry.course.startsWith(filterCourse) || 
+                            entry.course.includes(filterCourse);
+                    });
+                return matches && entry.day === day;
+            });
+
+            const priorityCourses = getPriorityCourses();
+            let score = 0;
+
+            // Check for lunch period penalty (count once if any workshop slot overlaps)
+            let lunchPenaltyAdded = false;
+            for (let i = 0; i < slotsNeeded; i++) {
+                const slotIndex = startIndex + i;
+                if (slotIndex < timeSlots.length) {
+                    const timeSlot = timeSlots[slotIndex];
+                    if (isInLunchPeriod(timeSlot, settings) && !lunchPenaltyAdded) {
+                        score += settings.lunch.penalty;
+                        lunchPenaltyAdded = true;
+                        break;
+                    }
+                }
+            }
+
+            // Track individual sections that have already been counted to avoid double-counting 
+            // the same section multiple times across different workshop time slots
+            const processedSections = new Set();
+            
+            currentData.forEach(entry => {
+                const entryStartSlot = findTimeSlot(entry.startTime);
+                const entryEndSlot = entryStartSlot + Math.ceil(entry.duration / 30) - 1;
+                
+                // Calculate buffer zones if enabled
+                let bufferedStartSlot = entryStartSlot;
+                let bufferedEndSlot = entryEndSlot;
+                
+                if (settings.buffer.enabled) {
+                    const bufferBefore = entry.type === 'lecture' ? 
+                        Math.ceil(settings.buffer.beforeLecture / 30) : 
+                        Math.ceil(settings.buffer.beforeOther / 30);
+                        
+                    const bufferAfter = entry.type === 'lecture' ? 
+                        Math.ceil(settings.buffer.afterLecture / 30) : 
+                        Math.ceil(settings.buffer.afterOther / 30);
+                        
+                    bufferedStartSlot = Math.max(0, entryStartSlot - bufferBefore);
+                    bufferedEndSlot = Math.min(timeSlots.length - 1, entryEndSlot + bufferAfter);
+                }
+
+                // Check if workshop time range overlaps with buffered course time range
+                const workshopStartSlot = startIndex;
+                const workshopEndSlot = startIndex + slotsNeeded - 1;
+                
+                const hasOverlap = workshopStartSlot <= bufferedEndSlot && workshopEndSlot >= bufferedStartSlot;
+                
+                if (hasOverlap) {
+                    // Create unique identifier for this specific section (includes all identifying info)
+                    const sectionKey = `${entry.course}-${entry.type}-${entry.startTime}-${entry.day}-${entry.instructor}-${entry.location}`;
+                    
+                    if (!processedSections.has(sectionKey)) {
+                        processedSections.add(sectionKey);
+                        
+                        const isPriority = priorityCourses.includes(entry.course);
+                        const isLecture = entry.type === 'lecture';
+
+                        let baseScore;
+                        if (isPriority) {
+                            baseScore = isLecture ? settings.scores.priorityLecture : settings.scores.priorityOther;
+                        } else {
+                            baseScore = isLecture ? settings.scores.nonPriorityLecture : settings.scores.nonPriorityOther;
+                        }
+
+                        // Apply enrollment weighting if enabled
+                        if (settings.enrollment.enabled) {
+                            const enrollment = getActualEnrollment(entry);
+                            if (enrollment > 0) {
+                                const enrollmentMultiplier = enrollment / 50;
+                                baseScore = Math.round(baseScore * enrollmentMultiplier);
+                            }
+                        }
+
+                        score += baseScore;
                     }
                 }
             });
@@ -1374,57 +2363,60 @@
             return score;
         }
 
+        // Updated findOptimalWorkshopTimes function
         function findOptimalWorkshopTimes() {
             const duration = parseInt(document.getElementById('workshopDuration').value) || 60;
-            const earliestTime = document.getElementById('earliestTime').value;
-            const latestTime = document.getElementById('latestTime').value;
+            const settings = getAdvancedSettings();
             
-            const earliestIndex = timeSlots.indexOf(earliestTime);
-            const latestIndex = timeSlots.indexOf(latestTime);
+            const opportunities = [];
             const slotsNeeded = Math.ceil(duration / 30);
 
-            if (earliestIndex === -1 || latestIndex === -1 || earliestIndex >= latestIndex) {
-                alert('Please check your time range settings.');
-                return;
-            }
-
-            const opportunities = [];
-
             days.forEach(day => {
+                let earliestTime, latestTime;
+                
+                if (settings.daySpecific.enabled) {
+                    const dayKey = day.toLowerCase();
+                    earliestTime = settings.daySpecific.times[dayKey].start;
+                    latestTime = settings.daySpecific.times[dayKey].end;
+                } else {
+                    earliestTime = document.getElementById('earliestTime').value;
+                    latestTime = document.getElementById('latestTime').value;
+                }
+                
+                const earliestIndex = timeSlots.indexOf(earliestTime);
+                const latestIndex = timeSlots.indexOf(latestTime);
+                
+                if (earliestIndex === -1 || latestIndex === -1 || earliestIndex >= latestIndex) {
+                    return;
+                }
+
                 for (let startIndex = earliestIndex; startIndex <= latestIndex - slotsNeeded; startIndex++) {
-                    let totalScore = 0;
-                    const timeSlotDetails = [];
-
-                    // Calculate total score for this time slot range
-                    for (let i = 0; i < slotsNeeded; i++) {
-                        const slotIndex = startIndex + i;
-                        if (slotIndex < timeSlots.length) {
-                            const timeSlot = timeSlots[slotIndex];
-                            const score = calculateConflictScore(day, timeSlot);
-                            totalScore += score;
-                            timeSlotDetails.push({ time: timeSlot, score });
-                        }
-                    }
-
                     const startTime = timeSlots[startIndex];
                     const endTime = addMinutes(startTime, duration);
+                    
+                    // Use the new single-calculation method
+                    const totalScore = calculateWorkshopConflictScore(day, startTime, duration);
                     
                     opportunities.push({
                         day,
                         startTime,
                         endTime,
                         totalScore,
-                        details: timeSlotDetails
+                        details: [] // You can populate this if needed for debugging
                     });
                 }
             });
 
             // Sort by score (lower is better)
             opportunities.sort((a, b) => a.totalScore - b.totalScore);
-
-            displayWorkshopResults(opportunities.slice(0, 10), duration); // Show top 10
+            displayWorkshopResults(opportunities.slice(0, 10), duration);
         }
 
+        function isCRN(input) {
+            return /^\d{5}$/.test(input.trim());
+        }
+
+        // Updated displayWorkshopResults function - replace the tooltip generation part
         function displayWorkshopResults(opportunities, duration) {
             const resultsDiv = document.getElementById('workshopResults');
             const contentDiv = document.getElementById('resultsContent');
@@ -1443,8 +2435,43 @@
                 const startTimeFormatted = formatDisplayTime(opp.startTime);
                 const endTimeFormatted = formatDisplayTime(opp.endTime);
                 
+                // Get conflict details using the new function
+                const conflictDetails = getWorkshopConflictDetailsForDisplay(opp.day, opp.startTime, duration);
+
+                // Build tooltip content
+                let tooltipContent = '<div class="workshop-tooltip">';
+
+                if (conflictDetails.conflicts.length === 0 && !conflictDetails.lunchConflict) {
+                    tooltipContent += '<div class="no-conflicts">No conflicts detected!</div>';
+                } else {
+                    tooltipContent += '<strong>Score Breakdown (Total: ' + conflictDetails.totalScore + '):</strong>';
+                    tooltipContent += '<div class="conflict-list">';
+                    
+                    // Add lunch penalty if applicable
+                    if (conflictDetails.lunchConflict) {
+                        tooltipContent += '<div class="conflict-item">';
+                        tooltipContent += '<span class="conflict-course">Lunch Period: +' + conflictDetails.settings.lunch.penalty + '</span>';
+                        tooltipContent += '</div>';
+                    }
+                    
+                    // Add course conflicts
+                    conflictDetails.conflicts.forEach(conflict => {
+                        tooltipContent += '<div class="conflict-item">';
+                        const enrollmentText = conflictDetails.settings.enrollment.enabled && conflict.enrollment > 0 
+                            ? ` (${conflict.enrollment} students)` : '';
+                        tooltipContent += '<span class="conflict-course" style="font-size: 11px; max-width: 300px; word-wrap: break-word;">' + 
+                            conflict.course + ' ' + conflict.type + ': +' + conflict.finalScore + enrollmentText + '</span>';
+                        tooltipContent += '</div>';
+                    });
+                    
+                    tooltipContent += '</div>';
+                }
+
+                tooltipContent += '</div>';
+                
                 html += `
                     <div class="result-item">
+                        ${tooltipContent}
                         <div class="result-header">
                             #${ranking} - ${opp.day}, ${startTimeFormatted} - ${endTimeFormatted}
                             <span class="conflict-score">Score: ${opp.totalScore}</span>
@@ -1459,6 +2486,414 @@
             contentDiv.innerHTML = html;
             resultsDiv.style.display = 'block';
             explanationDiv.style.display = 'block';
+        }
+
+        // Replace the conflict details generation in displayWorkshopResults
+        function getWorkshopConflictDetailsForDisplay(day, startTime, duration) {
+            const settings = getAdvancedSettings();
+            const slotsNeeded = Math.ceil(duration / 30);
+            const startIndex = timeSlots.indexOf(startTime);
+            
+            // Get currently filtered data
+            const filterText = document.getElementById('courseFilter').value.trim().toUpperCase();
+            let filteredCourses = [];
+
+            if (filterText) {
+                filteredCourses = filterText.split(/[,\s]+/)
+                    .map(c => c.trim())
+                    .filter(c => c.length > 0)
+                    .map(c => c.toUpperCase());
+            } else {
+                filteredCourses = allCourses;
+            }
+
+            const currentData = courseData.filter(entry => {
+                const matches = filteredCourses.length === 0 || filteredCourses === allCourses || 
+                    filteredCourses.some(filterCourse => {
+                        return entry.course === filterCourse || 
+                            entry.course.startsWith(filterCourse) || 
+                            entry.course.includes(filterCourse);
+                    });
+                return matches && entry.day === day;
+            });
+
+            const priorityCourses = getPriorityCourses();
+            let totalScore = 0;
+            const conflicts = [];
+            let lunchConflict = false;
+            
+            // Check for lunch period penalty (once for entire workshop)
+            let hasLunchOverlap = false;
+            for (let i = 0; i < slotsNeeded && !hasLunchOverlap; i++) {
+                const slotIndex = startIndex + i;
+                if (slotIndex < timeSlots.length) {
+                    const timeSlot = timeSlots[slotIndex];
+                    if (isInLunchPeriod(timeSlot, settings)) {
+                        hasLunchOverlap = true;
+                        lunchConflict = true;
+                        totalScore += settings.lunch.penalty;
+                    }
+                }
+            }
+            
+            // Track individual sections that have already been counted
+            const processedSections = new Set();
+            
+            currentData.forEach(entry => {
+                const entryStartSlot = findTimeSlot(entry.startTime);
+                const entryEndSlot = entryStartSlot + Math.ceil(entry.duration / 30) - 1;
+                
+                // Calculate buffer zones if enabled
+                let bufferedStartSlot = entryStartSlot;
+                let bufferedEndSlot = entryEndSlot;
+                
+                if (settings.buffer.enabled) {
+                    const bufferBefore = entry.type === 'lecture' ? 
+                        Math.ceil(settings.buffer.beforeLecture / 30) : 
+                        Math.ceil(settings.buffer.beforeOther / 30);
+                        
+                    const bufferAfter = entry.type === 'lecture' ? 
+                        Math.ceil(settings.buffer.afterLecture / 30) : 
+                        Math.ceil(settings.buffer.afterOther / 30);
+                        
+                    bufferedStartSlot = Math.max(0, entryStartSlot - bufferBefore);
+                    bufferedEndSlot = Math.min(timeSlots.length - 1, entryEndSlot + bufferAfter);
+                }
+
+                // Check if workshop time range overlaps with buffered course time range
+                const workshopStartSlot = startIndex;
+                const workshopEndSlot = startIndex + slotsNeeded - 1;
+                
+                const hasOverlap = workshopStartSlot <= bufferedEndSlot && workshopEndSlot >= bufferedStartSlot;
+                
+                if (hasOverlap) {
+                    // Create unique identifier for this specific section
+                    const sectionKey = `${entry.course}-${entry.type}-${entry.startTime}-${entry.day}-${entry.instructor}-${entry.location}`;
+                    
+                    if (!processedSections.has(sectionKey)) {
+                        processedSections.add(sectionKey);
+                        
+                        const isPriority = priorityCourses.includes(entry.course);
+                        const isLecture = entry.type === 'lecture';
+
+                        let baseScore;
+                        if (isPriority) {
+                            baseScore = isLecture ? settings.scores.priorityLecture : settings.scores.priorityOther;
+                        } else {
+                            baseScore = isLecture ? settings.scores.nonPriorityLecture : settings.scores.nonPriorityOther;
+                        }
+
+                        let finalScore = baseScore;
+                        let enrollment = 0;
+                        
+                        // Apply enrollment weighting if enabled
+                        if (settings.enrollment.enabled) {
+                            enrollment = getActualEnrollment(entry);
+                            if (enrollment > 0) {
+                                const enrollmentMultiplier = enrollment / 50;
+                                finalScore = Math.round(baseScore * enrollmentMultiplier);
+                            }
+                        }
+
+                        totalScore += finalScore;
+                        
+                        // Add to conflicts list for display
+                        const isInBuffer = (workshopStartSlot >= bufferedStartSlot && workshopStartSlot <= bufferedEndSlot) && 
+                                        !(workshopStartSlot >= entryStartSlot && workshopStartSlot <= entryEndSlot);
+                        
+                        conflicts.push({
+                            course: entry.course,
+                            type: entry.type,
+                            startTime: entry.startTime,
+                            endTime: entry.endTime,
+                            isPriority,
+                            baseScore,
+                            finalScore,
+                            enrollment,
+                            instructor: entry.instructor || 'Unknown',
+                            isInBuffer,
+                            bufferBefore: settings.buffer.enabled ? (entry.type === 'lecture' ? settings.buffer.beforeLecture : settings.buffer.beforeOther) : 0,
+                            bufferAfter: settings.buffer.enabled ? (entry.type === 'lecture' ? settings.buffer.afterLecture : settings.buffer.afterOther) : 0
+                        });
+                    }
+                }
+            });
+            
+            return {
+                conflicts,
+                lunchConflict,
+                totalScore,
+                settings
+            };
+        }
+
+        function getWorkshopConflictDetails(day, startTime, duration) {
+            const settings = getAdvancedSettings();
+            const slotsNeeded = Math.ceil(duration / 30);
+            const startIndex = timeSlots.indexOf(startTime);
+            
+            const conflicts = [];
+            let lunchConflict = false;
+            
+            // Get currently filtered data
+            const filterText = document.getElementById('courseFilter').value.trim().toUpperCase();
+            let filteredCourses = [];
+
+            if (filterText) {
+                filteredCourses = filterText.split(/[,\s]+/)
+                    .map(c => c.trim())
+                    .filter(c => c.length > 0)
+                    .map(c => c.toUpperCase());
+            } else {
+                filteredCourses = allCourses;
+            }
+
+            const currentData = courseData.filter(entry => {
+                const matches = filteredCourses.length === 0 || filteredCourses === allCourses || 
+                    filteredCourses.some(filterCourse => {
+                        return entry.course === filterCourse || 
+                            entry.course.startsWith(filterCourse) || 
+                            entry.course.includes(filterCourse);
+                    });
+                return matches && entry.day === day;
+            });
+
+            const priorityCourses = getPriorityCourses();
+            
+            // Check each slot in the workshop duration
+            for (let i = 0; i < slotsNeeded; i++) {
+                const slotIndex = startIndex + i;
+                if (slotIndex >= timeSlots.length) continue;
+                
+                const timeSlot = timeSlots[slotIndex];
+                
+                // Check for lunch conflict
+                if (isInLunchPeriod(timeSlot, settings)) {
+                    lunchConflict = true;
+                }
+                
+                // Check for course conflicts (including buffer zones)
+                currentData.forEach(entry => {
+                    const entryStartSlot = findTimeSlot(entry.startTime);
+                    const entryEndSlot = entryStartSlot + Math.ceil(entry.duration / 30) - 1;
+                    
+                    // Calculate buffer zones if enabled
+                    let bufferedStartSlot = entryStartSlot;
+                    let bufferedEndSlot = entryEndSlot;
+                    let isInBuffer = false;
+                    
+                    if (settings.buffer.enabled) {
+                        const bufferBefore = entry.type === 'lecture' ? 
+                            Math.ceil(settings.buffer.beforeLecture / 30) : 
+                            Math.ceil(settings.buffer.beforeOther / 30);
+                            
+                        const bufferAfter = entry.type === 'lecture' ? 
+                            Math.ceil(settings.buffer.afterLecture / 30) : 
+                            Math.ceil(settings.buffer.afterOther / 30);
+                            
+                        bufferedStartSlot = Math.max(0, entryStartSlot - bufferBefore);
+                        bufferedEndSlot = Math.min(timeSlots.length - 1, entryEndSlot + bufferAfter);
+                        
+                        // Check if we're only in the buffer zone (not the actual class)
+                        isInBuffer = (slotIndex >= bufferedStartSlot && slotIndex <= bufferedEndSlot) && 
+                                    !(slotIndex >= entryStartSlot && slotIndex <= entryEndSlot);
+                    }
+                    
+                    if (slotIndex >= bufferedStartSlot && slotIndex <= bufferedEndSlot) {
+                        const isPriority = priorityCourses.includes(entry.course);
+                        const isLecture = entry.type === 'lecture';
+                        
+                        let baseScore;
+                        if (isPriority) {
+                            baseScore = isLecture ? settings.scores.priorityLecture : settings.scores.priorityOther;
+                        } else {
+                            baseScore = isLecture ? settings.scores.nonPriorityLecture : settings.scores.nonPriorityOther;
+                        }
+                        
+                        let finalScore = baseScore;
+                        let enrollment = 0;
+                        
+                        // Apply enrollment weighting if enabled
+                        if (settings.enrollment.enabled) {
+                            enrollment = getActualEnrollment(entry);
+                            if (enrollment > 0) {
+                                const enrollmentMultiplier = enrollment / 50;
+                                finalScore = Math.round(baseScore * enrollmentMultiplier);
+                            }
+                        }
+                        
+                        // Check if this conflict is already recorded
+                        const existingConflict = conflicts.find(c => 
+                            c.course === entry.course && 
+                            c.type === entry.type &&
+                            c.startTime === entry.startTime
+                        );
+                        
+                        if (!existingConflict) {
+                            conflicts.push({
+                                course: entry.course,
+                                type: entry.type,
+                                startTime: entry.startTime,
+                                endTime: entry.endTime,
+                                isPriority,
+                                baseScore,
+                                finalScore,
+                                enrollment,
+                                instructor: entry.instructor || 'Unknown',
+                                isInBuffer,
+                                bufferBefore: settings.buffer.enabled ? (entry.type === 'lecture' ? settings.buffer.beforeLecture : settings.buffer.beforeOther) : 0,
+                                bufferAfter: settings.buffer.enabled ? (entry.type === 'lecture' ? settings.buffer.afterLecture : settings.buffer.afterOther) : 0
+                            });
+                        }
+                    }
+                });
+            }
+            
+            return {
+                conflicts,
+                lunchConflict,
+                settings
+            };
+        }
+
+        function debugCalculateConflictScore(day, timeSlot) {
+            console.log(`\n=== DEBUG CONFLICT SCORE for ${day} at ${timeSlot} ===`);
+            
+            const settings = getAdvancedSettings();
+            console.log('Settings:', settings);
+            
+            const currentData = courseData.filter(entry => {
+                // Filter to currently displayed courses
+                const filterText = document.getElementById('courseFilter').value.trim().toUpperCase();
+                let filteredCourses = [];
+
+                if (filterText) {
+                    filteredCourses = filterText.split(/[,\s]+/)
+                        .map(c => c.trim())
+                        .filter(c => c.length > 0)
+                        .map(c => c.toUpperCase());
+                } else {
+                    filteredCourses = allCourses;
+                }
+
+                const matches = filteredCourses.length === 0 || filteredCourses === allCourses || 
+                    filteredCourses.some(filterCourse => {
+                        return entry.course === filterCourse || 
+                            entry.course.startsWith(filterCourse) || 
+                            entry.course.includes(filterCourse);
+                    });
+
+                return matches && entry.day === day;
+            });
+
+            console.log(`Found ${currentData.length} courses on ${day}:`, currentData.map(e => `${e.course} ${e.type}`));
+
+            const priorityCourses = getPriorityCourses();
+            console.log('Priority courses:', priorityCourses);
+            
+            let score = 0;
+            let scoreBreakdown = [];
+
+            // Check for lunch period penalty
+            if (isInLunchPeriod(timeSlot, settings)) {
+                const lunchScore = settings.lunch.penalty;
+                score += lunchScore;
+                scoreBreakdown.push(`Lunch Period: +${lunchScore}`);
+                console.log(`Lunch period penalty: +${lunchScore}`);
+            }
+
+            currentData.forEach(entry => {
+                console.log(`\nProcessing ${entry.course} ${entry.type}:`);
+                
+                const entryStartSlot = findTimeSlot(entry.startTime);
+                const entryEndSlot = entryStartSlot + Math.ceil(entry.duration / 30) - 1;
+                const currentSlotIndex = timeSlots.indexOf(timeSlot);
+                
+                console.log(`  Entry spans slots ${entryStartSlot}-${entryEndSlot} (${timeSlots[entryStartSlot]}-${timeSlots[entryEndSlot]})`);
+                console.log(`  Current slot index: ${currentSlotIndex} (${timeSlot})`);
+                
+                // Calculate buffer zones if enabled
+                let bufferedStartSlot = entryStartSlot;
+                let bufferedEndSlot = entryEndSlot;
+                let bufferInfo = '';
+                
+                if (settings.buffer.enabled) {
+                    const bufferBefore = entry.type === 'lecture' ? 
+                        Math.ceil(settings.buffer.beforeLecture / 30) : 
+                        Math.ceil(settings.buffer.beforeOther / 30);
+                        
+                    const bufferAfter = entry.type === 'lecture' ? 
+                        Math.ceil(settings.buffer.afterLecture / 30) : 
+                        Math.ceil(settings.buffer.afterOther / 30);
+                        
+                    bufferedStartSlot = Math.max(0, entryStartSlot - bufferBefore);
+                    bufferedEndSlot = Math.min(timeSlots.length - 1, entryEndSlot + bufferAfter);
+                    
+                    console.log(`  Buffer: ${bufferBefore} slots before, ${bufferAfter} slots after`);
+                    console.log(`  Buffered span: slots ${bufferedStartSlot}-${bufferedEndSlot}`);
+                    
+                    const isInActualClass = currentSlotIndex >= entryStartSlot && currentSlotIndex <= entryEndSlot;
+                    const isInBufferZone = (currentSlotIndex >= bufferedStartSlot && currentSlotIndex <= bufferedEndSlot) && !isInActualClass;
+                    
+                    if (isInBufferZone) {
+                        bufferInfo = ' (in buffer zone)';
+                        console.log(`  Current slot is in buffer zone`);
+                    } else if (isInActualClass) {
+                        console.log(`  Current slot is in actual class`);
+                    }
+                }
+
+                // Check if workshop slot overlaps with buffered time range
+                if (currentSlotIndex >= bufferedStartSlot && currentSlotIndex <= bufferedEndSlot) {
+                    console.log(`  CONFLICT DETECTED!`);
+                    
+                    const isPriority = priorityCourses.includes(entry.course);
+                    const isLecture = entry.type === 'lecture';
+                    
+                    console.log(`  isPriority: ${isPriority}, isLecture: ${isLecture}`);
+
+                    let baseScore;
+                    if (isPriority) {
+                        baseScore = isLecture ? settings.scores.priorityLecture : settings.scores.priorityOther;
+                    } else {
+                        baseScore = isLecture ? settings.scores.nonPriorityLecture : settings.scores.nonPriorityOther;
+                    }
+                    
+                    console.log(`  Base score: ${baseScore}`);
+
+                    let finalScore = baseScore;
+                    
+                    // Apply enrollment weighting if enabled
+                    if (settings.enrollment.enabled) {
+                        const enrollment = getActualEnrollment(entry);
+                        console.log(`  Enrollment: ${enrollment}`);
+                        
+                        if (enrollment > 0) {
+                            const enrollmentMultiplier = enrollment / 50;
+                            finalScore = Math.round(baseScore * enrollmentMultiplier);
+                            console.log(`  Enrollment multiplier: ${enrollmentMultiplier.toFixed(2)}, final score: ${finalScore}`);
+                            scoreBreakdown.push(`${entry.course} ${entry.type}${bufferInfo}: +${baseScore} (base) × ${enrollmentMultiplier.toFixed(2)} (enrollment) = +${finalScore}`);
+                        } else {
+                            console.log(`  No enrollment data, using base score: ${finalScore}`);
+                            scoreBreakdown.push(`${entry.course} ${entry.type}${bufferInfo}: +${finalScore}`);
+                        }
+                    } else {
+                        console.log(`  Enrollment weighting disabled, using base score: ${finalScore}`);
+                        scoreBreakdown.push(`${entry.course} ${entry.type}${bufferInfo}: +${finalScore}`);
+                    }
+
+                    score += finalScore;
+                    console.log(`  Added ${finalScore} to score. Running total: ${score}`);
+                } else {
+                    console.log(`  No conflict - slot ${currentSlotIndex} not in range ${bufferedStartSlot}-${bufferedEndSlot}`);
+                }
+            });
+
+            console.log(`\nFINAL DEBUG SCORE: ${score}`);
+            console.log('Breakdown:', scoreBreakdown);
+            console.log('=== END DEBUG ===\n');
+            
+            return { score, breakdown: scoreBreakdown };
         }
 
         function exportTimetablePDF() {
@@ -2000,7 +3435,8 @@
                 'btime': 'time',               // Begin time
                 'duration': 'duration',        // Duration column
                 'room': 'location',            // Room column
-                'faculty name': 'instructor'   // Faculty Name column
+                'faculty name': 'instructor',   // Faculty Name column
+                'crn': 'crn'                   // CRN column
             };
 
             // Also need course number for full course code
@@ -2013,6 +3449,10 @@
                     map['coursenumber'] = i;
                 } else if (header === 'section title') {
                     map['sectiontitle'] = i;
+                } else if (header === 'act') {
+                    map['actualenrollment'] = i;
+                } else if (header === 'max') {
+                    map['maxenrollment'] = i;
                 }
             }
 
@@ -2068,11 +3508,12 @@
             const columnMap = detectColumns(headers);
             console.log('Column mapping:', columnMap);
             
-            if (!columnMap.course || !columnMap.day || !columnMap.time) {
+            if (!columnMap.course || !columnMap.day || !columnMap.time || !columnMap.crn) {
                 const missing = [];
                 if (!columnMap.course) missing.push('Subject');
                 if (!columnMap.day) missing.push('Day');
                 if (!columnMap.time) missing.push('BTime');
+                if (!columnMap.crn) missing.push('CRN');
                 
                 showStatus(`Could not detect required columns. Missing: ${missing.join(', ')}. Found columns: ${Object.keys(columnMap).join(', ')}`, true);
                 return;
@@ -2101,17 +3542,18 @@
                     const duration = parseDuration(durationStr);
                     const location = cells[columnMap.location]?.trim() || '';
                     const instructor = cells[columnMap.instructor]?.trim() || '';
+                    const crn = cells[columnMap.crn]?.trim() || '';
 
                     // Debug first few rows
                     if (index < 5) {
                         console.log(`Row ${index + 2}:`, {
-                            subject, courseNumber, type: `"${type}"`, day, timeStr, 
+                            subject, courseNumber, crn, type: `"${type}"`, day, timeStr, 
                             durationStr: `"${durationStr}"`, duration, location, instructor
                         });
                     }
 
                     // Skip if essential fields are missing
-                    if (!subject || !day || !timeStr || day.toLowerCase() === 'tba') {
+                    if (!subject || !day || !timeStr || !crn || day.toLowerCase() === 'tba') {
                         skippedRows++;
                         return;
                     }
@@ -2128,8 +3570,17 @@
 
                     const endTime = addMinutes(startTime, duration);
                     
+                    // Extract actual enrollment from 'Act' column
+                    const actualEnrollmentStr = cells[columnMap.actualenrollment]?.trim() || '0';
+                    const actualEnrollment = parseInt(actualEnrollmentStr) || 0;
+
+                    // Extract max enrollment from 'Max' column
+                    const maxEnrollmentStr = cells[columnMap.maxenrollment]?.trim() || '0';
+                    const maxEnrollment = parseInt(maxEnrollmentStr) || 0;
+
                     courseData.push({
                         course: courseCode.toUpperCase(),
+                        crn: crn,
                         type: normalizeType(type),
                         day: normalizeDay(day),
                         startTime,
@@ -2137,7 +3588,9 @@
                         duration,
                         location,
                         instructor,
-                        sectionTitle: sectionTitle || ''
+                        sectionTitle: sectionTitle || '',
+                        actualEnrollment,
+                        maxEnrollment
                     });
 
                     uniqueCourses.add(courseCode.toUpperCase());
@@ -2187,45 +3640,37 @@
 
         function filterAndRenderTimetable() {
             const filterText = document.getElementById('courseFilter').value.trim().toUpperCase();
-            let filteredCourses = [];
+            let filteredData = [];
 
             console.log('Filter text:', `"${filterText}"`);
             console.log('Available courses:', allCourses.slice(0, 10), '... and', allCourses.length - 10, 'more');
 
             if (filterText) {
                 // Split by commas and/or spaces, then clean up
-                filteredCourses = filterText.split(/[,\s]+/)
+                const filterItems = filterText.split(/[,\s]+/)
                     .map(c => c.trim())
-                    .filter(c => c.length > 0)
-                    .map(c => c.toUpperCase());
+                    .filter(c => c.length > 0);
                     
-                console.log('Parsed filter courses:', filteredCourses);
+                console.log('Parsed filter items:', filterItems);
+                
+                filteredData = courseData.filter(entry => {
+                    return filterItems.some(filterItem => {
+                        // Check if it's a CRN (5 digits)
+                        if (isCRN(filterItem)) {
+                            return entry.crn === filterItem;
+                        } else {
+                            // It's a course code - try different matching methods
+                            const upperFilterItem = filterItem.toUpperCase();
+                            return entry.course === upperFilterItem || 
+                                entry.course.startsWith(upperFilterItem) || 
+                                entry.course.includes(upperFilterItem);
+                        }
+                    });
+                });
             } else {
-                filteredCourses = allCourses;
+                filteredData = courseData;
                 console.log('Using all courses (no filter)');
             }
-
-            const filteredData = courseData.filter(entry => {
-                if (filteredCourses.length === 0 || filteredCourses === allCourses) {
-                    return true; // Show all if no filter or showing all courses
-                }
-                
-                // Check if the course matches any of the filtered courses
-                const matches = filteredCourses.some(filterCourse => {
-                    // Try exact match first
-                    if (entry.course === filterCourse) return true;
-                    
-                    // Try partial match (course starts with filter)
-                    if (entry.course.startsWith(filterCourse)) return true;
-                    
-                    // Try contains match for broader matching
-                    if (entry.course.includes(filterCourse)) return true;
-                    
-                    return false;
-                });
-                
-                return matches;
-            });
 
             console.log('Filtered data length:', filteredData.length);
             if (filteredData.length > 0) {
