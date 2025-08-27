@@ -626,6 +626,10 @@
             align-items: center;
             justify-content: space-between;
             width: 100%;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
         }
 
         .advanced-toggle:hover {
@@ -634,12 +638,16 @@
 
         .advanced-toggle.active {
             background: linear-gradient(135deg, #138496, #117a8b);
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
         }
 
         .advanced-content {
             background: white;
             padding: 25px;
             display: none;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
         }
 
         .advanced-content.show {
@@ -1350,36 +1358,24 @@
                                 <span>Select Course Groups:</span>
                                 <button type="button" class="clear-all-btn" id="clearPresets">Clear All</button>
                             </div>
-                            <label class="dropdown-item">
-                                <input type="checkbox" class="preset-checkbox" data-preset="preEngineering">
-                                <span class="checkmark"></span>
-                                Pre-Engineering
-                            </label>
-                            <label class="dropdown-item">
-                                <input type="checkbox" class="preset-checkbox" data-preset="firstYearScience">
-                                <span class="checkmark"></span>
-                                First Year General Science
-                            </label>
-                            <label class="dropdown-item">
-                                <input type="checkbox" class="preset-checkbox" data-preset="firstYearEngineering">
-                                <span class="checkmark"></span>
-                                First Year General Engineering
-                            </label>
-                            <label class="dropdown-item">
-                                <input type="checkbox" class="preset-checkbox" data-preset="firstYearBusiness">
-                                <span class="checkmark"></span>
-                                First Year General Business
-                            </label>
-                            <label class="dropdown-item">
-                                <input type="checkbox" class="preset-checkbox" data-preset="firstYearCS">
-                                <span class="checkmark"></span>
-                                First Year Computer Science
-                            </label>
-                            <label class="dropdown-item">
-                                <input type="checkbox" class="preset-checkbox" data-preset="secondYearCS">
-                                <span class="checkmark"></span>
-                                Second Year Computer Science
-                            </label>
+                            <div class="dropdown-item" style="flex-direction: column; align-items: stretch; gap: 8px;">
+                                <label style="font-weight: 600;">Faculty</label>
+                                <select id="facultySelect" style="padding: 8px 10px; border: 2px solid #e9ecef; border-radius: 8px; font-size: 14px;">
+                                    <option value="">Select a faculty...</option>
+                                </select>
+                            </div>
+                            <div class="dropdown-item" style="flex-direction: column; align-items: stretch; gap: 8px;">
+                                <label style="font-weight: 600;">Program</label>
+                                <select id="programSelect" disabled style="padding: 8px 10px; border: 2px solid #e9ecef; border-radius: 8px; font-size: 14px;">
+                                    <option value="">Select a program...</option>
+                                </select>
+                            </div>
+                            <div class="dropdown-item" style="flex-direction: column; align-items: stretch; gap: 8px;">
+                                <label style="font-weight: 600;">Year</label>
+                                <select id="yearSelect" disabled style="padding: 8px 10px; border: 2px solid #e9ecef; border-radius: 8px; font-size: 14px;">
+                                    <option value="">Select a year...</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1716,6 +1712,15 @@
                             </div>
                         </div>
 
+                        <!-- Results Display Settings -->
+                        <div class="advanced-section">
+                            <h4>📈 Results Display</h4>
+                            <div class="score-input-group">
+                                <label>Number of recommended time slots:</label>
+                                <input type="number" id="numRecommendations" min="1" max="50" value="10" />
+                            </div>
+                        </div>
+
                         <button type="button" class="reset-defaults-btn" id="resetDefaults">
                             🔄 Reset to Default Settings
                         </button>
@@ -1725,6 +1730,9 @@
             
             <div class="workshop-results" id="workshopResults" style="display: none;">
                 <h3>📊 Recommended Workshop Times</h3>
+                <div style="margin: 10px 0 15px 0;">
+                    <button type="button" class="find-workshops-btn" id="downloadCsvRecommendations" style="display: none;">⬇️ Download Recommended Times (CSV)</button>
+                </div>
                 <div class="results-content" id="resultsContent">
                     <!-- Results will be populated here -->
                 </div>
@@ -1768,9 +1776,13 @@
         document.getElementById('compactToggle').addEventListener('change', handleCompactToggle);
         document.getElementById('presetToggle').addEventListener('click', handlePresetToggle);
         document.getElementById('clearPresets').addEventListener('click', clearAllPresets);
+        document.getElementById('facultySelect').addEventListener('change', handleFacultyChange);
+        document.getElementById('programSelect').addEventListener('change', handleProgramChange);
+        document.getElementById('yearSelect').addEventListener('change', handleYearChange);
         document.getElementById('priorityToggle').addEventListener('click', handlePriorityToggle);
         document.getElementById('clearPriority').addEventListener('click', clearAllPriority);
         document.getElementById('findWorkshops').addEventListener('click', findOptimalWorkshopTimes);
+        document.getElementById('downloadCsvRecommendations').addEventListener('click', downloadRecommendationsCsv);
         document.getElementById('exportPdf').addEventListener('click', exportTimetablePDF);
         document.getElementById('advancedToggle').addEventListener('click', handleAdvancedToggle);
         document.getElementById('enableDaySpecific').addEventListener('change', handleDaySpecificToggle);
@@ -1780,10 +1792,10 @@
         initializeAdvancedSettings();
         initializeTooltipPositioning();
 
-        // Add event listeners for preset checkboxes
-        document.querySelectorAll('.preset-checkbox').forEach(checkbox => {
-            checkbox.addEventListener('change', handlePresetChange);
-        });
+        // Store all ranked opportunities for CSV export
+        let lastRankedOpportunities = [];
+
+        // Initialize cascading preset selects (moved to after presets are defined)
 
         // Close dropdown when clicking outside
         document.addEventListener('click', function(event) {
@@ -1803,36 +1815,80 @@
             }
         });
 
-        // Define course presets
-        const coursePresets = {
-            preEngineering: [
-                'COMM1050U', 'CHEM0900U', 'ENGR1015U', 'MATH0900U', 'PHY0900U'
-            ],
-            firstYearScience: [
-                'BIOL1000U', 'BIOL1010U', 'BIOL1020U', 'CHEM1010U', 'CHEM1020U', 
-                'CSCI1040U', 'MATH1000U', 'MATH1010U', 'MATH1020U', 'PHY1030U', 
-                'PHY1010U', 'PHY1020U'
-            ],
-            firstYearEngineering: [
-                'COMM1050U', 'ENGR1015U', 'MATH1010U', 'MATH1850U', 'PHY1010U', 
-                'CHEM1800U', 'ENGR1025U', 'ENGR1200U', 'MATH1020U', 'PHY1020U', 
-                'SSCI1470U'
-            ],
-            firstYearCS: [
-                'CSCI1030U', 'CSCI1060U', 'CSCI1061U', 'CSCI2050U', 'MATH1020U', 
-                'PHY1020U', 'CSCI2050U', 'CSCI1062U', 'CSCI1063U', 'MATH1000U', 
-                'MATH1010U', 'PHY1010U', 'PHY1030U'
-            ],
-            secondYearCS: [
-                'CSCI2000U', 'CSCI2010U', 'CSCI2020U', 'CSCI2040U', 'CSCI2072U', 
-                'CSCI2110U', 'MATH2050U', 'STAT2010U'
-            ],
-            firstYearBusiness: [
-                'BUSI1030U', 'BUSI1130U', 'BUSI1520U', 'BUSI1600U', 'BUSI1700U',
-                'BUSI1915U', 'BUSI2000U', 'BUSI2311U', 'ECON2010U', 'ECON2020U',
-                'INFR1101U', 'XBIT1500U'
-            ]
+        // Define faculty -> program -> year presets
+        const programPresets = {
+            FSc: {
+                'Computer Science': {
+                    '1st year': [
+                        'CSCI1030U', 'CSCI1060U', 'CSCI1061U', 'CSCI2050U', 'MATH1020U',
+                        'PHY1020U', 'CSCI2050U', 'CSCI1062U', 'CSCI1063U', 'MATH1000U',
+                        'MATH1010U', 'PHY1010U', 'PHY1030U'
+                    ],
+                    '2nd year': [
+                        'CSCI2000U', 'CSCI2010U', 'CSCI2020U', 'CSCI2040U', 'CSCI2072U',
+                        'CSCI2110U', 'MATH2050U', 'STAT2010U'
+                    ]
+                },
+                'General Science': {
+                    '1st year': [
+                        'BIOL1000U', 'BIOL1010U', 'BIOL1020U', 'CHEM1010U', 'CHEM1020U',
+                        'CSCI1040U', 'MATH1000U', 'MATH1010U', 'MATH1020U', 'PHY1030U',
+                        'PHY1010U', 'PHY1020U'
+                    ]
+                }
+            },
+            FEAS: {
+                'Pre-Engineering': {
+                    'Pre-Engineering': [
+                        'COMM1050U', 'CHEM0900U', 'ENGR1015U', 'MATH0900U', 'PHY0900U'
+                    ]
+                },
+                'General Engineering': {
+                    '1st year': [
+                        'COMM1050U', 'ENGR1015U', 'MATH1010U', 'MATH1850U', 'PHY1010U',
+                        'CHEM1800U', 'ENGR1025U', 'ENGR1200U', 'MATH1020U', 'PHY1020U',
+                        'SSCI1470U'
+                    ]
+                }
+            },
+            FBIT: {
+                'General Business': {
+                    '1st year': [
+                        'BUSI1030U', 'BUSI1130U', 'BUSI1520U', 'BUSI1600U', 'BUSI1700U',
+                        'BUSI1915U', 'BUSI2000U', 'BUSI2311U', 'ECON2010U', 'ECON2020U',
+                        'INFR1101U', 'XBIT1500U'
+                    ]
+                }
+            },
+            FHS: {
+                'Health Science': {},
+                'Nursing': {
+                    '1st year': [
+                        'HLSC1200U', 'HLSC1701U', 'NURS1003U', 'NURS1100U', 'NURS1420U',
+                        'HLSC1201U', 'NURS1503U', 'NURS1700U', 'NURS2320U', 'SOCI1000U'
+                    ],
+                    '2nd year': [
+                        'HLSC2460U', 'NURS2420U', 'NURS2810U', 'BIOL2830U', 'HLSC2461U',
+                        'HLSC2820U', 'NURS2700U', 'NURS2701U'
+                    ]
+                },
+                'Kinesiology': {
+                    '1st year': [
+                        'KINE1000U', 'KINE1010U', 'KINE1020U', 'KINE1030U', 'KINE1100U',
+                        'KINE1110U', 'KINE1120U', 'KINE1130U', 'BIOL1010U', 'BIOL1020U',
+                        'BIOL1011U', 'BIOL1840U', 'CHEM1010U', 'CHEM1020U', 'PSYC1000U',
+                        'SSCI1300U', 'SOCI1000U', 'COMM1100U'
+                    ]
+                }
+            },
+            FSSH: {},
+            FFEd: {}
         };
+
+        // Ensure faculty list is populated after presets are defined
+        if (typeof initializePresetSelectors === 'function') {
+            initializePresetSelectors();
+        }
 
         function handlePresetToggle() {
             const dropdown = document.getElementById('presetMenu');
@@ -1840,20 +1896,109 @@
             
             dropdown.classList.toggle('show');
             toggle.classList.toggle('active');
-        }
 
-        function handlePresetChange() {
-            updateCourseFilterFromPresets();
+            // Lazy-populate faculties if not yet populated
+            const facultySelect = document.getElementById('facultySelect');
+            if (facultySelect && facultySelect.options.length <= 1 && typeof initializePresetSelectors === 'function') {
+                initializePresetSelectors();
+            }
         }
 
         function clearAllPresets() {
-            // Uncheck all preset checkboxes
-            document.querySelectorAll('.preset-checkbox').forEach(checkbox => {
-                checkbox.checked = false;
-            });
-            
+            // Reset cascading selects
+            const faculty = document.getElementById('facultySelect');
+            const program = document.getElementById('programSelect');
+            const year = document.getElementById('yearSelect');
+            if (faculty) faculty.value = '';
+            if (program) {
+                program.innerHTML = '<option value="">Select a program...</option>';
+                program.disabled = true;
+            }
+            if (year) {
+                year.innerHTML = '<option value="">Select a year...</option>';
+                year.disabled = true;
+            }
+
             // Clear the course filter
             document.getElementById('courseFilter').value = '';
+            
+            // Update the timetable
+            filterAndRenderTimetable();
+        }
+
+        function initializePresetSelectors() {
+            const facultySelect = document.getElementById('facultySelect');
+            const programSelect = document.getElementById('programSelect');
+            const yearSelect = document.getElementById('yearSelect');
+            
+            // Populate faculty options
+            Object.keys(programPresets).forEach(fac => {
+                const opt = new Option(fac, fac);
+                facultySelect.appendChild(opt);
+            });
+            
+            // Ensure program/year are reset
+            programSelect.disabled = true;
+            yearSelect.disabled = true;
+        }
+
+        function handleFacultyChange() {
+            const faculty = document.getElementById('facultySelect').value;
+            const programSelect = document.getElementById('programSelect');
+            const yearSelect = document.getElementById('yearSelect');
+            
+            // Reset program/year
+            programSelect.innerHTML = '<option value="">Select a program...</option>';
+            yearSelect.innerHTML = '<option value="">Select a year...</option>';
+            programSelect.disabled = true;
+            yearSelect.disabled = true;
+            
+            if (!faculty || !programPresets[faculty]) {
+                return;
+            }
+            
+            // Populate programs
+            const programs = Object.keys(programPresets[faculty]);
+            programs.forEach(p => {
+                const opt = new Option(p, p);
+                programSelect.appendChild(opt);
+            });
+            programSelect.disabled = programs.length === 0;
+        }
+
+        function handleProgramChange() {
+            const faculty = document.getElementById('facultySelect').value;
+            const program = document.getElementById('programSelect').value;
+            const yearSelect = document.getElementById('yearSelect');
+            
+            // Reset years
+            yearSelect.innerHTML = '<option value="">Select a year...</option>'; 
+            yearSelect.disabled = true;
+            
+            if (!faculty || !program || !programPresets[faculty] || !programPresets[faculty][program]) {
+                return;
+            }
+            
+            // Populate years
+            const years = Object.keys(programPresets[faculty][program]);
+            years.forEach(y => {
+                const opt = new Option(y, y);
+                yearSelect.appendChild(opt);
+            });
+            yearSelect.disabled = years.length === 0;
+        }
+
+        function handleYearChange() {
+            const faculty = document.getElementById('facultySelect').value;
+            const program = document.getElementById('programSelect').value;
+            const year = document.getElementById('yearSelect').value;
+            
+            if (!faculty || !program || !year) return;
+            
+            const courses = programPresets?.[faculty]?.[program]?.[year] || [];
+            
+            // Update the filter input to exact list
+            document.getElementById('courseFilter').value = courses.join(', ');
             
             // Update the timetable
             filterAndRenderTimetable();
@@ -1923,6 +2068,10 @@
             document.getElementById('scorePriorityOther').value = '3';
             document.getElementById('scorePriorityLecture').value = '20';
             
+            // Reset results settings
+            const numRecs = document.getElementById('numRecommendations');
+            if (numRecs) numRecs.value = '10';
+            
             // Reset lunch settings
             document.getElementById('avoidLunch').checked = false;
             document.getElementById('lunchStartTime').value = '12:00';
@@ -1986,6 +2135,9 @@
                     nonPriorityLecture: parseInt(document.getElementById('scoreNonPriorityLecture').value) || 5,
                     priorityOther: parseInt(document.getElementById('scorePriorityOther').value) || 3,
                     priorityLecture: parseInt(document.getElementById('scorePriorityLecture').value) || 20
+                },
+                results: {
+                    numRecommendations: Math.max(1, Math.min(50, parseInt(document.getElementById('numRecommendations').value) || 10))
                 },
                 lunch: {
                     avoid: document.getElementById('avoidLunch').checked,
@@ -2409,7 +2561,63 @@
 
             // Sort by score (lower is better)
             opportunities.sort((a, b) => a.totalScore - b.totalScore);
-            displayWorkshopResults(opportunities.slice(0, 10), duration);
+            // Save full ranked list for CSV download
+            lastRankedOpportunities = opportunities.slice();
+            const numToShow = getAdvancedSettings().results.numRecommendations;
+            displayWorkshopResults(opportunities.slice(0, numToShow), duration);
+
+            // Auto-collapse Advanced Settings after search
+            const advContent = document.getElementById('advancedContent');
+            const advToggle = document.getElementById('advancedToggle');
+            if (advContent && advToggle) {
+                advContent.classList.remove('show');
+                advToggle.classList.remove('active');
+                const arrow = advToggle.querySelector('.dropdown-arrow');
+                if (arrow) {
+                    arrow.style.transform = 'rotate(0deg)';
+                }
+            }
+
+            // Show CSV download button if we have results
+            const dlBtn = document.getElementById('downloadCsvRecommendations');
+            if (dlBtn) {
+                dlBtn.style.display = opportunities.length > 0 ? 'inline-block' : 'none';
+            }
+        }
+
+        function downloadRecommendationsCsv() {
+            if (!Array.isArray(lastRankedOpportunities) || lastRankedOpportunities.length === 0) {
+                alert('No recommendations to export yet. Please run a search first.');
+                return;
+            }
+
+            // Map day names to abbreviations
+            const dayAbbrev = { 'Monday': 'M', 'Tuesday': 'T', 'Wednesday': 'W', 'Thursday': 'R', 'Friday': 'F' };
+
+            // Build CSV lines
+            const lines = [];
+            lines.push(['Day of week', 'Start Time', 'End Time', 'Score'].join(','));
+            lastRankedOpportunities.forEach(opp => {
+                const day = dayAbbrev[opp.day] || opp.day;
+                const start = formatDisplayTime(opp.startTime);
+                const end = formatDisplayTime(opp.endTime);
+                const score = opp.totalScore;
+                lines.push([day, start, end, score].join(','));
+            });
+
+            const csvContent = lines.join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            const now = new Date();
+            const pad = (n) => String(n).padStart(2, '0');
+            const ts = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}_${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())}`;
+            link.download = `recommended_times_${ts}.csv`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
         }
 
         function isCRN(input) {
