@@ -84,6 +84,7 @@
         .course-filter {
             flex: 1;
             min-width: 300px;
+            position: relative;
         }
 
         .course-filter input {
@@ -98,6 +99,180 @@
         .course-filter input:focus {
             outline: none;
             border-color: #007bff;
+        }
+
+        .course-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: none;
+            margin-top: 5px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .course-suggestions-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            border-bottom: 1px solid #e9ecef;
+            background: #f8f9fa;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+        
+        .course-suggestions-title {
+            font-weight: 600;
+            color: #495057;
+            font-size: 14px;
+        }
+        
+        .course-suggestions-close {
+            background: none;
+            border: none;
+            color: #6c757d;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+        
+        .course-suggestions-close:hover {
+            background: #e9ecef;
+            color: #495057;
+        }
+
+        .course-suggestions.show {
+            display: block;
+        }
+
+        .course-suggestion-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+            gap: 12px;
+            border: none;
+            font-size: 14px;
+            color: #495057;
+            width: 100%;
+            text-align: left;
+        }
+
+        .course-suggestion-item:hover {
+            background: #f8f9fa;
+        }
+
+        .course-suggestion-item:first-child {
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+
+        .course-suggestion-item:last-child {
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+        }
+
+        .course-suggestion-code {
+            font-weight: 600;
+            color: #007bff;
+        }
+
+        .course-suggestion-title {
+            color: #6c757d;
+            font-size: 13px;
+        }
+
+        .selected-courses {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+            min-height: 20px;
+        }
+
+        .course-bubble {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+            animation: bubbleAppear 0.3s ease-out;
+        }
+
+        @keyframes bubbleAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .course-bubble:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,123,255,0.3);
+        }
+
+        .course-bubble .remove-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            transition: all 0.2s;
+            opacity: 0;
+        }
+
+        .course-bubble:hover .remove-btn {
+            opacity: 1;
+            background: rgba(255,255,255,0.3);
+        }
+
+        .course-bubble .remove-btn:hover {
+            background: rgba(255,255,255,0.5);
+            transform: scale(1.1);
+        }
+        
+        .course-bubble.removing {
+            animation: bubbleRemove 0.3s ease-in forwards;
+        }
+        
+        @keyframes bubbleRemove {
+            to {
+                opacity: 0;
+                transform: scale(0.8) translateY(-10px);
+            }
         }
 
         .view-toggle {
@@ -1273,6 +1448,19 @@
                 min-width: auto;
             }
             
+            .course-suggestions {
+                max-height: 250px;
+            }
+            
+            .selected-courses {
+                justify-content: center;
+            }
+            
+            .course-bubble {
+                font-size: 13px;
+                padding: 6px 10px;
+            }
+            
             .preset-dropdown {
                 align-self: center;
             }
@@ -1346,7 +1534,10 @@
                     <label for="csvFile" class="file-input-label">📁 Upload CSV File</label>
                 </div>
                 <div class="course-filter">
-                    <input type="text" id="courseFilter" placeholder="Enter course codes (e.g., MATH1010U, CSCI1030U) or CRNs (e.g., 44778, 71139) - separate with commas" />
+                    <input type="text" id="courseFilter" placeholder="Search for courses..." />
+                    <div class="course-suggestions" id="courseSuggestions">
+                        <!-- Course suggestions will be populated here -->
+                    </div>
                 </div>
                 <div class="preset-dropdown">
                     <div class="dropdown-container">
@@ -1388,6 +1579,13 @@
                 </div>
                 <div class="export-controls" style="display: none;">
                     <button type="button" class="export-pdf-btn" id="exportPdf">📄 Export as PDF</button>
+                </div>
+            </div>
+
+            <div class="selected-courses" id="selectedCourses">
+                <!-- Selected course bubbles will appear here -->
+                <div id="noCoursesMessage" style="display: none; color: #6c757d; font-style: italic; text-align: center; width: 100%;">
+                    No courses selected. Search for courses above or use the presets to get started.
                 </div>
             </div>
 
@@ -1458,7 +1656,7 @@
                 
                 <div class="workshop-row">
                     <div class="workshop-input-group">
-                        <label for="earliestTime">Earliest Time:
+                        <label for="earliestTime">Earliest Start Time:
                             <span class="info-icon">i
                                 <div class="info-tooltip">The earliest time workshops can start. Use this to respect student schedules and avoid times when attendance would be poor.</div>
                             </span>
@@ -1489,7 +1687,7 @@
                     </div>
                     
                     <div class="workshop-input-group">
-                        <label for="latestTime">Latest Time:
+                        <label for="latestTime">Latest End Time:
                             <span class="info-icon">i
                                 <div class="info-tooltip">The latest time workshops can start. Note that your workshop must fit entirely before this time (duration is considered automatically).</div>
                             </span>
@@ -1755,7 +1953,7 @@
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js?v=1"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js?v=2"></script>
     <script>
         let courseData = [];
         let allCourses = [];
@@ -1787,10 +1985,23 @@
         document.getElementById('advancedToggle').addEventListener('click', handleAdvancedToggle);
         document.getElementById('enableDaySpecific').addEventListener('change', handleDaySpecificToggle);
         document.getElementById('resetDefaults').addEventListener('click', resetToDefaults);
+        
+        // Course search and selection functionality
+        document.getElementById('courseFilter').addEventListener('input', handleCourseSearch);
+        document.getElementById('courseFilter').addEventListener('focus', showCourseSuggestions);
+        document.getElementById('courseFilter').addEventListener('blur', hideCourseSuggestions);
+        document.getElementById('courseFilter').addEventListener('keydown', handleCourseSearchKeydown);
 
         // Initialize advanced settings
         initializeAdvancedSettings();
         initializeTooltipPositioning();
+        
+        // Course search and selection state
+        let selectedCourses = new Set();
+        let courseSuggestions = [];
+        
+        // Initialize the UI
+        renderSelectedCourseBubbles();
 
         // Store all ranked opportunities for CSV export
         let lastRankedOpportunities = [];
@@ -1803,6 +2014,8 @@
             const toggle = document.getElementById('presetToggle');
             const priorityDropdown = document.getElementById('priorityMenu');
             const priorityToggle = document.getElementById('priorityToggle');
+            const courseSuggestions = document.getElementById('courseSuggestions');
+            const courseFilter = document.getElementById('courseFilter');
             
             if (!toggle.contains(event.target) && !dropdown.contains(event.target)) {
                 dropdown.classList.remove('show');
@@ -1812,6 +2025,10 @@
             if (!priorityToggle.contains(event.target) && !priorityDropdown.contains(event.target)) {
                 priorityDropdown.classList.remove('show');
                 priorityToggle.classList.remove('active');
+            }
+            
+            if (!courseFilter.contains(event.target) && !courseSuggestions.contains(event.target)) {
+                hideCourseSuggestions();
             }
         });
 
@@ -1862,6 +2079,25 @@
             },
             FHS: {
                 'Health Science': {},
+                'Medical Laboratory Science': {
+                    '1st Year': [
+                        'BIOL1010U', 'CHEM1010U', 'HLSC1200U', 'HLSC1701U', 'CHEM1020U',
+                        'HLSC1201U', 'MLSC1110U', 'MATH1880U'
+                    ],
+                    '2nd Year': [
+                        'HLSC2460U', 'HLSC3800U', 'MLSC1010U', 'MLSC2130U', 'HLSC2461U',
+                        'HLSC3910U', 'MLSC2111U', 'MLSC2121U', 'MLSC2131U'
+                    ],
+                    '3rd Year': [
+                        'MLSC3111U', 'MLSC3121U', 'MLSC3131U', 'MLSC3200U', 'MLSC3230U',
+                        'MLSC3141U', 'MLSC3210U', 'MLSC3220U', 'MLSC3231U', 'MLSC3300U'
+                    ],
+                    '4th Year': [
+                        'HLSC4820U', 'MLSC4111U', 'MLSC4121U', 'MLSC4131U', 'MLSC4210U',
+                        'MLSC4220U', 'MLSC4231U', 'MLSC4400U', 'MLSC4112U', 'MLSC4122U',
+                        'MLSC4132U', 'MLSC4211U', 'MLSC4221U', 'MLSC4232U', 'MLSC4401U'
+                    ]
+                },
                 'Nursing': {
                     '1st year': [
                         'HLSC1200U', 'HLSC1701U', 'NURS1003U', 'NURS1100U', 'NURS1420U',
@@ -2008,11 +2244,213 @@
             
             const courses = programPresets?.[faculty]?.[program]?.[year] || [];
             
-            // Update the filter input to exact list
-            document.getElementById('courseFilter').value = courses.join(', ');
+            // Update selected courses and render bubbles
+            selectedCourses.clear();
+            courses.forEach(course => selectedCourses.add(course));
+            renderSelectedCourseBubbles();
             
             // Update the timetable
             filterAndRenderTimetable();
+        }
+        
+        // Course search and selection functions
+        function handleCourseSearch(event) {
+            const searchTerm = event.target.value.trim();
+            
+            if (searchTerm.length === 0) {
+                hideCourseSuggestions();
+                return;
+            }
+            
+            // Search through available courses
+            const suggestions = searchCourses(searchTerm);
+            showCourseSuggestions(suggestions);
+        }
+        
+        function searchCourses(searchTerm) {
+            if (!allCourses || allCourses.length === 0) return [];
+            
+            const term = searchTerm.toLowerCase();
+            const results = [];
+            
+            // Search by course code
+            allCourses.forEach(course => {
+                if (course.toLowerCase().includes(term)) {
+                    results.push({
+                        code: course,
+                        title: getCourseTitle(course),
+                        type: 'course'
+                    });
+                }
+            });
+            
+            // Search by CRN if it's a 5-digit number
+            if (/^\d{5}$/.test(searchTerm)) {
+                courseData.forEach(entry => {
+                    if (entry.crn === searchTerm) {
+                        results.push({
+                            code: entry.course,
+                            title: getCourseTitle(entry.course),
+                            type: 'crn',
+                            crn: searchTerm
+                        });
+                    }
+
+                });
+            }
+            
+            // Limit results to 20
+            return results.slice(0, 20);
+        }
+        
+        function getCourseTitle(courseCode) {
+            // Find a course entry with a title
+            const entry = courseData.find(e => e.course === courseCode && e.sectionTitle);
+            return entry ? entry.sectionTitle : '';
+        }
+        
+        function showCourseSuggestions(suggestions = null) {
+            const suggestionsDiv = document.getElementById('courseSuggestions');
+            if (!suggestionsDiv) return;
+            
+            if (suggestions === null) {
+                // Show all courses when focusing on empty input
+                suggestions = allCourses.slice(0, 20).map(course => ({
+                    code: course,
+                    title: getCourseTitle(course),
+                    type: 'course'
+                }));
+            }
+            
+            let html = `
+                <div class="course-suggestions-header">
+                    <span class="course-suggestions-title">Course Suggestions</span>
+                    <button class="course-suggestions-close" onclick="hideCourseSuggestions()" title="Close">×</button>
+                </div>
+            `;
+            
+            if (suggestions.length === 0) {
+                html += '<div class="course-suggestion-item">No courses found</div>';
+            } else {
+                suggestions.forEach(item => {
+                    const titleText = item.title ? ` (${item.title})` : '';
+                    html += `
+                        <div class="course-suggestion-item" data-course="${item.code}" data-type="${item.type}">
+                            <span class="course-suggestion-code">${item.code}</span>
+                            <span class="course-suggestion-title">${titleText}</span>
+                        </div>
+                    `;
+                });
+            }
+            
+            suggestionsDiv.innerHTML = html;
+            suggestionsDiv.classList.add('show');
+            
+            // Add click handlers to suggestions
+            suggestionsDiv.querySelectorAll('.course-suggestion-item').forEach(item => {
+                item.addEventListener('click', () => selectCourse(item.dataset.course));
+            });
+        }
+        
+        function hideCourseSuggestions() {
+            // Delay hiding to allow clicks on suggestions
+            setTimeout(() => {
+                const suggestionsDiv = document.getElementById('courseSuggestions');
+                if (suggestionsDiv) {
+                    suggestionsDiv.classList.remove('show');
+                }
+            }, 200);
+        }
+        
+        function selectCourse(courseCode) {
+            if (!courseCode) return;
+            
+            selectedCourses.add(courseCode);
+            renderSelectedCourseBubbles();
+            
+            // Clear the search input
+            document.getElementById('courseFilter').value = '';
+            hideCourseSuggestions();
+            
+            // Update the timetable
+            filterAndRenderTimetable();
+        }
+        
+        function removeCourse(courseCode) {
+            // Find the bubble element and add removal animation
+            const bubble = document.querySelector(`[data-course="${courseCode}"]`);
+            if (bubble) {
+                bubble.classList.add('removing');
+                setTimeout(() => {
+                    selectedCourses.delete(courseCode);
+                    renderSelectedCourseBubbles();
+                    
+                    // Update the timetable
+                    filterAndRenderTimetable();
+                }, 300); // Wait for animation to complete
+            } else {
+                // Fallback if bubble not found
+                selectedCourses.delete(courseCode);
+                renderSelectedCourseBubbles();
+                filterAndRenderTimetable();
+            }
+        }
+        
+        function renderSelectedCourseBubbles() {
+            const container = document.getElementById('selectedCourses');
+            const noCoursesMessage = document.getElementById('noCoursesMessage');
+            if (!container) return;
+            
+            if (selectedCourses.size === 0) {
+                container.innerHTML = '';
+                if (noCoursesMessage) {
+                    noCoursesMessage.style.display = 'block';
+                }
+                return;
+            }
+            
+            if (noCoursesMessage) {
+                noCoursesMessage.style.display = 'none';
+            }
+            
+            let html = '';
+            selectedCourses.forEach(course => {
+                html += `
+                    <div class="course-bubble" data-course="${course}">
+                        <span>${course}</span>
+                        <button class="remove-btn" onclick="removeCourse('${course}')" title="Remove ${course}">×</button>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+        
+        function handleCourseSearchKeydown(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const searchTerm = event.target.value.trim();
+                
+                if (searchTerm) {
+                    // Try to find an exact course match
+                    const exactMatch = allCourses.find(course => 
+                        course.toLowerCase() === searchTerm.toLowerCase()
+                    );
+                    
+                    if (exactMatch) {
+                        selectCourse(exactMatch);
+                    } else {
+                        // If no exact match, try to add as a custom course code
+                        const upperCourse = searchTerm.toUpperCase();
+                        if (/^[A-Z]+\d+[A-Z]*$/.test(upperCourse)) {
+                            selectCourse(upperCourse);
+                        } else {
+                            // Show error or add anyway
+                            selectCourse(upperCourse);
+                        }
+                    }
+                }
+            }
         }
 
         function handlePriorityToggle() {
@@ -2255,30 +2693,35 @@
             if (!priorityList) return;
             
             // Get currently filtered courses
-            const filterText = document.getElementById('courseFilter').value.trim().toUpperCase();
             let filteredCourses = [];
 
-            if (filterText) {
-                filteredCourses = filterText.split(/[,\s]+/)
-                    .map(c => c.trim())
-                    .filter(c => c.length > 0)
-                    .map(c => c.toUpperCase());
+            if (selectedCourses.size > 0) {
+                filteredCourses = Array.from(selectedCourses);
             } else {
                 filteredCourses = allCourses;
             }
 
-            const actualFilteredCourses = [...new Set(courseData
-                .filter(entry => {
-                    if (filteredCourses.length === 0 || filteredCourses === allCourses) {
-                        return true;
-                    }
-                    return filteredCourses.some(filterCourse => {
+            // Get unique courses with their titles
+            const courseMap = new Map();
+            courseData.forEach(entry => {
+                if (filteredCourses.length === 0 || filteredCourses === allCourses || 
+                    filteredCourses.some(filterCourse => {
                         return entry.course === filterCourse || 
                                entry.course.startsWith(filterCourse) || 
                                entry.course.includes(filterCourse);
-                    });
-                })
-                .map(entry => entry.course))].sort();
+                    })) {
+                    // If we don't have a title for this course yet, or if this entry has a better title
+                    if (!courseMap.has(entry.course) || 
+                        (entry.sectionTitle && entry.sectionTitle.length > (courseMap.get(entry.course).title || '').length)) {
+                        courseMap.set(entry.course, {
+                            title: entry.sectionTitle || '',
+                            course: entry.course
+                        });
+                    }
+                }
+            });
+
+            const actualFilteredCourses = Array.from(courseMap.values()).sort((a, b) => a.course.localeCompare(b.course));
 
             priorityList.innerHTML = '';
             
@@ -2287,13 +2730,19 @@
                 return;
             }
 
-            actualFilteredCourses.forEach(course => {
+            actualFilteredCourses.forEach(courseInfo => {
                 const itemDiv = document.createElement('label');
                 itemDiv.className = 'priority-course-item';
+                
+                // Display course number with title in brackets if available
+                const displayText = courseInfo.title ? 
+                    `${courseInfo.course} (${courseInfo.title})` : 
+                    courseInfo.course;
+                
                 itemDiv.innerHTML = `
-                    <input type="checkbox" class="priority-course-checkbox" data-course="${course}">
+                    <input type="checkbox" class="priority-course-checkbox" data-course="${courseInfo.course}">
                     <span class="checkmark"></span>
-                    <span>${course}</span>
+                    <span>${displayText}</span>
                 `;
                 priorityList.appendChild(itemDiv);
             });
@@ -2309,14 +2758,10 @@
             const settings = getAdvancedSettings();
             const currentData = courseData.filter(entry => {
                 // Filter to currently displayed courses
-                const filterText = document.getElementById('courseFilter').value.trim().toUpperCase();
                 let filteredCourses = [];
 
-                if (filterText) {
-                    filteredCourses = filterText.split(/[,\s]+/)
-                        .map(c => c.trim())
-                        .filter(c => c.length > 0)
-                        .map(c => c.toUpperCase());
+                if (selectedCourses.size > 0) {
+                    filteredCourses = Array.from(selectedCourses);
                 } else {
                     filteredCourses = allCourses;
                 }
@@ -2422,14 +2867,10 @@
             const startIndex = timeSlots.indexOf(startTime);
             
             // Get currently filtered data
-            const filterText = document.getElementById('courseFilter').value.trim().toUpperCase();
             let filteredCourses = [];
 
-            if (filterText) {
-                filteredCourses = filterText.split(/[,\s]+/)
-                    .map(c => c.trim())
-                    .filter(c => c.length > 0)
-                    .map(c => c.toUpperCase());
+            if (selectedCourses.size > 0) {
+                filteredCourses = Array.from(selectedCourses);
             } else {
                 filteredCourses = allCourses;
             }
@@ -2714,14 +3155,10 @@
             const startIndex = timeSlots.indexOf(startTime);
             
             // Get currently filtered data
-            const filterText = document.getElementById('courseFilter').value.trim().toUpperCase();
             let filteredCourses = [];
 
-            if (filterText) {
-                filteredCourses = filterText.split(/[,\s]+/)
-                    .map(c => c.trim())
-                    .filter(c => c.length > 0)
-                    .map(c => c.toUpperCase());
+            if (selectedCourses.size > 0) {
+                filteredCourses = Array.from(selectedCourses);
             } else {
                 filteredCourses = allCourses;
             }
@@ -2855,14 +3292,10 @@
             let lunchConflict = false;
             
             // Get currently filtered data
-            const filterText = document.getElementById('courseFilter').value.trim().toUpperCase();
             let filteredCourses = [];
 
-            if (filterText) {
-                filteredCourses = filterText.split(/[,\s]+/)
-                    .map(c => c.trim())
-                    .filter(c => c.length > 0)
-                    .map(c => c.toUpperCase());
+            if (selectedCourses.size > 0) {
+                filteredCourses = Array.from(selectedCourses);
             } else {
                 filteredCourses = allCourses;
             }
@@ -2983,14 +3416,10 @@
             
             const currentData = courseData.filter(entry => {
                 // Filter to currently displayed courses
-                const filterText = document.getElementById('courseFilter').value.trim().toUpperCase();
                 let filteredCourses = [];
 
-                if (filterText) {
-                    filteredCourses = filterText.split(/[,\s]+/)
-                        .map(c => c.trim())
-                        .filter(c => c.length > 0)
-                        .map(c => c.toUpperCase());
+                if (selectedCourses.size > 0) {
+                    filteredCourses = Array.from(selectedCourses);
                 } else {
                     filteredCourses = allCourses;
                 }
@@ -3159,17 +3588,17 @@
 
             // Add title and metadata
             const currentDate = new Date().toLocaleDateString();
-            const filterText = document.getElementById('courseFilter').value.trim() || 'All Courses';
+            const courseText = selectedCourses.size > 0 ? Array.from(selectedCourses).join(', ') : 'All Courses';
             const isCompact = document.getElementById('compactToggle').checked;
             
-            console.log('📋 PDF metadata:', { currentDate, filterText, isCompact });
+            console.log('📋 PDF metadata:', { currentDate, courseText, isCompact });
             
             // Build the PDF content as HTML string for better control
             let pdfHTML = `
                 <div style="text-align: center; margin-bottom: 15px; border-bottom: 2px solid black; padding-bottom: 8px;">
                     <h1 style="margin: 0; color: black; font-size: 24px; font-weight: bold;">Course Timetable</h1>
                     <p style="margin: 8px 0 4px 0; color: #333; font-size: 14px;">Generated on ${currentDate}</p>
-                    <p style="margin: 0; color: #333; font-size: 12px;">Courses: ${filterText} | View: ${isCompact ? 'Compact' : 'Standard'}</p>
+                    <p style="margin: 0; color: #333; font-size: 12px;">Courses: ${courseText} | View: ${isCompact ? 'Compact' : 'Standard'}</p>
                 </div>
             `;
 
@@ -3193,14 +3622,10 @@
             `;
 
             // Get current filtered data
-            const filterTextUpper = document.getElementById('courseFilter').value.trim().toUpperCase();
             let filteredCourses = [];
 
-            if (filterTextUpper) {
-                filteredCourses = filterTextUpper.split(/[,\s]+/)
-                    .map(c => c.trim())
-                    .filter(c => c.length > 0)
-                    .map(c => c.toUpperCase());
+            if (selectedCourses.size > 0) {
+                filteredCourses = Array.from(selectedCourses);
             } else {
                 filteredCourses = allCourses;
             }
@@ -3442,37 +3867,27 @@
         }
 
         function updateCourseFilterFromPresets() {
-            const selectedCourses = new Set();
+            const presetSelectedCourses = new Set();
             
             // Get all checked presets
             document.querySelectorAll('.preset-checkbox:checked').forEach(checkbox => {
                 const presetName = checkbox.dataset.preset;
                 const courses = coursePresets[presetName] || [];
-                courses.forEach(course => selectedCourses.add(course));
+                courses.forEach(course => presetSelectedCourses.add(course));
             });
             
-            // Get manually entered courses from the input field
-            const manualInput = document.getElementById('courseFilter').value.trim();
-            const existingCourses = manualInput ? manualInput.split(/[,\s]+/)
-                .map(c => c.trim().toUpperCase())
-                .filter(c => c.length > 0) : [];
+            // Get manually selected courses
+            const manualSelectedCourses = new Set(selectedCourses);
             
-            // Check if the current input matches exactly what the presets would generate
-            const presetCoursesArray = Array.from(selectedCourses).sort();
-            const existingCoursesFromPresets = existingCourses.filter(course => 
-                presetCoursesArray.includes(course)
-            );
+            // Combine preset courses with manually selected courses
+            const allSelectedCourses = new Set([...presetSelectedCourses, ...manualSelectedCourses]);
             
-            // Only include manual courses that aren't from presets
-            const manualOnlyCourses = existingCourses.filter(course => 
-                !presetCoursesArray.includes(course)
-            );
+            // Update the selected courses
+            selectedCourses.clear();
+            allSelectedCourses.forEach(course => selectedCourses.add(course));
             
-            // Combine preset courses with manual-only courses
-            const allCourses = [...presetCoursesArray, ...manualOnlyCourses];
-            
-            // Update the input field
-            document.getElementById('courseFilter').value = allCourses.join(', ');
+            // Render the bubbles
+            renderSelectedCourseBubbles();
             
             // Update the timetable
             filterAndRenderTimetable();
@@ -3858,33 +4273,14 @@
         }
 
         function filterAndRenderTimetable() {
-            const filterText = document.getElementById('courseFilter').value.trim().toUpperCase();
             let filteredData = [];
 
-            console.log('Filter text:', `"${filterText}"`);
+            console.log('Selected courses:', Array.from(selectedCourses));
             console.log('Available courses:', allCourses.slice(0, 10), '... and', allCourses.length - 10, 'more');
 
-            if (filterText) {
-                // Split by commas and/or spaces, then clean up
-                const filterItems = filterText.split(/[,\s]+/)
-                    .map(c => c.trim())
-                    .filter(c => c.length > 0);
-                    
-                console.log('Parsed filter items:', filterItems);
-                
+            if (selectedCourses.size > 0) {
                 filteredData = courseData.filter(entry => {
-                    return filterItems.some(filterItem => {
-                        // Check if it's a CRN (5 digits)
-                        if (isCRN(filterItem)) {
-                            return entry.crn === filterItem;
-                        } else {
-                            // It's a course code - try different matching methods
-                            const upperFilterItem = filterItem.toUpperCase();
-                            return entry.course === upperFilterItem || 
-                                entry.course.startsWith(upperFilterItem) || 
-                                entry.course.includes(upperFilterItem);
-                        }
-                    });
+                    return selectedCourses.has(entry.course);
                 });
             } else {
                 filteredData = courseData;
@@ -4113,3 +4509,4 @@
     </script>
 </body>
 </html>
+
