@@ -1885,6 +1885,16 @@
             FFEd: {}
         };
 
+        // Display labels for faculties
+        const facultyLabels = {
+            FSc: 'Faculty of Science',
+            FSSH: 'Faculty of Social Science and Humanities',
+            FEAS: 'Faculty of Engineering and Applied Science',
+            FHS: 'Faculty of Health Science',
+            FFEd: 'Frazer Faculty of Education',
+            FBIT: 'Faculty of Business and Information Technology'
+        };
+
         // Ensure faculty list is populated after presets are defined
         if (typeof initializePresetSelectors === 'function') {
             initializePresetSelectors();
@@ -1933,7 +1943,8 @@
             
             // Populate faculty options
             Object.keys(programPresets).forEach(fac => {
-                const opt = new Option(fac, fac);
+                const label = facultyLabels[fac] || fac;
+                const opt = new Option(label, fac);
                 facultySelect.appendChild(opt);
             });
             
