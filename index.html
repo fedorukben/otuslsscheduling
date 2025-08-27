@@ -27,6 +27,32 @@
             overflow: hidden;
         }
 
+
+
+        /* Responsive design for upload area */
+        @media (max-width: 768px) {
+            .upload-area-wide {
+                min-height: 70px;
+                padding: 15px 20px;
+            }
+
+            .upload-icon-wide {
+                font-size: 28px;
+            }
+
+            .upload-text-wide h3 {
+                font-size: 16px;
+            }
+
+            .upload-text-wide p {
+                font-size: 12px;
+            }
+
+            .course-selection-section {
+                gap: 15px;
+            }
+        }
+
         .header {
             background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
             color: white;
@@ -46,13 +72,127 @@
             border-bottom: 1px solid #e9ecef;
         }
 
-        .upload-section {
+        .upload-section-wide {
+            margin-bottom: 30px;
+        }
+
+        .course-selection-section {
             display: flex;
             gap: 20px;
             align-items: center;
             flex-wrap: wrap;
             margin-bottom: 20px;
         }
+
+        .upload-area-wide {
+            position: relative;
+            border: 3px dashed #dee2e6;
+            border-radius: 15px;
+            padding: 20px 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+            width: 100%;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .upload-area-wide:hover {
+            border-color: #007bff;
+            background: #e3f2fd;
+            transform: translateY(-2px);
+        }
+
+        .upload-area-wide.dragover {
+            border-color: #007bff;
+            background: #e3f2fd;
+            transform: scale(1.02);
+        }
+
+        /* File loaded state */
+        .upload-area-wide.file-loaded {
+            border-color: #28a745;
+            background: #d4edda;
+            border-style: solid;
+        }
+
+        .upload-area-wide.file-loaded:hover {
+            border-color: #218838;
+            background: #c3e6cb;
+        }
+
+        .upload-area-wide.file-loaded .upload-icon-wide {
+            color: #155724;
+        }
+
+        .upload-area-wide.file-loaded .upload-text-wide h3 {
+            color: #155724;
+        }
+
+        .upload-area-wide.file-loaded .upload-text-wide p {
+            color: #0f5132;
+        }
+
+        .upload-area-wide.file-loaded .upload-text-wide p strong {
+            color: #155724;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 4px 8px;
+            border-radius: 6px;
+            display: inline-block;
+            margin: 5px 0;
+        }
+
+        .upload-content-wide {
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .upload-icon-wide {
+            font-size: 36px;
+            opacity: 0.7;
+        }
+
+        .upload-text-wide h3 {
+            margin: 0 0 5px 0;
+            color: #495057;
+            font-size: 18px;
+        }
+
+        .upload-text-wide p {
+            margin: 0;
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .click-upload {
+            color: #007bff;
+            font-weight: 500;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .click-upload:hover {
+            color: #0056b3;
+        }
+
+        .clear-file {
+            color: #dc3545;
+            font-weight: 500;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .clear-file:hover {
+            color: #c82333;
+        }
+
+
 
         .file-input-wrapper {
             position: relative;
@@ -502,7 +642,7 @@
 
         /* Compact View Styles */
         .compact-view .schedule-cell {
-            height: 25px;
+            height: 18px;
             padding: 1px;
         }
 
@@ -514,7 +654,7 @@
             text-align: center;
             font-weight: bold;
             line-height: 1.4;
-            min-height: 20px;
+            min-height: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -546,8 +686,8 @@
         .compact-view .class-block.continuation {
             opacity: 1;
             border-top: none;
-            height: 18px;
-            min-height: 18px;
+            height: 15px;
+            min-height: 15px;
         }
 
         /* Workshop Scheduler Styles */
@@ -1348,7 +1488,7 @@
 
         .schedule-cell {
             border: 1px solid #e9ecef;
-            height: 55px;
+            height: 35px;
             position: relative;
             padding: 4px;
             vertical-align: top;
@@ -1527,12 +1667,25 @@
             <p>Upload your CSV course data and create a beautiful visual timetable</p>
         </div>
 
+
+
         <div class="controls">
-            <div class="upload-section">
-                <div class="file-input-wrapper">
+            <!-- Upload Section - Wider and Thinner -->
+            <div class="upload-section-wide">
+                <div class="upload-area-wide" id="uploadArea">
+                    <div class="upload-content-wide">
+                        <div class="upload-icon-wide">📁</div>
+                        <div class="upload-text-wide">
+                            <h3>Upload CSV File</h3>
+                            <p>Drag and drop your CSV file here, or <span class="click-upload">click to browse</span></p>
+                        </div>
+                    </div>
                     <input type="file" id="csvFile" class="file-input" accept=".csv" />
-                    <label for="csvFile" class="file-input-label">📁 Upload CSV File</label>
                 </div>
+            </div>
+
+            <!-- Course Selection Section -->
+            <div class="course-selection-section">
                 <div class="course-filter">
                     <input type="text" id="courseFilter" placeholder="Search for courses..." />
                     <div class="course-suggestions" id="courseSuggestions">
@@ -1958,16 +2111,111 @@
         let courseData = [];
         let allCourses = [];
 
-        // Time slots (8 AM to 8 PM)
+        // Time slots (8 AM to 8 PM) - 15 minute intervals
         const timeSlots = [];
         for (let hour = 8; hour <= 20; hour++) {
             timeSlots.push(`${hour.toString().padStart(2, '0')}:00`);
-            if (hour < 20) {
-                timeSlots.push(`${hour.toString().padStart(2, '0')}:30`);
-            }
+            timeSlots.push(`${hour.toString().padStart(2, '0')}:15`);
+            timeSlots.push(`${hour.toString().padStart(2, '0')}:30`);
+            timeSlots.push(`${hour.toString().padStart(2, '0')}:45`);
         }
 
         const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+
+
+
+        // Drag and drop functionality
+        const uploadArea = document.getElementById('uploadArea');
+        const csvFileInput = document.getElementById('csvFile');
+
+        uploadArea.addEventListener('click', () => csvFileInput.click());
+        
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0 && files[0].type === 'text/csv') {
+                csvFileInput.files = files;
+                handleFileUpload();
+            }
+        });
+
+        // Function to update upload area appearance when file is loaded
+        function updateUploadAreaAppearance(fileName) {
+            const uploadContent = uploadArea.querySelector('.upload-content-wide');
+            if (fileName) {
+                uploadArea.classList.add('file-loaded');
+                uploadContent.innerHTML = `
+                    <div class="upload-icon-wide">📄</div>
+                    <div class="upload-text-wide">
+                        <h3>CSV File Loaded</h3>
+                        <p><strong>${fileName}</strong></p>
+                        <p><span class="click-upload">Click to replace file</span> or <span class="clear-file">clear file</span></p>
+                    </div>
+                `;
+                
+                // Add event listener to clear button
+                const clearBtn = uploadContent.querySelector('.clear-file');
+                if (clearBtn) {
+                    clearBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        clearUploadedFile();
+                    });
+                }
+            } else {
+                uploadArea.classList.remove('file-loaded');
+                uploadContent.innerHTML = `
+                    <div class="upload-icon-wide">📁</div>
+                    <div class="upload-text-wide">
+                        <h3>Upload CSV File</h3>
+                        <p>Drag and drop your CSV file here, or <span class="click-upload">click to browse</span></p>
+                    </div>
+                `;
+            }
+        }
+
+        // Function to clear the uploaded file
+        function clearUploadedFile() {
+            csvFileInput.value = '';
+            courseData = [];
+            allCourses = [];
+            selectedCourses.clear();
+            updateUploadAreaAppearance(null);
+            renderSelectedCourseBubbles();
+            
+            // Clear the timetable
+            const container = document.querySelector('.timetable-container');
+            if (container) {
+                container.innerHTML = `
+                    <div class="no-data" id="noData">
+                        <h3>🎯 Ready to Create Your Timetable!</h3>
+                        <p>Upload a CSV file with your course data to get started.</p>
+                        <br>
+                        <p><strong>Expected CSV format (your scheduling system):</strong></p>
+                        <p>Headers: Subject, Course Number, Sec, Day, BTime, Duration, Room, Faculty Name</p>
+                        <p><em>The tool will automatically combine Subject + Course Number (e.g., MATH + 1010U = MATH1010U)</em></p>
+                    </div>
+                `;
+            }
+            
+            // Hide workshop scheduler
+            const workshopScheduler = document.getElementById('workshopScheduler');
+            if (workshopScheduler) {
+                workshopScheduler.style.display = 'none';
+            }
+            
+            showStatus('File cleared. Ready for new upload.');
+        }
 
         document.getElementById('csvFile').addEventListener('change', handleFileUpload);
         document.getElementById('courseFilter').addEventListener('input', filterAndRenderTimetable);
@@ -2168,6 +2416,10 @@
             // Clear the course filter
             document.getElementById('courseFilter').value = '';
             
+            // Clear selected courses
+            selectedCourses.clear();
+            renderSelectedCourseBubbles();
+            
             // Update the timetable
             filterAndRenderTimetable();
         }
@@ -2248,6 +2500,8 @@
             selectedCourses.clear();
             courses.forEach(course => selectedCourses.add(course));
             renderSelectedCourseBubbles();
+            
+
             
             // Update the timetable
             filterAndRenderTimetable();
@@ -2372,6 +2626,8 @@
             document.getElementById('courseFilter').value = '';
             hideCourseSuggestions();
             
+
+            
             // Update the timetable
             filterAndRenderTimetable();
         }
@@ -2385,6 +2641,8 @@
                     selectedCourses.delete(courseCode);
                     renderSelectedCourseBubbles();
                     
+
+                    
                     // Update the timetable
                     filterAndRenderTimetable();
                 }, 300); // Wait for animation to complete
@@ -2392,6 +2650,9 @@
                 // Fallback if bubble not found
                 selectedCourses.delete(courseCode);
                 renderSelectedCourseBubbles();
+                
+
+                
                 filterAndRenderTimetable();
             }
         }
@@ -2475,10 +2736,10 @@
                 const startSelect = document.getElementById(day + 'Start');
                 const endSelect = document.getElementById(day + 'End');
                 
-                // Populate with time options
+                // Populate with time options (15-minute intervals)
                 for (let hour = 8; hour <= 20; hour++) {
-                    ['00', '30'].forEach(minute => {
-                        if (hour === 20 && minute === '30') return; // Skip 8:30 PM
+                    ['00', '15', '30', '45'].forEach(minute => {
+                        if (hour === 20 && minute === '45') return; // Skip 8:45 PM
                         const timeValue = `${hour.toString().padStart(2, '0')}:${minute}`;
                         const timeDisplay = formatDisplayTime(timeValue);
                         
@@ -3919,6 +4180,7 @@
             const file = event.target.files[0];
             if (!file) {
                 console.log('No file selected');
+                updateUploadAreaAppearance(null);
                 return;
             }
 
@@ -3926,9 +4188,12 @@
 
             if (!file.name.toLowerCase().endsWith('.csv')) {
                 showStatus('Please upload a CSV file.', true);
+                updateUploadAreaAppearance(null);
                 return;
             }
 
+            // Update upload area to show file is being processed
+            updateUploadAreaAppearance(file.name);
             showStatus('Reading file...', false);
 
             const reader = new FileReader();
@@ -3939,12 +4204,14 @@
                 } catch (error) {
                     console.error('Parse error:', error);
                     showStatus(`Error reading file: ${error.message}`, true);
+                    updateUploadAreaAppearance(null);
                 }
             };
             
             reader.onerror = function(e) {
                 console.error('FileReader error:', e);
                 showStatus('Error reading file. Please try again.', true);
+                updateUploadAreaAppearance(null);
             };
             
             reader.readAsText(file);
@@ -4243,6 +4510,7 @@
             
             if (courseData.length === 0) {
                 showStatus('No valid course data found. Please check your CSV format and data.', true);
+                updateUploadAreaAppearance(null);
                 return;
             }
 
@@ -4346,8 +4614,8 @@
                     console.log(`Looking for time slot for ${entry.startTime}, found slot index: ${startSlot}`);
                     
                     if (startSlot !== -1) {
-                        // Calculate how many 30-minute slots this class spans
-                        const durationSlots = Math.ceil(entry.duration / 30);
+                        // Calculate how many 15-minute slots this class spans
+                        const durationSlots = Math.ceil(entry.duration / 15);
                         console.log(`Class duration: ${entry.duration} minutes = ${durationSlots} slots`);
                         
                         // Place the class in all time slots it spans
