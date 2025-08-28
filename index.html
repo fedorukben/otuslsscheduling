@@ -1419,6 +1419,7 @@
             gap: 20px;
             flex-wrap: wrap;
             align-items: center;
+            justify-content: space-between;
             margin-bottom: 20px;
         }
 
@@ -1431,6 +1432,40 @@
             background: white;
             border: 2px solid #e9ecef;
             font-weight: 500;
+        }
+        
+        .time-block-toggle {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .time-block-btn {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 12px;
+            transition: all 0.3s;
+            white-space: nowrap;
+            min-width: 120px;
+        }
+        
+        .time-block-btn:hover {
+            background: linear-gradient(135deg, #0056b3, #004085);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,123,255,0.3);
+        }
+        
+        .time-block-status {
+            font-size: 11px;
+            color: #6c757d;
+            text-align: center;
+            white-space: nowrap;
         }
 
         .color-dot {
@@ -1626,6 +1661,21 @@
             
             .legend {
                 justify-content: center;
+                gap: 15px;
+            }
+            
+            .time-block-toggle {
+                gap: 3px;
+            }
+            
+            .time-block-btn {
+                font-size: 11px;
+                padding: 5px 10px;
+                min-width: 100px;
+            }
+            
+            .time-block-status {
+                font-size: 10px;
             }
             
             .day-header {
@@ -1664,7 +1714,7 @@
     <div class="container">
         <div class="header">
             <h1>📚 Course Timetable Generator</h1>
-            <p>Upload your CSV course data and create a beautiful visual timetable</p>
+            <p>Upload your CSV course data and create a visual timetable</p>
         </div>
 
 
@@ -1750,6 +1800,16 @@
                 <div class="legend-item">
                     <div class="color-dot" style="background: linear-gradient(135deg, #f1c40f, #f39c12);"></div>
                     <span>All Others (Tutorials, Labs, Seminars, etc.)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="time-block-toggle">
+                        <button type="button" id="timeBlockToggleBtn" class="time-block-btn">
+                            Change to 15-min blocks
+                        </button>
+                        <div class="time-block-status">
+                            (Currently 30-min blocks)
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1880,6 +1940,8 @@
                         ⚙️ Advanced Settings <span class="dropdown-arrow">▼</span>
                     </button>
                     <div class="advanced-content" id="advancedContent">
+
+
                         <!-- Conflict Score Settings -->
                         <div class="advanced-section">
                             <h4>📊 Conflict Score Values
@@ -2121,14 +2183,31 @@
         let courseData = [];
         let allCourses = [];
 
-        // Time slots (8 AM to 8 PM) - 15 minute intervals
-        const timeSlots = [];
-        for (let hour = 8; hour <= 20; hour++) {
-            timeSlots.push(`${hour.toString().padStart(2, '0')}:00`);
-            timeSlots.push(`${hour.toString().padStart(2, '0')}:15`);
-            timeSlots.push(`${hour.toString().padStart(2, '0')}:30`);
-            timeSlots.push(`${hour.toString().padStart(2, '0')}:45`);
+        // Time slots (8 AM to 8 PM) - dynamic intervals
+        let timeSlots = [];
+        let use30MinBlocks = true; // Default to 30-minute blocks
+        
+        function generateTimeSlots() {
+            timeSlots = [];
+            if (use30MinBlocks) {
+                // 30-minute intervals
+                for (let hour = 8; hour <= 20; hour++) {
+                    timeSlots.push(`${hour.toString().padStart(2, '0')}:00`);
+                    timeSlots.push(`${hour.toString().padStart(2, '0')}:30`);
+                }
+            } else {
+                // 15-minute intervals
+                for (let hour = 8; hour <= 20; hour++) {
+                    timeSlots.push(`${hour.toString().padStart(2, '0')}:00`);
+                    timeSlots.push(`${hour.toString().padStart(2, '0')}:15`);
+                    timeSlots.push(`${hour.toString().padStart(2, '0')}:30`);
+                    timeSlots.push(`${hour.toString().padStart(2, '0')}:45`);
+                }
+            }
         }
+        
+        // Initialize time slots
+        generateTimeSlots();
 
         const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 
@@ -2243,6 +2322,7 @@
         document.getElementById('advancedToggle').addEventListener('click', handleAdvancedToggle);
         document.getElementById('enableDaySpecific').addEventListener('change', handleDaySpecificToggle);
         document.getElementById('resetDefaults').addEventListener('click', resetToDefaults);
+        document.getElementById('timeBlockToggleBtn').addEventListener('click', handleTimeBlockToggle);
         
         // Course search and selection functionality
         document.getElementById('courseFilter').addEventListener('input', handleCourseSearch);
@@ -2260,6 +2340,9 @@
         
         // Initialize the UI
         renderSelectedCourseBubbles();
+        
+        // Initialize time block button UI
+        updateTimeBlockButtonUI();
 
         // Store all ranked opportunities for CSV export
         let lastRankedOpportunities = [];
@@ -2324,6 +2407,118 @@
                         'CHEM1800U', 'ENGR1025U', 'ENGR1200U', 'MATH1020U', 'PHY1020U',
                         'SSCI1470U'
                     ]
+                },
+                'Automotive Engineering': {
+                    '2nd year': [
+                        'ELEE2790U', 'MANE2220U', 'MATH2860U', 'MECE2230U', 'MECE2310U', 'MECE2640U', 'AUTE2010U', 'ENGR2100U', 'MECE2420U', 'MECE2430U', 'MECE2860U', 'STAT2800U'
+                    ],
+                    '3rd year': [
+                        'AUTE3170U', 'MANE3190U', 'MECE3030U', 'MECE3350U', 'AUTE3210U', 'AUTE3450U', 'AUTE3500U', 'ENGR3360U'
+                    ],
+                    '4th year': [
+                        'AUTE4010U', 'AUTE4080U', 'ENGR4950U', 'AUTE4600U', 'ENGR4760U', 'ENGR4951U'
+                    ]
+                },
+                'Railway Engineering': {
+                    '3rd year': [
+                        'AUTE3170U', 'ENGR3011U', 'MANE3190U', 'MECE3030U', 'MECE3350U', 'AUTE3210U', 'AUTE3450U', 'AUTE3500U', 'ENGR3360U'
+                    ],
+                    '4th year': [
+                        'AUTE4010U', 'AUTE4080U', 'ENGR4022U', 'ENGR4950U', 'AUTE4600U', 'ENGR4033U', 'ENGR4044U', 'ENGR4760U', 'ENGR4951U'
+                    ]
+                },
+                'Electrical Engineering': {
+                    '2nd year': [
+                        'ELEE2450U', 'ELEE2200U', 'ELEE2530U', 'MECE2640U', 'SOFE2710U', 'ELEE2210U', 'ELEE2250U', 'ELEE2100U', 'ELEE2520U'
+                    ],
+                    '3rd year': [
+                        'ELEE3110U', 'ELEE3230U', 'ELEE3240U', 'ELEE3250U', 'ELEE3450U', 'ELEE3070U', 'ELEE3100U', 'ELEE3130U', 'ELEE3180U', 'ELEE3260U', 'ELEE3360U'
+                    ],
+                    '4th year': [
+                        'ENGR4940U', 'ENGR4760U', 'ENGR4941U'
+                    ]
+                },
+                'Smart Grid': {
+                    '4th Year': [
+                        'ELEE4115U', 'ELEE4940U', 'ELEE4120U', 'ELEE4125U', 'ELEE4140U', 'ELEE4760U', 'ELEE4941U'
+                    ]
+                },
+                'Energy Engineering': {
+                    '2nd Year': [
+                        'ENEE2160U', 'ENEE2210U', 'MANE2220U', 'MATH2860U', 'NUCL2860U', 'ELEE2790U', 'ENGR2100U', 'NUCL2010U', 'STAT2800U'
+                    ],
+                    '3rd Year': [
+                        'ENEE3030U', 'ENGR3150U', 'ESNS3380U', 'MECE3260U', 'MECE3350U', 'NUC3930U', 'ENEE3260U', 'ENEE3265U', 'MECE3410U'
+                    ],
+                    '4th year': [
+                        'ELEE4115U', 'ENEE4161U', 'ENEE4163U', 'ENGR4760U', 'ENGR4960U', 'MANE4380U', 'ENEE4260U', 'ENGR4961U'
+                    ]
+                },
+                'Industrial Engineering': {
+                    '2nd year': [
+                        'INSE2110U', 'MANE2220U', 'MATH2860U', 'MECE2230U', 'MECE2310U', 'SOFE2710U', 'ELEE2790U', 'ENGR2100U', 'INSE2210U', 'MANE3460U', 'MECE2420U', 'STAT2800U'
+                    ],
+                    '3rd year': [
+                        'ENGR3150U', 'INSE3110U', 'INSE3115U', 'INSE3140U', 'INSE3142U', 'MANE3190U', 'ENGR3215U', 'ENGR3360U', 'INSE3245U', 'MANE3300U', 'MANE4045U', 'METE4200U'
+                    ],
+                    '4th year': [
+                        'ENGR4760U', 'ENGR4970U', 'INSE4170U', 'MANE4390U', 'ENGR4971U', 'INSE4248U', 'MANE4015U'
+                    ]
+                },
+                'Manufacturing Engineering': {
+                    '2nd year': [
+                        'MANE2220U', 'MATH2860U', 'MECE2230U', 'MECE2310U', 'MECE2640U', 'ELEE2790U', 'ENGR2100U', 'MECE2420U', 'MECE2430U', 'MECE2860U', 'STAT2800U'
+                    ],
+                    '3rd year': [
+                        'MANE3120U', 'MANE3190U', 'MECE3030U', 'MECE3270U', 'MECE3350U', 'ENGR3360U', 'MANE3300U', 'MANE3460U', 'MANE4045U', 'MECE3220U'
+                    ],
+                    '4th year': [
+                        'ENGR4760U', 'ENGR4950U', 'MANE4110U', 'MANE4280U', 'MANE4390U', 'ENGR4951U', 'MANE4015U', 'MANE4600U', 'MECE4250U', 'METE4200U'
+                    ]
+                },
+                'Mechanical Engineering': {
+                    '2nd year': [
+                        'MANE2220U', 'MATH2860U', 'MECE2230U', 'MECE2310U', 'MECE2320U', 'ELEE2790U', 'ENGR2100U', 'MECE2420U', 'MECE2430U', 'MECE2860U', 'STAT2800U'
+                    ],
+                    '3rd year': [
+                        'MANE3190U', 'MECE3030U', 'MECE3270U', 'MECE3350U', 'MECE3420U', 'ENGR3360U', 'MECE3210U', 'MECE3220U', 'MECE3230U', 'MECE3390U', 'MECE3930U'
+                    ],
+                    '4th year': [
+                        'ENGR4760U', 'ENGR4950U', 'MECE4290U', 'MECE4210U', 'ENGR4951U'
+                    ]
+                },
+                'Mechatronics Engineering': {
+                    '2nd Year': [
+                        'MATH2860U', 'MECE2230U', 'MECE2310U', 'METE2010U', 'SOFE2710U', 'ENGR2100U', 'MECE2420U', 'MECE2430U', 'METE2020U', 'METE2030U', 'STAT2800U'
+                    ],
+                    '3rd year': [
+                        'MANE2220U', 'MECE2640U', 'MECE3030U', 'MECE3270U', 'MECE3350U', 'ENGR3360U', 'MECE2860U', 'MECE3220U', 'METE3100U', 'METE3200U', 'METE3350U'
+                    ],
+                    '4th year': [
+                        'ENGR4950U', 'MANE4280U', 'METE4100U', 'METE4400U', 'ENGR4760U', 'ENGR4951U', 'METE4200U'
+                    ]
+                },
+                'Nuclear Engineering': {
+                    '2nd year': [
+                        'ELEE2790U', 'ESNS2140U', 'MANE2220U', 'MATH2860U', 'NUCL2500U', 'NUCL2860U', 'ENGR2100U', 'NUCL2010U', 'NUCL2240U', 'NUCL2950U', 'STAT2800U'
+                    ],
+                    '3rd year': [
+                        'ESNS3380U', 'NUCL3740U', 'NUCL3820U', 'NUCL3930U', 'NUCL4640U', 'ENGR3360U', 'ESNS3750U', 'NUCL4610U', 'NUCL4780U'
+                    ],
+                    '4th year': [
+                        'NUCL4625U', 'NUCL4700U', 'NUCL4730U', 'NUCL4994U', 'ENGR4760U', 'ESNS4660U', 'NUCL4460U', 'NUCL4525U', 'NUCL4998U'
+                    ]
+                },
+                'Software Engineering': {
+                    '2nd year': [
+                        'ELEE2110U', 'ELEE2200U', 'SOFE2710U', 'SOFE2800U', 'SOFE2850U', 'SOFE2250U', 'STAT2800U', 'SOFE2715U', 'SOFE2720U'
+                    ],
+                    '3rd year': [
+                        'SOFE3200U', 'SOFE3650U', 'SOFE3700U', 'SOFE3770U', 'ENGR3360U', 'SOFE3290U', 'SOFE3720U', 'SOFE3850U', 'SOFE3950U'
+                    ],
+                    '4th year': [
+                        'ENGR4940U', 'SOFE4590U', 'SOFE4790U', 'SOFE4850U', 'ENGR4760U', 'ENGR4941U', 'SOFE4840U'
+                    ]
                 }
             },
             FBIT: {
@@ -2336,7 +2531,21 @@
                 }
             },
             FHS: {
-                'Health Science': {},
+                'Allied Health Sciences - Bridge': {
+                    '1st Year': [
+                        'HLSC1701U', 'HLSC2700U', 'HLSC1811U', 'HLSC2802U'
+                    ]
+                },
+                'Health Science': {
+                    '1st year': [
+                        'BIOL1010U', 'CHEM1010U', 'HLSC1200U', 'HLSC1701U', 'HLSC1810U', 'BIOL1020U', 'CHEM1020U', 'HLSC1201U', 'HLSC1811U', 'PSYC1000U'
+                    ]
+                },
+                'Health Administration': {
+                    '1st year': [
+                        'HLSC1701U', 'HLSC1810U', 'HLSC1811U', 'HLSC2601U', 'HLSC2802U', 'SUST1002U'
+                    ]
+                },
                 'Medical Laboratory Science': {
                     '1st Year': [
                         'BIOL1010U', 'CHEM1010U', 'HLSC1200U', 'HLSC1701U', 'CHEM1020U',
@@ -2741,26 +2950,217 @@
 
         function initializeAdvancedSettings() {
             // Populate day-specific time dropdowns
+            populateDayTimeDropdowns();
+            // Populate workshop time dropdowns
+            populateWorkshopTimeDropdowns();
+            // Populate lunch time dropdowns
+            populateLunchTimeDropdowns();
+            // Update workshop duration step
+            updateWorkshopDurationStep();
+            // Update buffer time steps
+            updateBufferTimeSteps();
+        }
+        
+        function populateDayTimeDropdowns() {
             const dayNames = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
             dayNames.forEach(day => {
                 const startSelect = document.getElementById(day + 'Start');
                 const endSelect = document.getElementById(day + 'End');
                 
-                // Populate with time options (15-minute intervals)
+                // Clear existing options
+                startSelect.innerHTML = '';
+                endSelect.innerHTML = '';
+                
+                // Populate with time options based on current setting
+                if (use30MinBlocks) {
+                    // 30-minute intervals
+                    for (let hour = 8; hour <= 20; hour++) {
+                        ['00', '30'].forEach(minute => {
+                            if (hour === 20 && minute === '30') return; // Skip 8:30 PM
+                            const timeValue = `${hour.toString().padStart(2, '0')}:${minute}`;
+                            const timeDisplay = formatDisplayTime(timeValue);
+                            
+                            const startOption = new Option(timeDisplay, timeValue, false, timeValue === '08:00');
+                            const endOption = new Option(timeDisplay, timeValue, false, timeValue === '20:00');
+                            
+                            startSelect.appendChild(startOption);
+                            endSelect.appendChild(endOption);
+                        });
+                    }
+                } else {
+                    // 15-minute intervals
+                    for (let hour = 8; hour <= 20; hour++) {
+                        ['00', '15', '30', '45'].forEach(minute => {
+                            if (hour === 20 && minute === '45') return; // Skip 8:45 PM
+                            const timeValue = `${hour.toString().padStart(2, '0')}:${minute}`;
+                            const timeDisplay = formatDisplayTime(timeValue);
+                            
+                            const startOption = new Option(timeDisplay, timeValue, false, timeValue === '08:00');
+                            const endOption = new Option(timeDisplay, timeValue, false, timeValue === '20:00');
+                            
+                            startSelect.appendChild(startOption);
+                            endSelect.appendChild(endOption);
+                        });
+                    }
+                }
+            });
+        }
+        
+        function populateWorkshopTimeDropdowns() {
+            const earliestSelect = document.getElementById('earliestTime');
+            const latestSelect = document.getElementById('latestTime');
+            
+            if (!earliestSelect || !latestSelect) return;
+            
+            // Clear existing options
+            earliestSelect.innerHTML = '';
+            latestSelect.innerHTML = '';
+            
+            // Populate with time options based on current setting
+            if (use30MinBlocks) {
+                // 30-minute intervals
+                for (let hour = 8; hour <= 20; hour++) {
+                    ['00', '30'].forEach(minute => {
+                        if (hour === 20 && minute === '30') return; // Skip 8:30 PM
+                        const timeValue = `${hour.toString().padStart(2, '0')}:${minute}`;
+                        const timeDisplay = formatDisplayTime(timeValue);
+                        
+                        const earliestOption = new Option(timeDisplay, timeValue, false, timeValue === '08:00');
+                        const latestOption = new Option(timeDisplay, timeValue, false, timeValue === '20:00');
+                        
+                        earliestSelect.appendChild(earliestOption);
+                        latestSelect.appendChild(latestOption);
+                    });
+                }
+            } else {
+                // 15-minute intervals
                 for (let hour = 8; hour <= 20; hour++) {
                     ['00', '15', '30', '45'].forEach(minute => {
                         if (hour === 20 && minute === '45') return; // Skip 8:45 PM
                         const timeValue = `${hour.toString().padStart(2, '0')}:${minute}`;
                         const timeDisplay = formatDisplayTime(timeValue);
                         
-                        const startOption = new Option(timeDisplay, timeValue, false, timeValue === '08:00');
-                        const endOption = new Option(timeDisplay, timeValue, false, timeValue === '20:00');
+                        const earliestOption = new Option(timeDisplay, timeValue, false, timeValue === '08:00');
+                        const latestOption = new Option(timeDisplay, timeValue, false, timeValue === '20:00');
                         
-                        startSelect.appendChild(startOption);
-                        endSelect.appendChild(endOption);
+                        earliestSelect.appendChild(earliestOption);
+                        latestOption.selected = timeValue === '20:00';
+                        latestSelect.appendChild(latestOption);
                     });
                 }
+            }
+        }
+        
+        function populateLunchTimeDropdowns() {
+            const lunchStartSelect = document.getElementById('lunchStartTime');
+            const lunchEndSelect = document.getElementById('lunchEndTime');
+            
+            if (!lunchStartSelect || !lunchEndSelect) return;
+            
+            // Clear existing options
+            lunchStartSelect.innerHTML = '';
+            lunchEndSelect.innerHTML = '';
+            
+            // Populate with time options based on current setting
+            if (use30MinBlocks) {
+                // 30-minute intervals for lunch (11:00 AM to 2:00 PM)
+                for (let hour = 11; hour <= 14; hour++) {
+                    ['00', '30'].forEach(minute => {
+                        if (hour === 14 && minute === '30') return; // Skip 2:30 PM
+                        const timeValue = `${hour.toString().padStart(2, '0')}:${minute}`;
+                        const timeDisplay = formatDisplayTime(timeValue);
+                        
+                        const startOption = new Option(timeDisplay, timeValue, false, timeValue === '12:00');
+                        const endOption = new Option(timeDisplay, timeValue, false, timeValue === '13:30');
+                        
+                        lunchStartSelect.appendChild(startOption);
+                        lunchEndSelect.appendChild(endOption);
+                    });
+                }
+            } else {
+                // 15-minute intervals for lunch (11:00 AM to 2:00 PM)
+                for (let hour = 11; hour <= 14; hour++) {
+                    ['00', '15', '30', '45'].forEach(minute => {
+                        if (hour === 14 && minute === '45') return; // Skip 2:45 PM
+                        const timeValue = `${hour.toString().padStart(2, '0')}:${minute}`;
+                        const timeDisplay = formatDisplayTime(timeValue);
+                        
+                        const startOption = new Option(timeDisplay, timeValue, false, timeValue === '12:00');
+                        const endOption = new Option(timeDisplay, timeValue, false, timeValue === '13:30');
+                        
+                        lunchStartSelect.appendChild(startOption);
+                        lunchEndSelect.appendChild(endOption);
+                    });
+                }
+            }
+        }
+        
+        function updateWorkshopDurationStep() {
+            const workshopDurationInput = document.getElementById('workshopDuration');
+            if (workshopDurationInput) {
+                workshopDurationInput.step = use30MinBlocks ? '30' : '15';
+                // Adjust the current value to be a multiple of the new step
+                const currentValue = parseInt(workshopDurationInput.value);
+                const newStep = use30MinBlocks ? 30 : 15;
+                const adjustedValue = Math.round(currentValue / newStep) * newStep;
+                workshopDurationInput.value = adjustedValue;
+            }
+        }
+        
+        function updateBufferTimeSteps() {
+            const bufferInputs = [
+                'bufferBeforeLecture',
+                'bufferAfterLecture', 
+                'bufferBeforeOther',
+                'bufferAfterOther'
+            ];
+            
+            bufferInputs.forEach(id => {
+                const input = document.getElementById(id);
+                if (input) {
+                    input.step = use30MinBlocks ? '30' : '15';
+                    // Adjust the current value to be a multiple of the new step
+                    const currentValue = parseInt(input.value);
+                    const newStep = use30MinBlocks ? 30 : 15;
+                    const adjustedValue = Math.round(currentValue / newStep) * newStep;
+                    input.value = adjustedValue;
+                }
             });
+        }
+        
+        function handleTimeBlockToggle() {
+            // Toggle the time block setting
+            use30MinBlocks = !use30MinBlocks;
+            
+            // Update the button text and status
+            updateTimeBlockButtonUI();
+            
+            generateTimeSlots();
+            populateDayTimeDropdowns();
+            populateWorkshopTimeDropdowns();
+            populateLunchTimeDropdowns();
+            updateWorkshopDurationStep();
+            updateBufferTimeSteps();
+            
+            // Re-render timetable if courses are loaded
+            if (courseData.length > 0) {
+                filterAndRenderTimetable();
+            }
+            
+            showStatus(`Switched to ${use30MinBlocks ? '30-minute' : '15-minute'} time blocks`);
+        }
+        
+        function updateTimeBlockButtonUI() {
+            const button = document.getElementById('timeBlockToggleBtn');
+            const status = document.querySelector('.time-block-status');
+            
+            if (use30MinBlocks) {
+                button.textContent = 'Change to 15-min blocks';
+                status.textContent = '(Currently 30-min blocks)';
+            } else {
+                button.textContent = 'Change to 30-min blocks';
+                status.textContent = '(Currently 15-min blocks)';
+            }
         }
 
         function handleAdvancedToggle() {
@@ -2782,6 +3182,11 @@
         }
 
         function resetToDefaults() {
+            // Reset time block setting
+            use30MinBlocks = true;
+            updateTimeBlockButtonUI();
+            generateTimeSlots();
+            
             // Reset conflict scores
             document.getElementById('scoreNonPriorityOther').value = '1';
             document.getElementById('scoreNonPriorityLecture').value = '5';
@@ -2794,18 +3199,11 @@
             
             // Reset lunch settings
             document.getElementById('avoidLunch').checked = false;
-            document.getElementById('lunchStartTime').value = '12:00';
-            document.getElementById('lunchEndTime').value = '13:30';
             document.getElementById('lunchPenalty').value = '50';
             
             // Reset day-specific settings
             document.getElementById('enableDaySpecific').checked = false;
             handleDaySpecificToggle();
-            const dayNames = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
-            dayNames.forEach(day => {
-                document.getElementById(day + 'Start').value = '08:00';
-                document.getElementById(day + 'End').value = '20:00';
-            });
             
             // Reset buffer settings
             document.getElementById('enableBuffer').checked = false;
@@ -2820,6 +3218,22 @@
             document.getElementById('baseEnrollmentUpper').value = '100';
             document.getElementById('lectureEnrollmentMultiplier').value = '1.0';
             document.getElementById('tutorialEnrollmentFraction').value = '0.3';
+            
+            // Re-populate day time dropdowns with new time slots
+            populateDayTimeDropdowns();
+            // Re-populate workshop time dropdowns
+            populateWorkshopTimeDropdowns();
+            // Re-populate lunch time dropdowns
+            populateLunchTimeDropdowns();
+            // Update workshop duration step
+            updateWorkshopDurationStep();
+            // Update buffer time steps
+            updateBufferTimeSteps();
+            
+            // Re-render timetable if courses are loaded
+            if (courseData.length > 0) {
+                filterAndRenderTimetable();
+            }
             
             showStatus('Settings reset to defaults');
         }
@@ -3027,6 +3441,7 @@
         // Replace your existing calculateConflictScore function with this fixed version
         function calculateConflictScore(day, timeSlot) {
             const settings = getAdvancedSettings();
+            const timeBlockMinutes = use30MinBlocks ? 30 : 15;
             const currentData = courseData.filter(entry => {
                 // Filter to currently displayed courses
                 let filteredCourses = [];
@@ -3061,7 +3476,7 @@
 
             currentData.forEach(entry => {
                 const entryStartSlot = findTimeSlot(entry.startTime);
-                const entryEndSlot = entryStartSlot + Math.ceil(entry.duration / 30) - 1;
+                const entryEndSlot = entryStartSlot + Math.ceil(entry.duration / timeBlockMinutes) - 1;
                 
                 // Calculate buffer zones if enabled
                 let bufferedStartSlot = entryStartSlot;
@@ -3069,12 +3484,12 @@
                 
                 if (settings.buffer.enabled) {
                     const bufferBefore = entry.type === 'lecture' ? 
-                        Math.ceil(settings.buffer.beforeLecture / 30) : 
-                        Math.ceil(settings.buffer.beforeOther / 30);
+                        Math.ceil(settings.buffer.beforeLecture / timeBlockMinutes) : 
+                        Math.ceil(settings.buffer.beforeOther / timeBlockMinutes);
                         
                     const bufferAfter = entry.type === 'lecture' ? 
-                        Math.ceil(settings.buffer.afterLecture / 30) : 
-                        Math.ceil(settings.buffer.afterOther / 30);
+                        Math.ceil(settings.buffer.afterLecture / timeBlockMinutes) : 
+                        Math.ceil(settings.buffer.afterOther / timeBlockMinutes);
                         
                     bufferedStartSlot = Math.max(0, entryStartSlot - bufferBefore);
                     bufferedEndSlot = Math.min(timeSlots.length - 1, entryEndSlot + bufferAfter);
@@ -3134,7 +3549,8 @@
         // Fixed version - counts each conflicting course only once per workshop
         function calculateWorkshopConflictScore(day, startTime, duration) {
             const settings = getAdvancedSettings();
-            const slotsNeeded = Math.ceil(duration / 30);
+            const timeBlockMinutes = use30MinBlocks ? 30 : 15;
+            const slotsNeeded = Math.ceil(duration / timeBlockMinutes);
             const startIndex = timeSlots.indexOf(startTime);
             
             // Get currently filtered data
@@ -3179,7 +3595,7 @@
             
             currentData.forEach(entry => {
                 const entryStartSlot = findTimeSlot(entry.startTime);
-                const entryEndSlot = entryStartSlot + Math.ceil(entry.duration / 30) - 1;
+                const entryEndSlot = entryStartSlot + Math.ceil(entry.duration / timeBlockMinutes) - 1;
                 
                 // Calculate buffer zones if enabled
                 let bufferedStartSlot = entryStartSlot;
@@ -3187,12 +3603,12 @@
                 
                 if (settings.buffer.enabled) {
                     const bufferBefore = entry.type === 'lecture' ? 
-                        Math.ceil(settings.buffer.beforeLecture / 30) : 
-                        Math.ceil(settings.buffer.beforeOther / 30);
+                        Math.ceil(settings.buffer.beforeLecture / timeBlockMinutes) : 
+                        Math.ceil(settings.buffer.beforeOther / timeBlockMinutes);
                         
                     const bufferAfter = entry.type === 'lecture' ? 
-                        Math.ceil(settings.buffer.afterLecture / 30) : 
-                        Math.ceil(settings.buffer.afterOther / 30);
+                        Math.ceil(settings.buffer.afterLecture / timeBlockMinutes) : 
+                        Math.ceil(settings.buffer.afterOther / timeBlockMinutes);
                         
                     bufferedStartSlot = Math.max(0, entryStartSlot - bufferBefore);
                     bufferedEndSlot = Math.min(timeSlots.length - 1, entryEndSlot + bufferAfter);
@@ -3242,9 +3658,10 @@
         function findOptimalWorkshopTimes() {
             const duration = parseInt(document.getElementById('workshopDuration').value) || 60;
             const settings = getAdvancedSettings();
+            const timeBlockMinutes = use30MinBlocks ? 30 : 15;
             
             const opportunities = [];
-            const slotsNeeded = Math.ceil(duration / 30);
+            const slotsNeeded = Math.ceil(duration / timeBlockMinutes);
 
             days.forEach(day => {
                 let earliestTime, latestTime;
@@ -3422,7 +3839,8 @@
         // Replace the conflict details generation in displayWorkshopResults
         function getWorkshopConflictDetailsForDisplay(day, startTime, duration) {
             const settings = getAdvancedSettings();
-            const slotsNeeded = Math.ceil(duration / 30);
+            const timeBlockMinutes = use30MinBlocks ? 30 : 15;
+            const slotsNeeded = Math.ceil(duration / timeBlockMinutes);
             const startIndex = timeSlots.indexOf(startTime);
             
             // Get currently filtered data
@@ -3468,7 +3886,7 @@
             
             currentData.forEach(entry => {
                 const entryStartSlot = findTimeSlot(entry.startTime);
-                const entryEndSlot = entryStartSlot + Math.ceil(entry.duration / 30) - 1;
+                const entryEndSlot = entryStartSlot + Math.ceil(entry.duration / timeBlockMinutes) - 1;
                 
                 // Calculate buffer zones if enabled
                 let bufferedStartSlot = entryStartSlot;
@@ -3476,12 +3894,12 @@
                 
                 if (settings.buffer.enabled) {
                     const bufferBefore = entry.type === 'lecture' ? 
-                        Math.ceil(settings.buffer.beforeLecture / 30) : 
-                        Math.ceil(settings.buffer.beforeOther / 30);
+                        Math.ceil(settings.buffer.beforeLecture / timeBlockMinutes) : 
+                        Math.ceil(settings.buffer.beforeOther / timeBlockMinutes);
                         
                     const bufferAfter = entry.type === 'lecture' ? 
-                        Math.ceil(settings.buffer.afterLecture / 30) : 
-                        Math.ceil(settings.buffer.afterOther / 30);
+                        Math.ceil(settings.buffer.afterLecture / timeBlockMinutes) : 
+                        Math.ceil(settings.buffer.afterOther / timeBlockMinutes);
                         
                     bufferedStartSlot = Math.max(0, entryStartSlot - bufferBefore);
                     bufferedEndSlot = Math.min(timeSlots.length - 1, entryEndSlot + bufferAfter);
@@ -3556,7 +3974,8 @@
 
         function getWorkshopConflictDetails(day, startTime, duration) {
             const settings = getAdvancedSettings();
-            const slotsNeeded = Math.ceil(duration / 30);
+            const timeBlockMinutes = use30MinBlocks ? 30 : 15;
+            const slotsNeeded = Math.ceil(duration / timeBlockMinutes);
             const startIndex = timeSlots.indexOf(startTime);
             
             const conflicts = [];
@@ -3598,7 +4017,7 @@
                 // Check for course conflicts (including buffer zones)
                 currentData.forEach(entry => {
                     const entryStartSlot = findTimeSlot(entry.startTime);
-                    const entryEndSlot = entryStartSlot + Math.ceil(entry.duration / 30) - 1;
+                    const entryEndSlot = entryStartSlot + Math.ceil(entry.duration / timeBlockMinutes) - 1;
                     
                     // Calculate buffer zones if enabled
                     let bufferedStartSlot = entryStartSlot;
@@ -3607,12 +4026,12 @@
                     
                     if (settings.buffer.enabled) {
                         const bufferBefore = entry.type === 'lecture' ? 
-                            Math.ceil(settings.buffer.beforeLecture / 30) : 
-                            Math.ceil(settings.buffer.beforeOther / 30);
+                            Math.ceil(settings.buffer.beforeLecture / timeBlockMinutes) : 
+                            Math.ceil(settings.buffer.beforeOther / timeBlockMinutes);
                             
                         const bufferAfter = entry.type === 'lecture' ? 
-                            Math.ceil(settings.buffer.afterLecture / 30) : 
-                            Math.ceil(settings.buffer.afterOther / 30);
+                            Math.ceil(settings.buffer.afterLecture / timeBlockMinutes) : 
+                            Math.ceil(settings.buffer.afterOther / timeBlockMinutes);
                             
                         bufferedStartSlot = Math.max(0, entryStartSlot - bufferBefore);
                         bufferedEndSlot = Math.min(timeSlots.length - 1, entryEndSlot + bufferAfter);
@@ -3683,7 +4102,9 @@
             console.log(`\n=== DEBUG CONFLICT SCORE for ${day} at ${timeSlot} ===`);
             
             const settings = getAdvancedSettings();
+            const timeBlockMinutes = use30MinBlocks ? 30 : 15;
             console.log('Settings:', settings);
+            console.log(`Time block size: ${timeBlockMinutes} minutes`);
             
             const currentData = courseData.filter(entry => {
                 // Filter to currently displayed courses
@@ -3725,7 +4146,7 @@
                 console.log(`\nProcessing ${entry.course} ${entry.type}:`);
                 
                 const entryStartSlot = findTimeSlot(entry.startTime);
-                const entryEndSlot = entryStartSlot + Math.ceil(entry.duration / 30) - 1;
+                const entryEndSlot = entryStartSlot + Math.ceil(entry.duration / timeBlockMinutes) - 1;
                 const currentSlotIndex = timeSlots.indexOf(timeSlot);
                 
                 console.log(`  Entry spans slots ${entryStartSlot}-${entryEndSlot} (${timeSlots[entryStartSlot]}-${timeSlots[entryEndSlot]})`);
@@ -3738,12 +4159,12 @@
                 
                 if (settings.buffer.enabled) {
                     const bufferBefore = entry.type === 'lecture' ? 
-                        Math.ceil(settings.buffer.beforeLecture / 30) : 
-                        Math.ceil(settings.buffer.beforeOther / 30);
+                        Math.ceil(settings.buffer.beforeLecture / timeBlockMinutes) : 
+                        Math.ceil(settings.buffer.beforeOther / timeBlockMinutes);
                         
                     const bufferAfter = entry.type === 'lecture' ? 
-                        Math.ceil(settings.buffer.afterLecture / 30) : 
-                        Math.ceil(settings.buffer.afterOther / 30);
+                        Math.ceil(settings.buffer.afterLecture / timeBlockMinutes) : 
+                        Math.ceil(settings.buffer.afterOther / timeBlockMinutes);
                         
                     bufferedStartSlot = Math.max(0, entryStartSlot - bufferBefore);
                     bufferedEndSlot = Math.min(timeSlots.length - 1, entryEndSlot + bufferAfter);
@@ -3926,7 +4347,8 @@
                 if (schedule[entry.day]) {
                     const startSlot = findTimeSlot(entry.startTime);
                     if (startSlot !== -1) {
-                        const durationSlots = Math.ceil(entry.duration / 30);
+                        const timeBlockMinutes = use30MinBlocks ? 30 : 15;
+                        const durationSlots = Math.ceil(entry.duration / timeBlockMinutes);
                         for (let i = 0; i < durationSlots && (startSlot + i) < timeSlots.length; i++) {
                             const timeKey = timeSlots[startSlot + i];
                             if (schedule[entry.day][timeKey]) {
@@ -4624,9 +5046,10 @@
                     console.log(`Looking for time slot for ${entry.startTime}, found slot index: ${startSlot}`);
                     
                     if (startSlot !== -1) {
-                        // Calculate how many 15-minute slots this class spans
-                        const durationSlots = Math.ceil(entry.duration / 15);
-                        console.log(`Class duration: ${entry.duration} minutes = ${durationSlots} slots`);
+                        // Calculate how many time slots this class spans based on current time block setting
+                        const timeBlockMinutes = use30MinBlocks ? 30 : 15;
+                        const durationSlots = Math.ceil(entry.duration / timeBlockMinutes);
+                        console.log(`Class duration: ${entry.duration} minutes = ${durationSlots} ${timeBlockMinutes}-minute slots`);
                         
                         // Place the class in all time slots it spans
                         for (let i = 0; i < durationSlots && (startSlot + i) < timeSlots.length; i++) {
