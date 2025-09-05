@@ -66,6 +66,26 @@
             text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
+        .help-btn {
+            background: #17a2b8;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .help-btn:hover {
+            background: #138496;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
         .controls {
             padding: 30px;
             background: #f8f9fa;
@@ -1093,7 +1113,7 @@
         }
 
         .reset-defaults-btn {
-            background: #6c757d;
+            background: #dc3545;
             color: white;
             border: none;
             padding: 10px 20px;
@@ -1106,7 +1126,7 @@
         }
 
         .reset-defaults-btn:hover {
-            background: #5a6268;
+            background: #c82333;
             transform: translateY(-1px);
         }
 
@@ -1708,6 +1728,178 @@
                 margin-top: 10px;
             }
         }
+
+        /* Help Modal Styles */
+        .help-modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .help-modal-content {
+            background-color: white;
+            margin: 2% auto;
+            padding: 0;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .help-modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px 30px;
+            border-radius: 15px 15px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .help-modal-header h2 {
+            margin: 0;
+            font-size: 1.8em;
+            font-weight: 600;
+        }
+
+        .help-modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background-color 0.3s;
+        }
+
+        .help-modal-close:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .help-modal-body {
+            padding: 30px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .help-section {
+            margin-bottom: 25px;
+        }
+
+        .help-section h3 {
+            color: #495057;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 8px;
+        }
+
+        .help-section p {
+            margin-bottom: 12px;
+            line-height: 1.6;
+            color: #6c757d;
+        }
+
+        .help-section ul {
+            margin: 15px 0;
+            padding-left: 20px;
+        }
+
+        .help-section li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+            color: #495057;
+        }
+
+        .help-section code {
+            background: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e83e8c;
+            font-weight: 600;
+        }
+
+        .help-section strong {
+            color: #495057;
+            font-weight: 600;
+        }
+
+        .help-modal-footer {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            text-align: center;
+            border-radius: 0 0 15px 15px;
+        }
+
+        .help-modal-close-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .help-modal-close-btn:hover {
+            background: #218838;
+            transform: translateY(-1px);
+        }
+
+        /* Responsive design for modal */
+        @media (max-width: 768px) {
+            .help-modal-content {
+                width: 95%;
+                margin: 5% auto;
+                max-height: 95vh;
+            }
+            
+            .help-modal-header {
+                padding: 20px;
+            }
+            
+            .help-modal-header h2 {
+                font-size: 1.5em;
+            }
+            
+            .help-modal-body {
+                padding: 20px;
+            }
+            
+            .help-modal-footer {
+                padding: 15px 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1715,9 +1907,80 @@
         <div class="header">
             <h1>📚 Course Timetable Generator</h1>
             <p>Upload your CSV course data and create a visual timetable</p>
+            <button type="button" class="help-btn" id="helpBtn">❓ How to Use</button>
         </div>
 
-
+        <!-- Help Modal -->
+        <div id="helpModal" class="help-modal">
+            <div class="help-modal-content">
+                <div class="help-modal-header">
+                    <h2>📖 How to Use the Course Timetable Generator</h2>
+                    <button type="button" class="help-modal-close" id="helpModalClose">&times;</button>
+                </div>
+                <div class="help-modal-body">
+                    <div class="help-section">
+                        <h3>📥 Step 1: Prepare Your Data</h3>
+                        <ul>
+                            <li>On receipt of the Scheduling Summary Report, download the Excel (XLSX) file</li>
+                            <li>Press <strong>File > Save As</strong></li>
+                            <li>Under the file selection dropbox, select <strong>"CSV UTF-8 (Comma delimited) (*.csv)"</strong> to save the file as a CSV file</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="help-section">
+                        <h3>🎯 Step 2: Select Your Courses</h3>
+                        <p>You can select courses in two ways:</p>
+                        <ul>
+                            <li><strong>Course Presets:</strong> Use the dropdown to select course groups (e.g., First Year Engineering, Computer Science, etc.)</li>
+                            <li><strong>Manual Entry:</strong> Type course codes in the search box</li>
+                        </ul>
+                        <p><strong>Important:</strong> Course codes must be in the format <code>ABCD1234U</code>. For example, for Calculus I, enter <code>MATH1010U</code>, not <code>MATH1010</code> or <code>MATH 1010U</code> (no spaces, include the U)</p>
+                    </div>
+                    
+                    <div class="help-section">
+                        <h3>📁 Step 3: Upload Your CSV File</h3>
+                        <ul>
+                            <li>Click the <strong>"Upload CSV File"</strong> button or drag and drop your CSV file</li>
+                            <li>The system will process your file and display the course data</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="help-section">
+                        <h3>📅 Step 4: View Your Timetable</h3>
+                        <ul>
+                            <li>You'll see a calendar view showing all instances of your selected courses (lectures, tutorials, labs, etc.)</li>
+                            <li>Toggle between <strong>"Compact View"</strong> and regular view using the switch</li>
+                            <li>Use the time block toggle to switch between 30-minute and 15-minute time intervals</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="help-section">
+                        <h3>⚙️ Step 5: Workshop Scheduler (Optional)</h3>
+                        <p>Scroll down past the calendar to find the <strong>"Workshop Scheduler"</strong> feature:</p>
+                        <ul>
+                            <li><strong>Priority Courses:</strong> Select courses that should be weighted more heavily in the algorithm (these will be more strongly avoided)</li>
+                            <li><strong>Workshop Settings:</strong> Set your workshop duration, earliest and latest times</li>
+                            <li><strong>Advanced Settings:</strong> Configure buffer time, lunch block avoidance, day-specific hours, and enrollment-based scores</li>
+                            <li><strong>Find Times:</strong> Click <strong>"Find Best Workshop Times"</strong> to get recommendations</li>
+                        </ul>
+                        <p><strong>Scoring:</strong> Lower scores mean fewer conflicts. Choose timeslots with the lowest scores for optimal workshop scheduling.</p>
+                    </div>
+                    
+                    <div class="help-section">
+                        <h3>💡 Tips</h3>
+                        <ul>
+                            <li>You can select multiple course presets - they will be combined automatically</li>
+                            <li>Use the course search to find specific courses by code or CRN</li>
+                            <li>The legend shows different colors for lectures vs. other course types</li>
+                            <li>Export your timetable as PDF if needed</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="help-modal-footer">
+                    <button type="button" class="help-modal-close-btn" id="helpModalFooterClose">Got it!</button>
+                </div>
+            </div>
+        </div>
 
         <div class="controls">
             <!-- Upload Section - Wider and Thinner -->
@@ -2324,6 +2587,11 @@
         document.getElementById('resetDefaults').addEventListener('click', resetToDefaults);
         document.getElementById('timeBlockToggleBtn').addEventListener('click', handleTimeBlockToggle);
         
+        // Help modal functionality
+        document.getElementById('helpBtn').addEventListener('click', showHelpModal);
+        document.getElementById('helpModalClose').addEventListener('click', hideHelpModal);
+        document.getElementById('helpModalFooterClose').addEventListener('click', hideHelpModal);
+        
         // Course search and selection functionality
         document.getElementById('courseFilter').addEventListener('input', handleCourseSearch);
         document.getElementById('courseFilter').addEventListener('focus', showCourseSuggestions);
@@ -2392,6 +2660,62 @@
                         'BIOL1000U', 'BIOL1010U', 'BIOL1020U', 'CHEM1010U', 'CHEM1020U',
                         'CSCI1040U', 'MATH1000U', 'MATH1010U', 'MATH1020U', 'PHY1030U',
                         'PHY1010U', 'PHY1020U'
+                    ]
+                },
+                'Biological Science': {
+                    '1st Year': [
+                        'BIOL1000U', 'BIOL1010U', 'BIOL1020U', 'CHEM1010U', 'CHEM1020U',
+                        'CSCI1040U', 'MATH1015U', 'PHY1030U', 'PHY1040U'
+                    ]
+                },
+                'Chemistry': {
+                    '1st Year': [
+                        'BIOL1010U', 'BIOL1020U', 'CHEM1010U', 'CHEM1020U', 'MATH1020U',
+                        'PHY1020U', 'MATH1000U', 'MATH1010U', 'PHY1010U', 'PHY1030U'
+                    ],
+                    '2nd Year': [
+                        'BIOL2080U', 'CHEM2010U', 'CHEM2020U', 'CHEM2030U', 'CHEM2040U',
+                        'CHEM2120U', 'CHEM2220U'
+                    ],
+                    '3rd Year': [
+                        'CHEM3040U', 'CHEM3210U', 'CHEM3510U', 'CHEM3520U', 'CHEM3530U',
+                        'CHEM3540U'
+                    ],
+                    '4th Year': [
+                        'CHEM4040U', 'CHEM4060U', 'CHEM4410U', 'CHEM4420U'
+                    ]
+                },
+                'Neuroscience': {
+                    '1st Year': [
+                        'BIOL1010U', 'BIOL1020U', 'CHEM1010U', 'CHEM1020U', 'CSCI1040U',
+                        'MATH1015U', 'PHY1030U', 'PHY1040U', 'PSYC1000U'
+                    ],
+                    '2nd Year': [
+                        'BIOL2010U', 'BIOL2020U', 'BIOL2030U', 'BIOL2050U', 'BIOL2080U',
+                        'CHEM2020U', 'PSYC2050U', 'STAT2020U'
+                    ],
+                    '3rd Year': [
+                        'BIOL3020U', 'BIOL3060U', 'BIOL3610U', 'NSCI2400U', 'NSCI3410U',
+                        'NSCI3470U', 'PSYC2010U', 'PSYC2030U', 'PSYC2060U'
+                    ],
+                    '4th Year': [
+                        'BIOL4080U', 'BIOL4620U', 'BIOL4820U', 'NSCI4414U', 'NSCI4808U',
+                        'NSCI4999U', 'NSCI4410U', 'NSCI4420U'
+                    ]
+                },
+                'Integrated Mathematics and Computer Science': {
+                    '1st Year': [
+                        'CSCI1030U', 'MATH1020U', 'MATH2050U', 'PSY1020U', 'CSCI1060U',
+                        'CSCI1061U', 'CSCI1062U', 'CSCI1063U', 'MATH1000U', 'MATH1010U',
+                        'PHY1010U', 'PHY1030U'
+                    ],
+                    '2nd Year': [
+                        'CSCI2000U', 'CSCI2010U', 'CSCI2020U', 'CSCI2040U', 'CSCI2072U',
+                        'CSCI2110U', 'MATH2015U', 'MATH2055U', 'MATH2060U', 'STAT2010U'
+                    ],
+                    '3rd and 4th Year': [
+                        'IMCS3010U', 'IMCS3020U', 'CSCI3070U', 'CSCI4040U', 'MATH3060U',
+                        'IMCS4410U', 'IMCS4420U'
                     ]
                 }
             },
@@ -2715,8 +3039,7 @@
             
             const courses = programPresets?.[faculty]?.[program]?.[year] || [];
             
-            // Update selected courses and render bubbles
-            selectedCourses.clear();
+            // Append new courses to existing selection (without duplicates)
             courses.forEach(course => selectedCourses.add(course));
             renderSelectedCourseBubbles();
             
@@ -4607,6 +4930,34 @@
             statusDiv.innerHTML = `<div class="status ${isError ? 'error' : 'success'}">${message}</div>`;
             setTimeout(() => statusDiv.innerHTML = '', 5000);
         }
+
+        // Help modal functions
+        function showHelpModal() {
+            const modal = document.getElementById('helpModal');
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function hideHelpModal() {
+            const modal = document.getElementById('helpModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto'; // Restore scrolling
+        }
+
+        // Close modal when clicking outside of it
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('helpModal');
+            if (event.target === modal) {
+                hideHelpModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                hideHelpModal();
+            }
+        });
 
         function handleFileUpload(event) {
             const file = event.target.files[0];
