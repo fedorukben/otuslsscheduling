@@ -3,8 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSV Course Timetable Generator</title>
+    <title>Course Timetable Generator | Ontario Tech University</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
     <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta name="theme-color" content="#003C71">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -68,7 +75,7 @@
         }
 
         .help-btn {
-            background: #17a2b8;
+            background: #003C71;
             color: white;
             border: none;
             padding: 12px 24px;
@@ -82,7 +89,7 @@
         }
 
         .help-btn:hover {
-            background: #138496;
+            background: #00283C;
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
@@ -122,26 +129,26 @@
         }
 
         .upload-area-wide:hover {
-            border-color: #007bff;
-            background: #e3f2fd;
+            border-color: #0077CA;
+            background: #E6F1FA;
             transform: translateY(-2px);
         }
 
         .upload-area-wide.dragover {
-            border-color: #007bff;
-            background: #e3f2fd;
+            border-color: #0077CA;
+            background: #E6F1FA;
             transform: scale(1.02);
         }
 
         /* File loaded state */
         .upload-area-wide.file-loaded {
-            border-color: #28a745;
+            border-color: #003C71;
             background: #d4edda;
             border-style: solid;
         }
 
         .upload-area-wide.file-loaded:hover {
-            border-color: #218838;
+            border-color: #00283C;
             background: #c3e6cb;
         }
 
@@ -181,36 +188,36 @@
 
         .upload-text-wide h3 {
             margin: 0 0 5px 0;
-            color: #495057;
+            color: #00283C;
             font-size: 18px;
         }
 
         .upload-text-wide p {
             margin: 0;
-            color: #6c757d;
+            color: #5B6770;
             font-size: 14px;
         }
 
         .click-upload {
-            color: #007bff;
+            color: #0077CA;
             font-weight: 500;
             text-decoration: underline;
             cursor: pointer;
         }
 
         .click-upload:hover {
-            color: #0056b3;
+            color: #003C71;
         }
 
         .clear-file {
-            color: #dc3545;
+            color: #5B6770;
             font-weight: 500;
             text-decoration: underline;
             cursor: pointer;
         }
 
         .clear-file:hover {
-            color: #c82333;
+            color: #46505A;
         }
 
 
@@ -227,7 +234,7 @@
         }
 
         .file-input-label {
-            background: #007bff;
+            background: #0077CA;
             color: white;
             padding: 12px 24px;
             border-radius: 25px;
@@ -238,7 +245,7 @@
         }
 
         .file-input-label:hover {
-            background: #0056b3;
+            background: #003C71;
             transform: translateY(-2px);
         }
 
@@ -259,7 +266,7 @@
 
         .course-filter input:focus {
             outline: none;
-            border-color: #007bff;
+            border-color: #0077CA;
         }
 
         .course-suggestions {
@@ -291,14 +298,14 @@
         
         .course-suggestions-title {
             font-weight: 600;
-            color: #495057;
+            color: #00283C;
             font-size: 14px;
         }
         
         .course-suggestions-close {
             background: none;
             border: none;
-            color: #6c757d;
+            color: #5B6770;
             cursor: pointer;
             font-size: 18px;
             padding: 0;
@@ -313,7 +320,7 @@
         
         .course-suggestions-close:hover {
             background: #e9ecef;
-            color: #495057;
+            color: #00283C;
         }
 
         .course-suggestions.show {
@@ -329,7 +336,7 @@
             gap: 12px;
             border: none;
             font-size: 14px;
-            color: #495057;
+            color: #00283C;
             width: 100%;
             text-align: left;
         }
@@ -350,11 +357,11 @@
 
         .course-suggestion-code {
             font-weight: 600;
-            color: #007bff;
+            color: #0077CA;
         }
 
         .course-suggestion-title {
-            color: #6c757d;
+            color: #5B6770;
             font-size: 13px;
         }
 
@@ -370,7 +377,7 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: linear-gradient(135deg, #007bff, #0056b3);
+            background: linear-gradient(135deg, #0077CA, #003C71);
             color: white;
             padding: 8px 12px;
             border-radius: 20px;
@@ -395,7 +402,7 @@
 
         .course-bubble:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,123,255,0.3);
+            box-shadow: 0 4px 12px rgba(0,60,113,0.25);
         }
 
         .course-bubble .remove-btn {
@@ -479,7 +486,7 @@
         }
 
         input:checked + .slider {
-            background-color: #007bff;
+            background-color: #0077CA;
         }
 
         input:checked + .slider:before {
@@ -488,7 +495,7 @@
 
         .toggle-label {
             font-size: 14px;
-            color: #495057;
+            color: #00283C;
         }
 
         .export-controls {
@@ -497,7 +504,7 @@
         }
 
         .export-pdf-btn {
-            background: linear-gradient(135deg, #dc3545, #c82333);
+            background: linear-gradient(135deg, #5B6770, #46505A);
             color: white;
             border: none;
             padding: 12px 20px;
@@ -509,17 +516,17 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 4px 12px rgba(220,53,69,0.3);
+            box-shadow: 0 4px 12px rgba(0,60,113,0.25);
         }
 
         .export-pdf-btn:hover {
-            background: linear-gradient(135deg, #c82333, #a71e2a);
+            background: linear-gradient(135deg, #46505A, #3A434B);
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(220,53,69,0.4);
+            box-shadow: 0 6px 20px rgba(0,60,113,0.35);
         }
 
         .export-pdf-btn:disabled {
-            background: #6c757d;
+            background: #5B6770;
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
@@ -536,7 +543,7 @@
         }
 
         .dropdown-toggle {
-            background: #28a745;
+            background: #003C71;
             color: white;
             border: none;
             padding: 12px 20px;
@@ -553,7 +560,7 @@
         }
 
         .dropdown-toggle:hover {
-            background: #218838;
+            background: #00283C;
             transform: translateY(-2px);
         }
 
@@ -592,11 +599,11 @@
             justify-content: space-between;
             align-items: center;
             font-weight: 600;
-            color: #495057;
+            color: #00283C;
         }
 
         .clear-all-btn {
-            background: #dc3545;
+            background: #5B6770;
             color: white;
             border: none;
             padding: 5px 12px;
@@ -607,7 +614,7 @@
         }
 
         .clear-all-btn:hover {
-            background: #c82333;
+            background: #46505A;
         }
 
         .dropdown-item {
@@ -619,7 +626,7 @@
             gap: 12px;
             border: none;
             font-size: 14px;
-            color: #495057;
+            color: #00283C;
         }
 
         .dropdown-item:hover {
@@ -646,8 +653,8 @@
         }
 
         .preset-checkbox:checked + .checkmark {
-            background: #007bff;
-            border-color: #007bff;
+            background: #0077CA;
+            border-color: #0077CA;
         }
 
         .preset-checkbox:checked + .checkmark::after {
@@ -726,13 +733,13 @@
         }
 
         .workshop-header h2 {
-            color: #495057;
+            color: #00283C;
             font-size: 1.8em;
             margin-bottom: 8px;
         }
 
         .workshop-header p {
-            color: #6c757d;
+            color: #5B6770;
             font-size: 1.1em;
         }
 
@@ -765,7 +772,7 @@
 
         .workshop-input-group label {
             font-weight: 600;
-            color: #495057;
+            color: #00283C;
             font-size: 14px;
         }
 
@@ -781,7 +788,7 @@
         .workshop-input-group input:focus,
         .workshop-input-group select:focus {
             outline: none;
-            border-color: #007bff;
+            border-color: #0077CA;
         }
 
         .priority-courses-section {
@@ -791,7 +798,7 @@
 
         .priority-courses-section label {
             font-weight: 600;
-            color: #495057;
+            color: #00283C;
             font-size: 14px;
             margin-bottom: 8px;
             display: block;
@@ -802,7 +809,7 @@
         }
 
         .priority-dropdown-toggle {
-            background: #6f42c1;
+            background: #003C71;
             color: white;
             border: none;
             padding: 10px 16px;
@@ -819,7 +826,7 @@
         }
 
         .priority-dropdown-toggle:hover {
-            background: #5a2d91;
+            background: #00283C;
             transform: translateY(-2px);
         }
 
@@ -855,12 +862,12 @@
             justify-content: space-between;
             align-items: center;
             font-weight: 600;
-            color: #495057;
+            color: #00283C;
             font-size: 13px;
         }
 
         .clear-priority-btn {
-            background: #dc3545;
+            background: #5B6770;
             color: white;
             border: none;
             padding: 4px 10px;
@@ -871,7 +878,7 @@
         }
 
         .clear-priority-btn:hover {
-            background: #c82333;
+            background: #46505A;
         }
 
         .priority-course-item {
@@ -882,7 +889,7 @@
             transition: background 0.2s;
             gap: 12px;
             font-size: 14px;
-            color: #495057;
+            color: #00283C;
             border: none;
             width: 100%;
             min-height: 44px;
@@ -908,8 +915,8 @@
         }
 
         .priority-course-checkbox:checked + .checkmark {
-            background: #6f42c1;
-            border-color: #6f42c1;
+            background: #003C71;
+            border-color: #003C71;
         }
 
         .priority-course-checkbox:checked + .checkmark::after {
@@ -924,7 +931,7 @@
         }
 
         .find-workshops-btn {
-            background: linear-gradient(135deg, #007bff, #0056b3);
+            background: linear-gradient(135deg, #0077CA, #003C71);
             color: white;
             border: none;
             padding: 12px 24px;
@@ -933,12 +940,12 @@
             font-weight: 600;
             font-size: 14px;
             transition: all 0.3s;
-            box-shadow: 0 4px 12px rgba(0,123,255,0.3);
+            box-shadow: 0 4px 12px rgba(0,60,113,0.25);
         }
 
         .find-workshops-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,123,255,0.4);
+            box-shadow: 0 6px 20px rgba(0,60,113,0.35);
         }
 
         /* Advanced Settings Styles */
@@ -950,7 +957,7 @@
         }
 
         .advanced-toggle {
-            background: linear-gradient(135deg, #17a2b8, #138496);
+            background: linear-gradient(135deg, #003C71, #00283C);
             color: white;
             border: none;
             padding: 15px 20px;
@@ -969,11 +976,11 @@
         }
 
         .advanced-toggle:hover {
-            background: linear-gradient(135deg, #138496, #117a8b);
+            background: linear-gradient(135deg, #00283C, #00283C);
         }
 
         .advanced-toggle.active {
-            background: linear-gradient(135deg, #138496, #117a8b);
+            background: linear-gradient(135deg, #00283C, #00283C);
             border-bottom-left-radius: 0;
             border-bottom-right-radius: 0;
         }
@@ -999,7 +1006,7 @@
         }
 
         .advanced-section h4 {
-            color: #495057;
+            color: #00283C;
             font-size: 16px;
             margin-bottom: 15px;
             display: flex;
@@ -1029,7 +1036,7 @@
         .score-input-group label {
             font-size: 13px;
             font-weight: 600;
-            color: #495057;
+            color: #00283C;
         }
 
         .score-input-group input {
@@ -1043,7 +1050,7 @@
 
         .score-input-group input:focus {
             outline: none;
-            border-color: #007bff;
+            border-color: #0077CA;
         }
 
         .checkbox-group {
@@ -1061,7 +1068,7 @@
 
         .checkbox-group label {
             font-weight: 600;
-            color: #495057;
+            color: #00283C;
             cursor: pointer;
             font-size: 14px;
         }
@@ -1076,7 +1083,7 @@
         .time-range-group label {
             font-size: 13px;
             font-weight: 500;
-            color: #6c757d;
+            color: #5B6770;
             white-space: nowrap;
         }
 
@@ -1090,7 +1097,7 @@
 
         .time-range-group select:focus {
             outline: none;
-            border-color: #007bff;
+            border-color: #0077CA;
         }
 
         .day-time-config {
@@ -1109,12 +1116,12 @@
 
         .day-config h5 {
             margin: 0 0 10px 0;
-            color: #495057;
+            color: #00283C;
             font-size: 14px;
         }
 
         .reset-defaults-btn {
-            background: #dc3545;
+            background: #5B6770;
             color: white;
             border: none;
             padding: 10px 20px;
@@ -1127,7 +1134,7 @@
         }
 
         .reset-defaults-btn:hover {
-            background: #c82333;
+            background: #46505A;
             transform: translateY(-1px);
         }
 
@@ -1149,12 +1156,12 @@
 
         .buffer-input-group input:focus {
             outline: none;
-            border-color: #007bff;
+            border-color: #0077CA;
         }
 
         .buffer-input-group label {
             font-size: 13px;
-            color: #6c757d;
+            color: #5B6770;
         }
 
         /* Info Box Styles */
@@ -1164,7 +1171,7 @@
             justify-content: center;
             width: 16px;
             height: 16px;
-            background: #007bff;
+            background: #0077CA;
             color: white;
             border-radius: 50%;
             font-size: 10px;
@@ -1180,7 +1187,7 @@
             bottom: 125%;
             left: 50%;
             transform: translateX(-50%);
-            background: #2c3e50;
+            background: #00283C;
             color: white;
             padding: 10px 12px;
             border-radius: 8px;
@@ -1220,7 +1227,7 @@
             top: -5px;
             bottom: auto;
             border-top-color: transparent;
-            border-bottom-color: #2c3e50;
+            border-bottom-color: #00283C;
         }
 
         .info-tooltip::after {
@@ -1230,7 +1237,7 @@
             left: 50%;
             transform: translateX(-50%);
             border: 5px solid transparent;
-            border-top-color: #2c3e50;
+            border-top-color: #00283C;
         }
 
         .info-icon:hover .info-tooltip {
@@ -1250,8 +1257,8 @@
         /* Workshop Result Tooltip Styles */
         .result-item {
             padding: 15px;
-            background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
-            border: 2px solid #e1bee7;
+            background: linear-gradient(135deg, #E6F1FA, #F4F7FA);
+            border: 2px solid #C8DDF0;
             border-radius: 12px;
             transition: transform 0.2s;
             position: relative;
@@ -1263,7 +1270,7 @@
             bottom: 100%;
             left: 50%;
             transform: translateX(-50%);
-            background: #2c3e50;
+            background: #00283C;
             color: white;
             padding: 12px 15px;
             border-radius: 8px;
@@ -1287,7 +1294,7 @@
             left: 50%;
             transform: translateX(-50%);
             border: 5px solid transparent;
-            border-top-color: #2c3e50;
+            border-top-color: #00283C;
         }
 
         .result-item:hover .workshop-tooltip {
@@ -1329,7 +1336,7 @@
         }
 
         .no-conflicts {
-            color: #4CAF50;
+            color: #7FD3FF;
             font-weight: 600;
             text-align: center;
             font-style: italic;
@@ -1343,7 +1350,7 @@
         }
 
         .workshop-results h3 {
-            color: #495057;
+            color: #00283C;
             margin-bottom: 20px;
             font-size: 1.3em;
         }
@@ -1355,8 +1362,8 @@
 
         .result-item {
             padding: 15px;
-            background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
-            border: 2px solid #e1bee7;
+            background: linear-gradient(135deg, #E6F1FA, #F4F7FA);
+            border: 2px solid #C8DDF0;
             border-radius: 12px;
             transition: transform 0.2s;
         }
@@ -1367,19 +1374,19 @@
 
         .result-header {
             font-weight: 600;
-            color: #4a148c;
+            color: #003C71;
             font-size: 16px;
             margin-bottom: 8px;
         }
 
         .result-details {
-            color: #6a1b9a;
+            color: #00283C;
             font-size: 14px;
             line-height: 1.4;
         }
 
         .conflict-score {
-            background: #4a148c;
+            background: #003C71;
             color: white;
             padding: 4px 8px;
             border-radius: 8px;
@@ -1398,13 +1405,13 @@
         }
 
         .scoring-explanation h4 {
-            color: #495057;
+            color: #00283C;
             margin-bottom: 15px;
             font-size: 1.2em;
         }
 
         .scoring-details {
-            color: #6c757d;
+            color: #5B6770;
             line-height: 1.6;
         }
 
@@ -1422,12 +1429,12 @@
         }
 
         .scoring-details strong {
-            color: #495057;
+            color: #00283C;
         }
 
         .scoring-details em {
             font-style: italic;
-            color: #495057;
+            color: #00283C;
         }
 
         .compact-view .class-block.continuation {
@@ -1463,7 +1470,7 @@
         }
         
         .time-block-btn {
-            background: linear-gradient(135deg, #007bff, #0056b3);
+            background: linear-gradient(135deg, #0077CA, #003C71);
             color: white;
             border: none;
             padding: 6px 12px;
@@ -1477,14 +1484,14 @@
         }
         
         .time-block-btn:hover {
-            background: linear-gradient(135deg, #0056b3, #004085);
+            background: linear-gradient(135deg, #003C71, #00283C);
             transform: translateY(-1px);
-            box-shadow: 0 2px 8px rgba(0,123,255,0.3);
+            box-shadow: 0 2px 8px rgba(0,60,113,0.25);
         }
         
         .time-block-status {
             font-size: 11px;
-            color: #6c757d;
+            color: #5B6770;
             text-align: center;
             white-space: nowrap;
         }
@@ -1511,7 +1518,7 @@
         }
 
         .time-header {
-            background: #2c3e50;
+            background: #00283C;
             color: white;
             font-weight: bold;
             text-align: center;
@@ -1522,7 +1529,7 @@
         }
 
         .day-header {
-            background: #34495e;
+            background: #003C71;
             color: white;
             font-weight: bold;
             text-align: center;
@@ -1533,11 +1540,11 @@
         }
 
         .time-slot {
-            background: #ecf0f1;
+            background: #F1F0EE;
             font-weight: 500;
             text-align: center;
             padding: 10px;
-            border-right: 2px solid #bdc3c7;
+            border-right: 2px solid #ACA39A;
             white-space: nowrap;
             width: 100px;
         }
@@ -1580,7 +1587,7 @@
         .class-block.seminar,
         .class-block.practicum {
             background: linear-gradient(135deg, #f1c40f, #f39c12);
-            color: #2c3e50;
+            color: #00283C;
         }
 
         .class-block.continuation {
@@ -1598,7 +1605,7 @@
         .no-data {
             text-align: center;
             padding: 60px;
-            color: #7f8c8d;
+            color: #5B6770;
             font-size: 18px;
         }
 
@@ -1814,7 +1821,7 @@
         }
 
         .help-section h3 {
-            color: #495057;
+            color: #00283C;
             margin-bottom: 15px;
             font-size: 1.2em;
             border-bottom: 2px solid #e9ecef;
@@ -1824,7 +1831,7 @@
         .help-section p {
             margin-bottom: 12px;
             line-height: 1.6;
-            color: #6c757d;
+            color: #5B6770;
         }
 
         .help-section ul {
@@ -1835,7 +1842,7 @@
         .help-section li {
             margin-bottom: 8px;
             line-height: 1.5;
-            color: #495057;
+            color: #00283C;
         }
 
         .help-section code {
@@ -1843,12 +1850,12 @@
             padding: 2px 6px;
             border-radius: 4px;
             font-family: 'Courier New', monospace;
-            color: #e83e8c;
+            color: #003C71;
             font-weight: 600;
         }
 
         .help-section strong {
-            color: #495057;
+            color: #00283C;
             font-weight: 600;
         }
 
@@ -1861,7 +1868,7 @@
         }
 
         .help-modal-close-btn {
-            background: #28a745;
+            background: #003C71;
             color: white;
             border: none;
             padding: 12px 30px;
@@ -1873,7 +1880,7 @@
         }
 
         .help-modal-close-btn:hover {
-            background: #218838;
+            background: #00283C;
             transform: translateY(-1px);
         }
 
@@ -1901,26 +1908,363 @@
                 padding: 15px 20px;
             }
         }
+    
+        /* ==========================================================
+           ONTARIO TECH THEME LAYER
+           Palette and type from the Ontario Tech Brand Guidelines
+           (Quick Reference Guide, April 2026). Primary: Future Blue,
+           Simcoe Blue, Tech Tangerine. Secondary: greys + Spirit Navy.
+           Tech Tangerine is used only for accents/large display text
+           (AODA: never body-size text on white).
+           ========================================================== */
+        :root {
+            --otu-future-blue: #003C71;
+            --otu-simcoe-blue: #0077CA;
+            --otu-tangerine: #E75D2A;
+            --otu-spirit-navy: #00283C;
+            --otu-warm-grey: #ACA39A;
+            --otu-cool-grey: #A7A8AA;
+            --otu-dark-grey: #5B6770;
+            --otu-surface: #F4F6F8;
+            --otu-line: #DCE1E6;
+            --otu-radius: 6px;
+        }
+
+        body {
+            font-family: 'Ubuntu', Arial, sans-serif;
+            background: var(--otu-surface);
+            color: var(--otu-spirit-navy);
+            padding: 24px;
+        }
+
+        button, input, select, textarea { font-family: inherit; }
+
+        .container {
+            border-radius: var(--otu-radius);
+            box-shadow: 0 1px 3px rgba(0,40,60,0.08), 0 8px 24px rgba(0,40,60,0.06);
+            border-top: 6px solid var(--otu-future-blue);
+        }
+
+        /* Header */
+        .header {
+            background: var(--otu-future-blue);
+            text-align: left;
+            padding: 36px 40px 32px;
+            position: relative;
+        }
+        .header .eyebrow {
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #CFE3F5;
+            margin-bottom: 10px;
+        }
+        .header h1 {
+            font-size: 2.4em;
+            font-weight: 700;
+            text-shadow: none;
+            margin-bottom: 8px;
+            letter-spacing: -0.01em;
+        }
+        .header h1::after {
+            content: '';
+            display: block;
+            width: 64px;
+            height: 5px;
+            background: var(--otu-tangerine);
+            margin-top: 14px;
+        }
+        .header p { font-weight: 300; font-size: 1.1em; color: #E6F1FA; }
+
+        .help-btn {
+            background: transparent;
+            border: 2px solid #FFFFFF;
+            border-radius: var(--otu-radius);
+            box-shadow: none;
+            margin-top: 20px;
+        }
+        .help-btn:hover {
+            background: #FFFFFF;
+            color: var(--otu-future-blue);
+            box-shadow: none;
+        }
+
+        /* Controls */
+        .controls { background: #FFFFFF; border-bottom: 1px solid var(--otu-line); }
+
+        .upload-area-wide {
+            border: 2px dashed var(--otu-cool-grey);
+            border-radius: var(--otu-radius);
+            background: var(--otu-surface);
+        }
+        .upload-area-wide:hover,
+        .upload-area-wide.dragover {
+            border-color: var(--otu-simcoe-blue);
+            background: #E6F1FA;
+        }
+        .upload-area-wide.file-loaded {
+            border: 2px solid var(--otu-simcoe-blue);
+            border-left: 6px solid var(--otu-future-blue);
+            background: #E6F1FA;
+        }
+        .upload-area-wide.file-loaded:hover { border-color: var(--otu-future-blue); background: #D9EAF7; }
+        .upload-area-wide.file-loaded .upload-icon-wide,
+        .upload-area-wide.file-loaded .upload-text-wide h3,
+        .upload-area-wide.file-loaded .upload-text-wide p,
+        .upload-area-wide.file-loaded .upload-text-wide p strong { color: var(--otu-future-blue); }
+        .upload-area-wide.file-loaded .upload-text-wide p strong { background: #FFFFFF; border-radius: 4px; }
+        .upload-icon-wide { opacity: 1; color: var(--otu-simcoe-blue); display: flex; }
+        .upload-icon-wide svg { width: 36px; height: 36px; }
+        .upload-text-wide h3 { font-weight: 500; }
+        .clear-file { color: var(--otu-dark-grey); }
+        .clear-file:hover { color: var(--otu-spirit-navy); }
+
+        .course-filter input,
+        .workshop-input-group input,
+        .workshop-input-group select,
+        .score-input-group input,
+        .buffer-input-group input,
+        .time-range-group select,
+        #facultySelect, #programSelect, #yearSelect, #lunchPenalty {
+            border: 1px solid var(--otu-cool-grey) !important;
+            border-radius: var(--otu-radius) !important;
+            background: #FFFFFF;
+            color: var(--otu-spirit-navy);
+        }
+        .course-filter input:focus,
+        .workshop-input-group input:focus,
+        .workshop-input-group select:focus,
+        .score-input-group input:focus,
+        .buffer-input-group input:focus,
+        .time-range-group select:focus {
+            outline: 2px solid var(--otu-simcoe-blue);
+            outline-offset: 1px;
+            border-color: var(--otu-simcoe-blue) !important;
+        }
+
+        .course-suggestions, .dropdown-menu, .priority-dropdown-menu {
+            border: 1px solid var(--otu-line);
+            border-radius: var(--otu-radius);
+            box-shadow: 0 8px 24px rgba(0,40,60,0.12);
+        }
+        .course-suggestions-header { border-radius: var(--otu-radius) var(--otu-radius) 0 0; background: var(--otu-surface); }
+        .course-suggestion-item:first-child,
+        .course-suggestion-item:last-child,
+        .dropdown-item:last-child { border-radius: 0; }
+        .course-suggestion-item:hover, .dropdown-item:hover, .priority-course-item:hover { background: #E6F1FA; }
+        .course-suggestion-code { color: var(--otu-future-blue); }
+
+        .course-bubble {
+            background: var(--otu-future-blue);
+            border-radius: var(--otu-radius);
+            border-left: 4px solid var(--otu-tangerine);
+        }
+        .course-bubble:hover { box-shadow: 0 4px 12px rgba(0,40,60,0.2); }
+
+        /* Buttons */
+        .dropdown-toggle,
+        .priority-dropdown-toggle,
+        .find-workshops-btn,
+        .export-pdf-btn,
+        .time-block-btn,
+        .help-modal-close-btn,
+        .reset-defaults-btn,
+        .clear-all-btn,
+        .clear-priority-btn {
+            border-radius: var(--otu-radius);
+            box-shadow: none;
+            font-weight: 500;
+        }
+        .dropdown-toggle, .priority-dropdown-toggle,
+        .find-workshops-btn, .export-pdf-btn, .time-block-btn, .help-modal-close-btn {
+            background: var(--otu-future-blue);
+            color: #FFFFFF;
+        }
+        .dropdown-toggle:hover, .priority-dropdown-toggle:hover,
+        .find-workshops-btn:hover, .export-pdf-btn:hover, .time-block-btn:hover, .help-modal-close-btn:hover {
+            background: var(--otu-simcoe-blue);
+            box-shadow: none;
+        }
+        .find-workshops-btn { border-bottom: 3px solid var(--otu-tangerine); }
+        .export-pdf-btn:disabled { background: var(--otu-cool-grey); }
+        .reset-defaults-btn, .clear-all-btn, .clear-priority-btn {
+            background: #FFFFFF;
+            color: var(--otu-dark-grey);
+            border: 1px solid var(--otu-dark-grey);
+        }
+        .reset-defaults-btn:hover, .clear-all-btn:hover, .clear-priority-btn:hover {
+            background: var(--otu-dark-grey);
+            color: #FFFFFF;
+        }
+        button:focus-visible { outline: 3px solid var(--otu-tangerine); outline-offset: 2px; }
+
+        input:checked + .slider { background-color: var(--otu-simcoe-blue); }
+        .slider { background-color: var(--otu-cool-grey); }
+        .toggle-label { color: var(--otu-spirit-navy); }
+
+        .checkmark, .priority-course-checkbox + .checkmark { border-color: var(--otu-cool-grey); }
+        .preset-checkbox:checked + .checkmark,
+        .priority-course-checkbox:checked + .checkmark {
+            background: var(--otu-future-blue);
+            border-color: var(--otu-future-blue);
+        }
+
+        /* Legend */
+        .legend-item { border: 1px solid var(--otu-line); border-radius: var(--otu-radius); }
+        .color-dot { border-radius: 3px; }
+        .time-block-status { color: var(--otu-dark-grey); }
+
+        /* Timetable */
+        .timetable {
+            border-radius: var(--otu-radius);
+            box-shadow: 0 1px 3px rgba(0,40,60,0.1);
+            border: 1px solid var(--otu-line);
+        }
+        .time-header { background: var(--otu-spirit-navy); }
+        .day-header { background: var(--otu-future-blue); border-bottom: 4px solid var(--otu-tangerine); }
+        .time-slot { background: #F1F0EE; color: var(--otu-spirit-navy); border-right: 2px solid var(--otu-warm-grey); }
+        .schedule-cell { border: 1px solid #E9ECEF; }
+
+        .class-block { border-radius: 4px; box-shadow: none; }
+        .class-block.lecture {
+            background: var(--otu-future-blue);
+            color: #FFFFFF;
+        }
+        .class-block.tutorial,
+        .class-block.lab,
+        .class-block.seminar,
+        .class-block.practicum {
+            background: var(--otu-warm-grey);
+            color: #000000;
+        }
+        .class-block.continuation { opacity: 0.75; border-top: 2px dashed rgba(255,255,255,0.6); }
+        .class-block.tutorial.continuation,
+        .class-block.lab.continuation,
+        .class-block.seminar.continuation,
+        .class-block.practicum.continuation { border-top-color: rgba(0,0,0,0.35); }
+        .compact-view .class-block { border-radius: 2px; }
+
+        .no-data { color: var(--otu-dark-grey); }
+        .no-data h3 { color: var(--otu-future-blue); font-weight: 700; margin-bottom: 8px; }
+
+        .status { border-radius: var(--otu-radius); }
+        .status.success { background: #E6F1FA; color: var(--otu-future-blue); border: 1px solid #C8DDF0; border-left: 5px solid var(--otu-simcoe-blue); }
+        .status.error { background: #FFF1EC; color: #7A2A0C; border: 1px solid #F6C8B6; border-left: 5px solid var(--otu-tangerine); }
+        .csv-preview { border-radius: var(--otu-radius); background: var(--otu-surface); }
+
+        /* Workshop scheduler */
+        .workshop-scheduler {
+            background: var(--otu-surface);
+            border: none;
+            border-top: 1px solid var(--otu-line);
+            border-radius: 0;
+            margin-top: 0;
+            padding: 40px 30px;
+        }
+        .workshop-header h2 { color: var(--otu-future-blue); font-weight: 700; }
+        .workshop-header h2::after {
+            content: '';
+            display: block;
+            width: 48px;
+            height: 4px;
+            background: var(--otu-tangerine);
+            margin: 12px auto 0;
+        }
+        .workshop-header p { color: var(--otu-dark-grey); }
+        .workshop-controls, .workshop-results {
+            border-radius: var(--otu-radius);
+            box-shadow: 0 1px 3px rgba(0,40,60,0.08);
+            border: 1px solid var(--otu-line);
+        }
+        .workshop-results h3 { color: var(--otu-future-blue); }
+        .advanced-settings { border: 1px solid var(--otu-line); border-radius: var(--otu-radius); }
+        .advanced-toggle { background: var(--otu-future-blue); border-radius: var(--otu-radius); }
+        .advanced-toggle:hover, .advanced-toggle.active { background: var(--otu-spirit-navy); }
+        .advanced-toggle.active { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+        .advanced-content { border-radius: 0 0 var(--otu-radius) var(--otu-radius); }
+        .advanced-section { background: var(--otu-surface); border: 1px solid var(--otu-line); border-radius: var(--otu-radius); }
+        .advanced-section h4 { color: var(--otu-future-blue); font-weight: 500; }
+        .day-config { border-radius: var(--otu-radius); border-color: var(--otu-line); }
+        .info-icon { background: var(--otu-simcoe-blue); }
+        .info-tooltip, .workshop-tooltip { background: var(--otu-spirit-navy); border-radius: var(--otu-radius); }
+
+        .result-item {
+            background: #FFFFFF;
+            border: 1px solid var(--otu-line);
+            border-left: 5px solid var(--otu-simcoe-blue);
+            border-radius: var(--otu-radius);
+        }
+        .results-content .result-item:first-child { border-left-color: var(--otu-tangerine); }
+        .result-header { color: var(--otu-future-blue); font-weight: 500; }
+        .result-details { color: var(--otu-dark-grey); }
+        .result-header .conflict-score { background: var(--otu-future-blue); border-radius: 4px; }
+        .workshop-tooltip .conflict-score { background: rgba(255,255,255,0.2); }
+
+        .scoring-explanation { background: #FFFFFF; border: 1px solid var(--otu-line); border-radius: var(--otu-radius); }
+        .scoring-explanation h4 { color: var(--otu-future-blue); }
+        .score-badge {
+            display: inline-block;
+            min-width: 34px;
+            text-align: center;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .score-badge.np-other { background: #E6F1FA; color: var(--otu-future-blue); border: 1px solid #C8DDF0; }
+        .score-badge.np-lecture { background: var(--otu-simcoe-blue); color: #FFFFFF; }
+        .score-badge.p-other { background: var(--otu-warm-grey); color: #000000; }
+        .score-badge.p-lecture { background: var(--otu-future-blue); color: #FFFFFF; }
+
+        /* Help modal */
+        .help-modal { background-color: rgba(0,40,60,0.55); }
+        .help-modal-content { border-radius: var(--otu-radius); border-top: 6px solid var(--otu-tangerine); }
+        .help-modal-header { background: var(--otu-future-blue); border-radius: 0; }
+        .help-modal-header h2 { font-weight: 500; }
+        .help-section h3 { color: var(--otu-future-blue); font-weight: 500; border-bottom: 2px solid var(--otu-line); }
+        .help-section p { color: var(--otu-dark-grey); }
+        .help-section li { color: var(--otu-spirit-navy); }
+        .help-section code { background: #E6F1FA; color: var(--otu-future-blue); }
+        .help-modal-footer { background: var(--otu-surface); border-radius: 0 0 var(--otu-radius) var(--otu-radius); }
+
+        .site-footer {
+            padding: 18px 30px;
+            border-top: 1px solid var(--otu-line);
+            font-size: 13px;
+            color: var(--otu-dark-grey);
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 12px; }
+            .header { padding: 28px 20px 24px; }
+            .header h1 { font-size: 1.8em; }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>📚 Course Timetable Generator</h1>
+            <div class="eyebrow">Ontario Tech University</div>
+            <h1>Course Timetable Generator</h1>
             <p>Upload your CSV course data and create a visual timetable</p>
-            <button type="button" class="help-btn" id="helpBtn">❓ How to Use</button>
+            <button type="button" class="help-btn" id="helpBtn">How to Use</button>
         </div>
 
         <!-- Help Modal -->
         <div id="helpModal" class="help-modal">
             <div class="help-modal-content">
                 <div class="help-modal-header">
-                    <h2>📖 How to Use the Course Timetable Generator</h2>
+                    <h2>How to Use the Course Timetable Generator</h2>
                     <button type="button" class="help-modal-close" id="helpModalClose">&times;</button>
                 </div>
                 <div class="help-modal-body">
                     <div class="help-section">
-                        <h3>📥 Step 1: Prepare Your Data</h3>
+                        <h3>Step 1: Prepare Your Data</h3>
                         <ul>
                             <li>On receipt of the Scheduling Summary Report, download the Excel (XLSX) file</li>
                             <li>Press <strong>File > Save As</strong></li>
@@ -1929,7 +2273,7 @@
                     </div>
                     
                     <div class="help-section">
-                        <h3>🎯 Step 2: Select Your Courses</h3>
+                        <h3>Step 2: Select Your Courses</h3>
                         <p>You can select courses in two ways:</p>
                         <ul>
                             <li><strong>Course Presets:</strong> Use the dropdown to select course groups (e.g., First Year Engineering, Computer Science, etc.)</li>
@@ -1939,7 +2283,7 @@
                     </div>
                     
                     <div class="help-section">
-                        <h3>📁 Step 3: Upload Your CSV File</h3>
+                        <h3>Step 3: Upload Your CSV File</h3>
                         <ul>
                             <li>Click the <strong>"Upload CSV File"</strong> button or drag and drop your CSV file</li>
                             <li>The system will process your file and display the course data</li>
@@ -1947,7 +2291,7 @@
                     </div>
                     
                     <div class="help-section">
-                        <h3>📅 Step 4: View Your Timetable</h3>
+                        <h3>Step 4: View Your Timetable</h3>
                         <ul>
                             <li>You'll see a calendar view showing all instances of your selected courses (lectures, tutorials, labs, etc.)</li>
                             <li>Toggle between <strong>"Compact View"</strong> and regular view using the switch</li>
@@ -1956,7 +2300,7 @@
                     </div>
                     
                     <div class="help-section">
-                        <h3>⚙️ Step 5: Workshop Scheduler (Optional)</h3>
+                        <h3>Step 5: Workshop Scheduler (Optional)</h3>
                         <p>Scroll down past the calendar to find the <strong>"Workshop Scheduler"</strong> feature:</p>
                         <ul>
                             <li><strong>Priority Courses:</strong> Select courses that should be weighted more heavily in the algorithm (these will be more strongly avoided)</li>
@@ -1968,7 +2312,7 @@
                     </div>
                     
                     <div class="help-section">
-                        <h3>💡 Tips</h3>
+                        <h3>Tips</h3>
                         <ul>
                             <li>You can select multiple course presets - they will be combined automatically</li>
                             <li>Use the course search to find specific courses by code or CRN</li>
@@ -1988,7 +2332,7 @@
             <div class="upload-section-wide">
                 <div class="upload-area-wide" id="uploadArea">
                     <div class="upload-content-wide">
-                        <div class="upload-icon-wide">📁</div>
+                        <div class="upload-icon-wide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/><path d="M12 4v11"/><path d="M7 9l5-5 5 5"/></svg></div>
                         <div class="upload-text-wide">
                             <h3>Upload CSV File</h3>
                             <p>Drag and drop your CSV file here, or <span class="click-upload">click to browse</span></p>
@@ -2009,7 +2353,7 @@
                 <div class="preset-dropdown">
                     <div class="dropdown-container">
                         <button type="button" class="dropdown-toggle" id="presetToggle">
-                            📚 Course Presets <span class="dropdown-arrow">▼</span>
+                            Course Presets <span class="dropdown-arrow">▼</span>
                         </button>
                         <div class="dropdown-menu" id="presetMenu">
                             <div class="dropdown-header">
@@ -2045,24 +2389,24 @@
                     </label>
                 </div>
                 <div class="export-controls" style="display: none;">
-                    <button type="button" class="export-pdf-btn" id="exportPdf">📄 Export as PDF</button>
+                    <button type="button" class="export-pdf-btn" id="exportPdf">Export as PDF</button>
                 </div>
             </div>
 
             <div class="selected-courses" id="selectedCourses">
                 <!-- Selected course bubbles will appear here -->
-                <div id="noCoursesMessage" style="display: none; color: #6c757d; font-style: italic; text-align: center; width: 100%;">
+                <div id="noCoursesMessage" style="display: none; color: #5B6770; font-style: italic; text-align: center; width: 100%;">
                     No courses selected. Search for courses above or use the presets to get started.
                 </div>
             </div>
 
             <div class="legend">
                 <div class="legend-item">
-                    <div class="color-dot" style="background: linear-gradient(135deg, #e74c3c, #c0392b);"></div>
+                    <div class="color-dot" style="background: #003C71;"></div>
                     <span>Lectures</span>
                 </div>
                 <div class="legend-item">
-                    <div class="color-dot" style="background: linear-gradient(135deg, #f1c40f, #f39c12);"></div>
+                    <div class="color-dot" style="background: #ACA39A;"></div>
                     <span>All Others (Tutorials, Labs, Seminars, etc.)</span>
                 </div>
                 <div class="legend-item">
@@ -2082,7 +2426,7 @@
         
         <div class="timetable-container">
             <div class="no-data" id="noData">
-                <h3>🎯 Ready to Create Your Timetable!</h3>
+                <h3>Ready to create your timetable</h3>
                 <p>Upload a CSV file with your course data to get started.</p>
                 <br>
                 <p><strong>Expected CSV format (your scheduling system):</strong></p>
@@ -2093,7 +2437,7 @@
 
         <div class="workshop-scheduler" id="workshopScheduler" style="display: none;">
             <div class="workshop-header">
-                <h2>🛠️ Workshop Scheduler</h2>
+                <h2>Workshop Scheduler</h2>
                 <p>Find optimal times to schedule workshops with minimal course conflicts</p>
             </div>
             
@@ -2107,7 +2451,7 @@
                         </label>
                         <div class="priority-dropdown-container">
                             <button type="button" class="priority-dropdown-toggle" id="priorityToggle">
-                                📍 Select Priority Courses <span class="dropdown-arrow">▼</span>
+                                Select Priority Courses <span class="dropdown-arrow">▼</span>
                             </button>
                             <div class="priority-dropdown-menu" id="priorityMenu">
                                 <div class="priority-dropdown-header">
@@ -2195,20 +2539,20 @@
                     </div>
                     
                     <div class="workshop-input-group">
-                        <button type="button" class="find-workshops-btn" id="findWorkshops">🔍 Find Best Workshop Times</button>
+                        <button type="button" class="find-workshops-btn" id="findWorkshops">Find Best Workshop Times</button>
                     </div>
                 </div>
                 
                 <div class="advanced-settings">
                     <button type="button" class="advanced-toggle" id="advancedToggle">
-                        ⚙️ Advanced Settings <span class="dropdown-arrow">▼</span>
+                        Advanced Settings <span class="dropdown-arrow">▼</span>
                     </button>
                     <div class="advanced-content" id="advancedContent">
 
 
                         <!-- Conflict Score Settings -->
                         <div class="advanced-section">
-                            <h4>📊 Conflict Score Values
+                            <h4>Conflict Score Values
                                 <span class="info-icon">i
                                     <div class="info-tooltip">Lower scores are better. These values are added together for each conflicting course during your workshop time. Customize these to reflect the importance of avoiding different types of conflicts.</div>
                                 </span>
@@ -2235,7 +2579,7 @@
 
                         <!-- Lunch Avoidance -->
                         <div class="advanced-section">
-                            <h4>🍽️ Lunch Time Avoidance
+                            <h4>Lunch Time Avoidance
                                 <span class="info-icon">i
                                     <div class="info-tooltip">Adds penalty points for workshop times that overlap with typical lunch hours. Even online students often prefer to maintain regular meal schedules.</div>
                                 </span>
@@ -2274,7 +2618,7 @@
 
                         <!-- Per-Day Time Settings -->
                         <div class="advanced-section">
-                            <h4>📅 Day-Specific Time Ranges
+                            <h4>Day-Specific Time Ranges
                                 <span class="info-icon">i
                                     <div class="info-tooltip">Set different available time windows for each day of the week. Useful if certain days have different course loads or student availability patterns.</div>
                                 </span>
@@ -2333,12 +2677,12 @@
 
                         <!-- Extended Conflict Buffer -->
                         <div class="advanced-section">
-                            <h4>🛡️ Conflict Buffers
+                            <h4>Conflict Buffers
                                 <span class="info-icon">i
                                     <div class="info-tooltip">Adds time buffers before and after existing courses to prevent back-to-back scheduling. Helps students transition between activities and reduces stress from tight schedules.</div>
                                 </span>
                             </h4>
-                            <p style="color: #6c757d; font-size: 13px; margin-bottom: 15px;">Add buffer time before/after existing classes to avoid back-to-back scheduling conflicts.</p>
+                            <p style="color: #5B6770; font-size: 13px; margin-bottom: 15px;">Add buffer time before/after existing classes to avoid back-to-back scheduling conflicts.</p>
                             <div class="checkbox-group">
                                 <input type="checkbox" id="enableBuffer">
                                 <label for="enableBuffer">Enable conflict buffers</label>
@@ -2369,12 +2713,12 @@
 
                         <!-- Enrollment-Based Weighting -->
                         <div class="advanced-section">
-                            <h4>👥 Enrollment-Based Scoring
+                            <h4>Enrollment-Based Scoring
                                 <span class="info-icon">i
                                     <div class="info-tooltip">Multiplies conflict scores by actual enrollment numbers from your CSV data. Higher enrollment courses get higher penalties, helping minimize impact on the most students.</div>
                                 </span>
                             </h4>
-                            <p style="color: #6c757d; font-size: 13px; margin-bottom: 15px;">Weight conflicts based on actual student enrollment from CSV data to minimize impact on the most students.</p>
+                            <p style="color: #5B6770; font-size: 13px; margin-bottom: 15px;">Weight conflicts based on actual student enrollment from CSV data to minimize impact on the most students.</p>
                             <div class="checkbox-group">
                                 <input type="checkbox" id="enableEnrollmentWeighting">
                                 <label for="enableEnrollmentWeighting">Apply enrollment-based weighting</label>
@@ -2401,7 +2745,7 @@
 
                         <!-- Results Display Settings -->
                         <div class="advanced-section">
-                            <h4>📈 Results Display</h4>
+                            <h4>Results Display</h4>
                             <div class="score-input-group">
                                 <label>Number of recommended time slots:</label>
                                 <input type="number" id="numRecommendations" min="1" max="50" value="10" />
@@ -2409,16 +2753,16 @@
                         </div>
 
                         <button type="button" class="reset-defaults-btn" id="resetDefaults">
-                            🔄 Reset to Default Settings
+                            Reset to Default Settings
                         </button>
                     </div>
                 </div>
             </div>
             
             <div class="workshop-results" id="workshopResults" style="display: none;">
-                <h3>📊 Recommended Workshop Times</h3>
+                <h3>Recommended Workshop Times</h3>
                 <div style="margin: 10px 0 15px 0;">
-                    <button type="button" class="find-workshops-btn" id="downloadCsvRecommendations" style="display: none;">⬇️ Download Recommended Times (CSV)</button>
+                    <button type="button" class="find-workshops-btn" id="downloadCsvRecommendations" style="display: none;">Download Recommended Times (CSV)</button>
                 </div>
                 <div class="results-content" id="resultsContent">
                     <!-- Results will be populated here -->
@@ -2426,20 +2770,24 @@
             </div>
             
             <div class="scoring-explanation" id="scoringExplanation" style="display: none;">
-                <h4>🧮 How Conflict Scores Are Calculated</h4>
+                <h4>How Conflict Scores Are Calculated</h4>
                 <div class="scoring-details">
                     <p><strong>Lower scores = better workshop times!</strong> Each course running during a potential workshop time adds points:</p>
                     <ul>
-                        <li><span style="background: #28a745; color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px;">+1</span> <strong>Non-priority Tutorial/Lab/Other</strong></li>
-                        <li><span style="background: #ffc107; color: #212529; padding: 2px 6px; border-radius: 4px; font-size: 11px;">+5</span> <strong>Non-priority Lecture</strong></li>
-                        <li><span style="background: #fd7e14; color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px;">+3</span> <strong>Priority Tutorial/Lab/Other</strong></li>
-                        <li><span style="background: #dc3545; color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px;">+20</span> <strong>Priority Lecture</strong></li>
+                        <li><span class="score-badge np-other">+1</span> <strong>Non-priority Tutorial/Lab/Other</strong></li>
+                        <li><span class="score-badge np-lecture">+5</span> <strong>Non-priority Lecture</strong></li>
+                        <li><span class="score-badge p-other">+3</span> <strong>Priority Tutorial/Lab/Other</strong></li>
+                        <li><span class="score-badge p-lecture">+20</span> <strong>Priority Lecture</strong></li>
                     </ul>
                     <p><em><strong>Priority courses</strong> are those you've specifically selected above. The algorithm finds workshop times that minimize total conflict points across your entire workshop duration.</em></p>
                     <p><em><strong>Example:</strong> A time slot with 2 non-priority tutorials (2 points) + 1 priority lecture (20 points) = 22 total points.</em></p>
                 </div>
             </div>
         </div>
+        <footer class="site-footer">
+            <span>Ontario Tech University</span>
+            <span>All processing happens in your browser; no course data is uploaded.</span>
+        </footer>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js?v=2"></script>
@@ -2509,7 +2857,7 @@
             if (fileName) {
                 uploadArea.classList.add('file-loaded');
                 uploadContent.innerHTML = `
-                    <div class="upload-icon-wide">📄</div>
+                    <div class="upload-icon-wide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5"/><path d="M9 14l2 2 4-4"/></svg></div>
                     <div class="upload-text-wide">
                         <h3>CSV File Loaded</h3>
                         <p><strong>${fileName}</strong></p>
@@ -2528,7 +2876,7 @@
             } else {
                 uploadArea.classList.remove('file-loaded');
                 uploadContent.innerHTML = `
-                    <div class="upload-icon-wide">📁</div>
+                    <div class="upload-icon-wide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/><path d="M12 4v11"/><path d="M7 9l5-5 5 5"/></svg></div>
                     <div class="upload-text-wide">
                         <h3>Upload CSV File</h3>
                         <p>Drag and drop your CSV file here, or <span class="click-upload">click to browse</span></p>
@@ -2551,7 +2899,7 @@
             if (container) {
                 container.innerHTML = `
                     <div class="no-data" id="noData">
-                        <h3>🎯 Ready to Create Your Timetable!</h3>
+                        <h3>Ready to create your timetable</h3>
                         <p>Upload a CSV file with your course data to get started.</p>
                         <br>
                         <p><strong>Expected CSV format (your scheduling system):</strong></p>
@@ -3110,8 +3458,8 @@
             const suggestionsDiv = document.getElementById('courseSuggestions');
             if (!suggestionsDiv) return;
             
-            if (suggestions === null) {
-                // Show all courses when focusing on empty input
+            if (!Array.isArray(suggestions)) {
+                // Show all courses when focusing on empty input (also handles the focus event object)
                 suggestions = allCourses.slice(0, 20).map(course => ({
                     code: course,
                     title: getCourseTitle(course),
@@ -3735,7 +4083,7 @@
             priorityList.innerHTML = '';
             
             if (actualFilteredCourses.length === 0) {
-                priorityList.innerHTML = '<div style="padding: 15px; color: #6c757d; text-align: center;">No courses available</div>';
+                priorityList.innerHTML = '<div style="padding: 15px; color: #5B6770; text-align: center;">No courses available</div>';
                 return;
             }
 
@@ -4095,7 +4443,7 @@
             const explanationDiv = document.getElementById('scoringExplanation');
 
             if (opportunities.length === 0) {
-                contentDiv.innerHTML = '<div style="text-align: center; color: #6c757d; padding: 20px;">No suitable time slots found. Try adjusting your parameters.</div>';
+                contentDiv.innerHTML = '<div style="text-align: center; color: #5B6770; padding: 20px;">No suitable time slots found. Try adjusting your parameters.</div>';
                 resultsDiv.style.display = 'block';
                 explanationDiv.style.display = 'block';
                 return;
@@ -4584,7 +4932,7 @@
 
             // Disable button and show loading state
             exportBtn.disabled = true;
-            exportBtn.innerHTML = '⏳ Generating PDF...';
+            exportBtn.innerHTML = 'Generating PDF…';
             console.log('📝 Button disabled, generating PDF...');
 
             // Create a simpler container for PDF export
@@ -4596,8 +4944,8 @@
                 width: 297mm;
                 background: white;
                 padding: 10mm;
-                font-family: Arial, sans-serif;
-                color: black;
+                font-family: 'Ubuntu', Arial, sans-serif;
+                color: #00283C;
                 z-index: 9999;
                 overflow: visible;
             `;
@@ -4611,8 +4959,8 @@
             
             // Build the PDF content as HTML string for better control
             let pdfHTML = `
-                <div style="text-align: center; margin-bottom: 15px; border-bottom: 2px solid black; padding-bottom: 8px;">
-                    <h1 style="margin: 0; color: black; font-size: 24px; font-weight: bold;">Course Timetable</h1>
+                <div style="text-align: center; margin-bottom: 15px; border-bottom: 3px solid #E75D2A; padding-bottom: 8px;">
+                    <div style="font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #003C71; font-weight: bold;">Ontario Tech University</div><h1 style="margin: 4px 0 0 0; color: #003C71; font-size: 24px; font-weight: bold;">Course Timetable</h1>
                     <p style="margin: 8px 0 4px 0; color: #333; font-size: 14px;">Generated on ${currentDate}</p>
                     <p style="margin: 0; color: #333; font-size: 12px;">Courses: ${courseText} | View: ${isCompact ? 'Compact' : 'Standard'}</p>
                 </div>
@@ -4626,12 +4974,12 @@
                 <table style="width: 100%; border-collapse: collapse; font-size: ${fontSize}; margin: 0; page-break-inside: auto;">
                     <thead>
                         <tr>
-                            <th style="border: 1px solid black; padding: ${cellPadding}; background: black; color: white; font-weight: bold; text-align: center; font-size: ${fontSize};">Time</th>
-                            <th style="border: 1px solid black; padding: ${cellPadding}; background: black; color: white; font-weight: bold; text-align: center; font-size: ${fontSize};">Monday</th>
-                            <th style="border: 1px solid black; padding: ${cellPadding}; background: black; color: white; font-weight: bold; text-align: center; font-size: ${fontSize};">Tuesday</th>
-                            <th style="border: 1px solid black; padding: ${cellPadding}; background: black; color: white; font-weight: bold; text-align: center; font-size: ${fontSize};">Wednesday</th>
-                            <th style="border: 1px solid black; padding: ${cellPadding}; background: black; color: white; font-weight: bold; text-align: center; font-size: ${fontSize};">Thursday</th>
-                            <th style="border: 1px solid black; padding: ${cellPadding}; background: black; color: white; font-weight: bold; text-align: center; font-size: ${fontSize};">Friday</th>
+                            <th style="border: 1px solid black; padding: ${cellPadding}; background: #003C71; color: white; font-weight: bold; text-align: center; font-size: ${fontSize};">Time</th>
+                            <th style="border: 1px solid black; padding: ${cellPadding}; background: #003C71; color: white; font-weight: bold; text-align: center; font-size: ${fontSize};">Monday</th>
+                            <th style="border: 1px solid black; padding: ${cellPadding}; background: #003C71; color: white; font-weight: bold; text-align: center; font-size: ${fontSize};">Tuesday</th>
+                            <th style="border: 1px solid black; padding: ${cellPadding}; background: #003C71; color: white; font-weight: bold; text-align: center; font-size: ${fontSize};">Wednesday</th>
+                            <th style="border: 1px solid black; padding: ${cellPadding}; background: #003C71; color: white; font-weight: bold; text-align: center; font-size: ${fontSize};">Thursday</th>
+                            <th style="border: 1px solid black; padding: ${cellPadding}; background: #003C71; color: white; font-weight: bold; text-align: center; font-size: ${fontSize};">Friday</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -4725,19 +5073,19 @@
                         
                         if (lectureCount > 0) {
                             const displayText = lectureCount > 1 ? `(${lectureCount})` : '';
-                            pdfHTML += `<div style="background: #e74c3c; color: white; margin: 1px; padding: 1px 2px; border-radius: 2px; font-size: ${isCompact ? '7px' : '9px'}; font-weight: bold; line-height: 1.1;">${displayText}</div>`;
+                            pdfHTML += `<div style="background: #003C71; color: white; margin: 1px; padding: 1px 2px; border-radius: 2px; font-size: ${isCompact ? '7px' : '9px'}; font-weight: bold; line-height: 1.1;">${displayText}</div>`;
                         }
                         
                         if (nonLectureCount > 0) {
                             const displayText = nonLectureCount > 1 ? `(${nonLectureCount})` : '';
-                            pdfHTML += `<div style="background: #f1c40f; color: #2c3e50; margin: 1px; padding: 1px 2px; border-radius: 2px; font-size: ${isCompact ? '7px' : '9px'}; font-weight: bold; line-height: 1.1;">${displayText}</div>`;
+                            pdfHTML += `<div style="background: #ACA39A; color: #000000; margin: 1px; padding: 1px 2px; border-radius: 2px; font-size: ${isCompact ? '7px' : '9px'}; font-weight: bold; line-height: 1.1;">${displayText}</div>`;
                         }
                     } else {
                         // Normal mode - show individual courses
                         classes.forEach(cls => {
                             if (cls.isFirstSlot) {
-                                const bgColor = cls.type === 'lecture' ? '#e74c3c' : '#f1c40f';
-                                const textColor = cls.type === 'lecture' ? 'white' : '#2c3e50';
+                                const bgColor = cls.type === 'lecture' ? '#003C71' : '#ACA39A';
+                                const textColor = cls.type === 'lecture' ? 'white' : '#000000';
                                 pdfHTML += `<div style="background: ${bgColor}; color: ${textColor}; margin: 1px; padding: 1px 2px; border-radius: 2px; font-size: ${isCompact ? '7px' : '9px'}; font-weight: bold; line-height: 1.1;">`;
                                 pdfHTML += `${cls.course}<br><span style="font-size: ${isCompact ? '6px' : '7px'};">${cls.type.toUpperCase()}</span>`;
                                 if (cls.location && !isCompact) {
@@ -4761,11 +5109,11 @@
                     <h3 style="margin: 0 0 6px 0; font-size: 14px;">Legend:</h3>
                     <div style="display: flex; gap: 15px; font-size: 12px; flex-wrap: wrap;">
                         <div style="display: flex; align-items: center; gap: 4px;">
-                            <div style="width: 12px; height: 12px; background: #e74c3c; border-radius: 2px; display: inline-block;"></div>
+                            <div style="width: 12px; height: 12px; background: #003C71; border-radius: 2px; display: inline-block;"></div>
                             <span>Lectures</span>
                         </div>
                         <div style="display: flex; align-items: center; gap: 4px;">
-                            <div style="width: 12px; height: 12px; background: #f1c40f; border-radius: 2px; display: inline-block;"></div>
+                            <div style="width: 12px; height: 12px; background: #ACA39A; border-radius: 2px; display: inline-block;"></div>
                             <span>All Others (Tutorials, Labs, Seminars, etc.)</span>
                         </div>
                     </div>
@@ -4852,7 +5200,7 @@
                     
                     // Reset button
                     exportBtn.disabled = false;
-                    exportBtn.innerHTML = '📄 Export as PDF';
+                    exportBtn.innerHTML = 'Export as PDF';
                     
                     // Clean up export container
                     if (document.body.contains(exportContainer)) {
@@ -4872,7 +5220,7 @@
                     });
                     
                     exportBtn.disabled = false;
-                    exportBtn.innerHTML = '📄 Export as PDF';
+                    exportBtn.innerHTML = 'Export as PDF';
                     
                     if (document.body.contains(exportContainer)) {
                         document.body.removeChild(exportContainer);
@@ -5361,7 +5709,7 @@
 
             if (data.length === 0) {
                 console.log('No data to render');
-                container.innerHTML = '<div class="no-data"><h3>📋 No courses match your filter</h3><p>Try adjusting your course filter or upload a different CSV file.</p></div>';
+                container.innerHTML = '<div class="no-data"><h3>No courses match your filter</h3><p>Try adjusting your course filter or upload a different CSV file.</p></div>';
                 return;
             }
 
@@ -5562,4 +5910,3 @@
     </script>
 </body>
 </html>
-
