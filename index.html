@@ -13,2324 +13,579 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-
-
-
-        /* Responsive design for upload area */
-        @media (max-width: 768px) {
-            .upload-area-wide {
-                min-height: 70px;
-                padding: 15px 20px;
-            }
-
-            .upload-icon-wide {
-                font-size: 28px;
-            }
-
-            .upload-text-wide h3 {
-                font-size: 16px;
-            }
-
-            .upload-text-wide p {
-                font-size: 12px;
-            }
-
-            .course-selection-section {
-                gap: 15px;
-            }
-        }
-
-        .header {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .help-btn {
-            background: #003C71;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            margin-top: 15px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
-
-        .help-btn:hover {
-            background: #00283C;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
-
-        .controls {
-            padding: 30px;
-            background: #f8f9fa;
-            border-bottom: 1px solid #e9ecef;
-        }
-
-        .upload-section-wide {
-            margin-bottom: 30px;
-        }
-
-        .course-selection-section {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
-        }
-
-        .upload-area-wide {
-            position: relative;
-            border: 3px dashed #dee2e6;
-            border-radius: 15px;
-            padding: 20px 40px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: #f8f9fa;
-            width: 100%;
-            min-height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .upload-area-wide:hover {
-            border-color: #0077CA;
-            background: #E6F1FA;
-            transform: translateY(-2px);
-        }
-
-        .upload-area-wide.dragover {
-            border-color: #0077CA;
-            background: #E6F1FA;
-            transform: scale(1.02);
-        }
-
-        /* File loaded state */
-        .upload-area-wide.file-loaded {
-            border-color: #003C71;
-            background: #d4edda;
-            border-style: solid;
-        }
-
-        .upload-area-wide.file-loaded:hover {
-            border-color: #00283C;
-            background: #c3e6cb;
-        }
-
-        .upload-area-wide.file-loaded .upload-icon-wide {
-            color: #155724;
-        }
-
-        .upload-area-wide.file-loaded .upload-text-wide h3 {
-            color: #155724;
-        }
-
-        .upload-area-wide.file-loaded .upload-text-wide p {
-            color: #0f5132;
-        }
-
-        .upload-area-wide.file-loaded .upload-text-wide p strong {
-            color: #155724;
-            font-size: 16px;
-            background: rgba(255, 255, 255, 0.3);
-            padding: 4px 8px;
-            border-radius: 6px;
-            display: inline-block;
-            margin: 5px 0;
-        }
-
-        .upload-content-wide {
-            pointer-events: none;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .upload-icon-wide {
-            font-size: 36px;
-            opacity: 0.7;
-        }
-
-        .upload-text-wide h3 {
-            margin: 0 0 5px 0;
-            color: #00283C;
-            font-size: 18px;
-        }
-
-        .upload-text-wide p {
-            margin: 0;
-            color: #5B6770;
-            font-size: 14px;
-        }
-
-        .click-upload {
-            color: #0077CA;
-            font-weight: 500;
-            text-decoration: underline;
-            cursor: pointer;
-        }
-
-        .click-upload:hover {
-            color: #003C71;
-        }
-
-        .clear-file {
-            color: #5B6770;
-            font-weight: 500;
-            text-decoration: underline;
-            cursor: pointer;
-        }
-
-        .clear-file:hover {
-            color: #46505A;
-        }
-
-
-
-        .file-input-wrapper {
-            position: relative;
-            overflow: hidden;
-            display: inline-block;
-        }
-
-        .file-input {
-            position: absolute;
-            left: -9999px;
-        }
-
-        .file-input-label {
-            background: #0077CA;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: 500;
-            display: inline-block;
-        }
-
-        .file-input-label:hover {
-            background: #003C71;
-            transform: translateY(-2px);
-        }
-
-        .course-filter {
-            flex: 1;
-            min-width: 300px;
-            position: relative;
-        }
-
-        .course-filter input {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #e9ecef;
-            border-radius: 25px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
-
-        .course-filter input:focus {
-            outline: none;
-            border-color: #0077CA;
-        }
-
-        .course-suggestions {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: white;
-            border: 2px solid #e9ecef;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            z-index: 1000;
-            display: none;
-            margin-top: 5px;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-        
-        .course-suggestions-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 16px;
-            border-bottom: 1px solid #e9ecef;
-            background: #f8f9fa;
-            border-top-left-radius: 15px;
-            border-top-right-radius: 15px;
-        }
-        
-        .course-suggestions-title {
-            font-weight: 600;
-            color: #00283C;
-            font-size: 14px;
-        }
-        
-        .course-suggestions-close {
-            background: none;
-            border: none;
-            color: #5B6770;
-            cursor: pointer;
-            font-size: 18px;
-            padding: 0;
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: all 0.2s;
-        }
-        
-        .course-suggestions-close:hover {
-            background: #e9ecef;
-            color: #00283C;
-        }
-
-        .course-suggestions.show {
-            display: block;
-        }
-
-        .course-suggestion-item {
-            display: flex;
-            align-items: center;
-            padding: 12px 16px;
-            cursor: pointer;
-            transition: background 0.2s;
-            gap: 12px;
-            border: none;
-            font-size: 14px;
-            color: #00283C;
-            width: 100%;
-            text-align: left;
-        }
-
-        .course-suggestion-item:hover {
-            background: #f8f9fa;
-        }
-
-        .course-suggestion-item:first-child {
-            border-top-left-radius: 15px;
-            border-top-right-radius: 15px;
-        }
-
-        .course-suggestion-item:last-child {
-            border-bottom-left-radius: 15px;
-            border-bottom-right-radius: 15px;
-        }
-
-        .course-suggestion-code {
-            font-weight: 600;
-            color: #0077CA;
-        }
-
-        .course-suggestion-title {
-            color: #5B6770;
-            font-size: 13px;
-        }
-
-        .selected-courses {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin: 15px 0;
-            min-height: 20px;
-        }
-
-        .course-bubble {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: linear-gradient(135deg, #0077CA, #003C71);
-            color: white;
-            padding: 8px 12px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.3s;
-            cursor: pointer;
-            position: relative;
-            animation: bubbleAppear 0.3s ease-out;
-        }
-
-        @keyframes bubbleAppear {
-            from {
-                opacity: 0;
-                transform: scale(0.8) translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
-        }
-
-        .course-bubble:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,60,113,0.25);
-        }
-
-        .course-bubble .remove-btn {
-            background: rgba(255,255,255,0.2);
-            border: none;
-            color: white;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: bold;
-            transition: all 0.2s;
-            opacity: 0;
-        }
-
-        .course-bubble:hover .remove-btn {
-            opacity: 1;
-            background: rgba(255,255,255,0.3);
-        }
-
-        .course-bubble .remove-btn:hover {
-            background: rgba(255,255,255,0.5);
-            transform: scale(1.1);
-        }
-        
-        .course-bubble.removing {
-            animation: bubbleRemove 0.3s ease-in forwards;
-        }
-        
-        @keyframes bubbleRemove {
-            to {
-                opacity: 0;
-                transform: scale(0.8) translateY(-10px);
-            }
-        }
-
-        .view-toggle {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .toggle-switch {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            font-weight: 500;
-        }
-
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: relative;
-            width: 50px;
-            height: 24px;
-            background-color: #ccc;
-            border-radius: 24px;
-            transition: .4s;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 18px;
-            width: 18px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            border-radius: 50%;
-            transition: .4s;
-        }
-
-        input:checked + .slider {
-            background-color: #0077CA;
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(26px);
-        }
-
-        .toggle-label {
-            font-size: 14px;
-            color: #00283C;
-        }
-
-        .export-controls {
-            display: flex;
-            align-items: center;
-        }
-
-        .export-pdf-btn {
-            background: linear-gradient(135deg, #5B6770, #46505A);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 14px;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 12px rgba(0,60,113,0.25);
-        }
-
-        .export-pdf-btn:hover {
-            background: linear-gradient(135deg, #46505A, #3A434B);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,60,113,0.35);
-        }
-
-        .export-pdf-btn:disabled {
-            background: #5B6770;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        /* Preset Dropdown Styles */
-        .preset-dropdown {
-            position: relative;
-        }
-
-        .dropdown-container {
-            position: relative;
-            display: inline-block;
-        }
-
-        .dropdown-toggle {
-            background: #003C71;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 14px;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            min-width: 180px;
-            justify-content: space-between;
-        }
-
-        .dropdown-toggle:hover {
-            background: #00283C;
-            transform: translateY(-2px);
-        }
-
-        .dropdown-arrow {
-            transition: transform 0.3s;
-            font-size: 12px;
-        }
-
-        .dropdown-toggle.active .dropdown-arrow {
-            transform: rotate(180deg);
-        }
-
-        .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: white;
-            border: 2px solid #e9ecef;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            z-index: 1000;
-            display: none;
-            margin-top: 5px;
-            min-width: 280px;
-        }
-
-        .dropdown-menu.show {
-            display: block;
-        }
-
-        .dropdown-header {
-            padding: 15px 20px 10px;
-            border-bottom: 1px solid #e9ecef;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 600;
-            color: #00283C;
-        }
-
-        .clear-all-btn {
-            background: #5B6770;
-            color: white;
-            border: none;
-            padding: 5px 12px;
-            border-radius: 15px;
-            font-size: 12px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .clear-all-btn:hover {
-            background: #46505A;
-        }
-
-        .dropdown-item {
-            display: flex;
-            align-items: center;
-            padding: 12px 20px;
-            cursor: pointer;
-            transition: background 0.2s;
-            gap: 12px;
-            border: none;
-            font-size: 14px;
-            color: #00283C;
-        }
-
-        .dropdown-item:hover {
-            background: #f8f9fa;
-        }
-
-        .dropdown-item:last-child {
-            border-bottom-left-radius: 15px;
-            border-bottom-right-radius: 15px;
-        }
-
-        .preset-checkbox {
-            display: none;
-        }
-
-        .checkmark {
-            width: 18px;
-            height: 18px;
-            border: 2px solid #dee2e6;
-            border-radius: 4px;
-            position: relative;
-            flex-shrink: 0;
-            transition: all 0.3s;
-        }
-
-        .preset-checkbox:checked + .checkmark {
-            background: #0077CA;
-            border-color: #0077CA;
-        }
-
-        .preset-checkbox:checked + .checkmark::after {
-            content: '✓';
-            color: white;
-            font-size: 12px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-weight: bold;
-        }
-
-        /* Compact View Styles */
-        .compact-view .schedule-cell {
-            height: 18px;
-            padding: 1px;
-        }
-
-        .compact-view .class-block {
-            padding: 1px 3px;
-            font-size: 10px;
-            margin: 0;
-            border-radius: 2px;
-            text-align: center;
-            font-weight: bold;
-            line-height: 1.4;
-            min-height: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .compact-view .class-info {
-            display: none;
-        }
-
-        .compact-view .time-slot {
-            padding: 4px;
-            font-size: 10px;
-        }
-
-        .compact-view .day-header {
-            padding: 6px;
-            font-size: 12px;
-        }
-
-        .compact-view .time-header {
-            padding: 6px;
-            font-size: 12px;
-        }
-
-        .compact-view .timetable {
-            font-size: 10px;
-        }
-
-        .compact-view .class-block.continuation {
-            opacity: 1;
-            border-top: none;
-            height: 15px;
-            min-height: 15px;
-        }
-
-        /* Workshop Scheduler Styles */
-        .workshop-scheduler {
-            margin-top: 30px;
-            padding: 30px;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border-radius: 20px;
-            border: 2px solid #dee2e6;
-        }
-
-        .workshop-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .workshop-header h2 {
-            color: #00283C;
-            font-size: 1.8em;
-            margin-bottom: 8px;
-        }
-
-        .workshop-header p {
-            color: #5B6770;
-            font-size: 1.1em;
-        }
-
-        .workshop-controls {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            margin-bottom: 25px;
-        }
-
-        .workshop-row {
-            display: flex;
-            gap: 20px;
-            align-items: end;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
-        }
-
-        .workshop-row:last-child {
-            margin-bottom: 0;
-        }
-
-        .workshop-input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            min-width: 180px;
-        }
-
-        .workshop-input-group label {
-            font-weight: 600;
-            color: #00283C;
-            font-size: 14px;
-        }
-
-        .workshop-input-group input,
-        .workshop-input-group select {
-            padding: 10px 12px;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            font-size: 14px;
-            transition: border-color 0.3s;
-        }
-
-        .workshop-input-group input:focus,
-        .workshop-input-group select:focus {
-            outline: none;
-            border-color: #0077CA;
-        }
-
-        .priority-courses-section {
-            flex: 1;
-            min-width: 250px;
-        }
-
-        .priority-courses-section label {
-            font-weight: 600;
-            color: #00283C;
-            font-size: 14px;
-            margin-bottom: 8px;
-            display: block;
-        }
-
-        .priority-dropdown-container {
-            position: relative;
-        }
-
-        .priority-dropdown-toggle {
-            background: #003C71;
-            color: white;
-            border: none;
-            padding: 10px 16px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 14px;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            min-width: 220px;
-            justify-content: space-between;
-        }
-
-        .priority-dropdown-toggle:hover {
-            background: #00283C;
-            transform: translateY(-2px);
-        }
-
-        .priority-dropdown-toggle.active .dropdown-arrow {
-            transform: rotate(180deg);
-        }
-
-        .priority-dropdown-menu {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: white;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            z-index: 1000;
-            display: none;
-            margin-top: 5px;
-            max-height: 140px;
-            overflow-y: auto;
-            min-width: 280px;
-        }
-
-        .priority-dropdown-menu.show {
-            display: block;
-        }
-
-        .priority-dropdown-header {
-            padding: 12px 16px;
-            border-bottom: 1px solid #e9ecef;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 600;
-            color: #00283C;
-            font-size: 13px;
-        }
-
-        .clear-priority-btn {
-            background: #5B6770;
-            color: white;
-            border: none;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 11px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .clear-priority-btn:hover {
-            background: #46505A;
-        }
-
-        .priority-course-item {
-            display: flex;
-            align-items: center;
-            padding: 12px 16px;
-            cursor: pointer;
-            transition: background 0.2s;
-            gap: 12px;
-            font-size: 14px;
-            color: #00283C;
-            border: none;
-            width: 100%;
-            min-height: 44px;
-        }
-
-        .priority-course-item:hover {
-            background: #f8f9fa;
-        }
-
-        .priority-course-checkbox {
-            display: none;
-        }
-
-        .priority-course-checkbox + .checkmark {
-            width: 18px;
-            height: 18px;
-            border: 2px solid #dee2e6;
-            border-radius: 4px;
-            position: relative;
-            flex-shrink: 0;
-            transition: all 0.3s;
-            display: inline-block;
-        }
-
-        .priority-course-checkbox:checked + .checkmark {
-            background: #003C71;
-            border-color: #003C71;
-        }
-
-        .priority-course-checkbox:checked + .checkmark::after {
-            content: '✓';
-            color: white;
-            font-size: 10px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-weight: bold;
-        }
-
-        .find-workshops-btn {
-            background: linear-gradient(135deg, #0077CA, #003C71);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 14px;
-            transition: all 0.3s;
-            box-shadow: 0 4px 12px rgba(0,60,113,0.25);
-        }
-
-        .find-workshops-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,60,113,0.35);
-        }
-
-        /* Advanced Settings Styles */
-        .advanced-settings {
-            margin-top: 20px;
-            border: 2px solid #dee2e6;
-            border-radius: 15px;
-            overflow: hidden;
-        }
-
-        .advanced-toggle {
-            background: linear-gradient(135deg, #003C71, #00283C);
-            color: white;
-            border: none;
-            padding: 15px 20px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 14px;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            border-top-left-radius: 15px;
-            border-top-right-radius: 15px;
-            border-bottom-left-radius: 15px;
-            border-bottom-right-radius: 15px;
-        }
-
-        .advanced-toggle:hover {
-            background: linear-gradient(135deg, #00283C, #00283C);
-        }
-
-        .advanced-toggle.active {
-            background: linear-gradient(135deg, #00283C, #00283C);
-            border-bottom-left-radius: 0;
-            border-bottom-right-radius: 0;
-        }
-
-        .advanced-content {
-            background: white;
-            padding: 25px;
-            display: none;
-            border-bottom-left-radius: 15px;
-            border-bottom-right-radius: 15px;
-        }
-
-        .advanced-content.show {
-            display: block;
-        }
-
-        .advanced-section {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            border: 1px solid #e9ecef;
-        }
-
-        .advanced-section h4 {
-            color: #00283C;
-            font-size: 16px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .advanced-section-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            align-items: start;
-        }
-
-        .score-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 15px;
-        }
-
-        .score-input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .score-input-group label {
-            font-size: 13px;
-            font-weight: 600;
-            color: #00283C;
-        }
-
-        .score-input-group input {
-            padding: 8px 10px;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            font-size: 13px;
-            transition: border-color 0.3s;
-            width: 100%;
-        }
-
-        .score-input-group input:focus {
-            outline: none;
-            border-color: #0077CA;
-        }
-
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .checkbox-group input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-        }
-
-        .checkbox-group label {
-            font-weight: 600;
-            color: #00283C;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .time-range-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .time-range-group label {
-            font-size: 13px;
-            font-weight: 500;
-            color: #5B6770;
-            white-space: nowrap;
-        }
-
-        .time-range-group select {
-            padding: 6px 8px;
-            border: 2px solid #e9ecef;
-            border-radius: 6px;
-            font-size: 13px;
-            transition: border-color 0.3s;
-        }
-
-        .time-range-group select:focus {
-            outline: none;
-            border-color: #0077CA;
-        }
-
-        .day-time-config {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .day-config {
-            background: white;
-            padding: 15px;
-            border: 1px solid #dee2e6;
-            border-radius: 8px;
-        }
-
-        .day-config h5 {
-            margin: 0 0 10px 0;
-            color: #00283C;
-            font-size: 14px;
-        }
-
-        .reset-defaults-btn {
-            background: #5B6770;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 14px;
-            transition: all 0.3s;
-            margin-top: 20px;
-        }
-
-        .reset-defaults-btn:hover {
-            background: #46505A;
-            transform: translateY(-1px);
-        }
-
-        .buffer-input-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .buffer-input-group input {
-            width: 80px;
-            padding: 8px 10px;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            font-size: 13px;
-            transition: border-color 0.3s;
-        }
-
-        .buffer-input-group input:focus {
-            outline: none;
-            border-color: #0077CA;
-        }
-
-        .buffer-input-group label {
-            font-size: 13px;
-            color: #5B6770;
-        }
-
-        /* Info Box Styles */
-        .info-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 16px;
-            height: 16px;
-            background: #0077CA;
-            color: white;
-            border-radius: 50%;
-            font-size: 10px;
-            font-weight: bold;
-            cursor: help;
-            margin-left: 6px;
-            position: relative;
-            flex-shrink: 0;
-        }
-
-        .info-tooltip {
-            position: absolute;
-            bottom: 125%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #00283C;
-            color: white;
-            padding: 10px 12px;
-            border-radius: 8px;
-            font-size: 12px;
-            line-height: 1.4;
-            white-space: normal;
-            width: 300px;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s;
-            z-index: 9999;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-
-        .advanced-settings {
-            margin-top: 20px;
-            border: 2px solid #dee2e6;
-            border-radius: 15px;
-            overflow: visible;
-        }
-
-        .advanced-content .info-tooltip {
-            position: absolute;
-            bottom: 125%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 300px;
-            z-index: 10001;
-        }
-
-        .info-tooltip.adjust-position {
-            bottom: auto;
-            top: 125%;
-        }
-
-        .info-tooltip.adjust-position::after {
-            top: -5px;
-            bottom: auto;
-            border-top-color: transparent;
-            border-bottom-color: #00283C;
-        }
-
-        .info-tooltip::after {
-            content: '';
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            border: 5px solid transparent;
-            border-top-color: #00283C;
-        }
-
-        .info-icon:hover .info-tooltip {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .workshop-input-group .info-icon {
-            margin-left: 8px;
-            margin-top: 2px;
-        }
-
-        .priority-courses-section .info-icon {
-            margin-left: 8px;
-        }
-
-        /* Workshop Result Tooltip Styles */
-        .result-item {
-            padding: 15px;
-            background: linear-gradient(135deg, #E6F1FA, #F4F7FA);
-            border: 2px solid #C8DDF0;
-            border-radius: 12px;
-            transition: transform 0.2s;
-            position: relative;
-            cursor: pointer;
-        }
-
-        .workshop-tooltip {
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #00283C;
-            color: white;
-            padding: 12px 15px;
-            border-radius: 8px;
-            font-size: 12px;
-            line-height: 1.4;
-            white-space: nowrap;
-            max-width: 400px;
-            white-space: normal;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s;
-            z-index: 10000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            margin-bottom: 8px;
-        }
-
-        .workshop-tooltip::after {
-            content: '';
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            border: 5px solid transparent;
-            border-top-color: #00283C;
-        }
-
-        .result-item:hover .workshop-tooltip {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .conflict-list {
-            margin: 8px 0;
-        }
-
-        .conflict-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 3px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.2);
-        }
-
-        .conflict-item:last-child {
-            border-bottom: none;
-        }
-
-        .conflict-course {
-            font-weight: 600;
-        }
-
-        .conflict-type {
-            font-size: 11px;
-            opacity: 0.8;
-        }
-
-        .conflict-score {
-            background: rgba(255,255,255,0.2);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 10px;
-            font-weight: bold;
-        }
-
-        .no-conflicts {
-            color: #7FD3FF;
-            font-weight: 600;
-            text-align: center;
-            font-style: italic;
-        }
-
-        .workshop-results {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .workshop-results h3 {
-            color: #00283C;
-            margin-bottom: 20px;
-            font-size: 1.3em;
-        }
-
-        .results-content {
-            display: grid;
-            gap: 15px;
-        }
-
-        .result-item {
-            padding: 15px;
-            background: linear-gradient(135deg, #E6F1FA, #F4F7FA);
-            border: 2px solid #C8DDF0;
-            border-radius: 12px;
-            transition: transform 0.2s;
-        }
-
-        .result-item:hover {
-            transform: translateY(-2px);
-        }
-
-        .result-header {
-            font-weight: 600;
-            color: #003C71;
-            font-size: 16px;
-            margin-bottom: 8px;
-        }
-
-        .result-details {
-            color: #00283C;
-            font-size: 14px;
-            line-height: 1.4;
-        }
-
-        .conflict-score {
-            background: #003C71;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: bold;
-            display: inline-block;
-            margin-left: 10px;
-        }
-
-        .scoring-explanation {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 15px;
-            border: 2px solid #e9ecef;
-            margin-top: 20px;
-        }
-
-        .scoring-explanation h4 {
-            color: #00283C;
-            margin-bottom: 15px;
-            font-size: 1.2em;
-        }
-
-        .scoring-details {
-            color: #5B6770;
-            line-height: 1.6;
-        }
-
-        .scoring-details p {
-            margin-bottom: 12px;
-        }
-
-        .scoring-details ul {
-            margin: 15px 0;
-            padding-left: 20px;
-        }
-
-        .scoring-details li {
-            margin-bottom: 8px;
-        }
-
-        .scoring-details strong {
-            color: #00283C;
-        }
-
-        .scoring-details em {
-            font-style: italic;
-            color: #00283C;
-        }
-
-        .compact-view .class-block.continuation {
-            opacity: 1;
-            border-top: none;
-        }
-
-        .legend {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            border-radius: 15px;
-            background: white;
-            border: 2px solid #e9ecef;
-            font-weight: 500;
-        }
-        
-        .time-block-toggle {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-        }
-        
-        .time-block-btn {
-            background: linear-gradient(135deg, #0077CA, #003C71);
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 12px;
-            transition: all 0.3s;
-            white-space: nowrap;
-            min-width: 120px;
-        }
-        
-        .time-block-btn:hover {
-            background: linear-gradient(135deg, #003C71, #00283C);
-            transform: translateY(-1px);
-            box-shadow: 0 2px 8px rgba(0,60,113,0.25);
-        }
-        
-        .time-block-status {
-            font-size: 11px;
-            color: #5B6770;
-            text-align: center;
-            white-space: nowrap;
-        }
-
-        .color-dot {
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-        }
-
-        .timetable-container {
-            padding: 30px;
-            overflow-x: auto;
-        }
-
-        .timetable {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 800px;
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-
-        .time-header {
-            background: #00283C;
-            color: white;
-            font-weight: bold;
-            text-align: center;
-            padding: 15px;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-
-        .day-header {
-            background: #003C71;
-            color: white;
-            font-weight: bold;
-            text-align: center;
-            padding: 15px;
-            writing-mode: vertical-rl;
-            text-orientation: mixed;
-            min-width: 120px;
-        }
-
-        .time-slot {
-            background: #F1F0EE;
-            font-weight: 500;
-            text-align: center;
-            padding: 10px;
-            border-right: 2px solid #ACA39A;
-            white-space: nowrap;
-            width: 100px;
-        }
-
-        .schedule-cell {
-            border: 1px solid #e9ecef;
-            height: 35px;
-            position: relative;
-            padding: 4px;
-            vertical-align: top;
-            width: 140px;
-        }
-
-        .class-block {
-            background: #3498db;
-            color: white;
-            padding: 3px 6px;
-            border-radius: 6px;
-            margin: 1px 0;
-            font-size: 10px;
-            font-weight: 500;
-            line-height: 1.1;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .class-block:hover {
-            transform: scale(1.05);
-            z-index: 5;
-            position: relative;
-        }
-
-        .class-block.lecture {
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
-        }
-
-        .class-block.tutorial,
-        .class-block.lab,
-        .class-block.seminar,
-        .class-block.practicum {
-            background: linear-gradient(135deg, #f1c40f, #f39c12);
-            color: #00283C;
-        }
-
-        .class-block.continuation {
-            opacity: 0.7;
-            border-top: 2px dashed rgba(255,255,255,0.5);
-        }
-
-        .class-info {
-            display: block;
-            font-size: 9px;
-            opacity: 0.95;
-            line-height: 1.1;
-        }
-
-        .no-data {
-            text-align: center;
-            padding: 60px;
-            color: #5B6770;
-            font-size: 18px;
-        }
-
-        .status {
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 10px;
-            font-weight: 500;
-        }
-
-        .status.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .status.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
-        .csv-preview {
-            background: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 10px;
-            padding: 15px;
-            margin: 15px 0;
-            max-height: 200px;
-            overflow: auto;
-            font-family: monospace;
-            font-size: 12px;
-        }
-
-        @media (max-width: 768px) {
-            .upload-section {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 15px;
-            }
-            
-            .course-filter {
-                min-width: auto;
-            }
-            
-            .course-suggestions {
-                max-height: 250px;
-            }
-            
-            .selected-courses {
-                justify-content: center;
-            }
-            
-            .course-bubble {
-                font-size: 13px;
-                padding: 6px 10px;
-            }
-            
-            .preset-dropdown {
-                align-self: center;
-            }
-            
-            .dropdown-toggle {
-                width: 100%;
-                max-width: 280px;
-            }
-            
-            .view-toggle {
-                justify-content: center;
-            }
-            
-            .export-controls {
-                justify-content: center;
-                margin-top: 10px;
-            }
-            
-            .export-pdf-btn {
-                width: 100%;
-                max-width: 280px;
-            }
-            
-            .legend {
-                justify-content: center;
-                gap: 15px;
-            }
-            
-            .time-block-toggle {
-                gap: 3px;
-            }
-            
-            .time-block-btn {
-                font-size: 11px;
-                padding: 5px 10px;
-                min-width: 100px;
-            }
-            
-            .time-block-status {
-                font-size: 10px;
-            }
-            
-            .day-header {
-                writing-mode: horizontal-tb;
-                text-orientation: initial;
-                min-width: auto;
-            }
-
-            .workshop-row {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 15px;
-            }
-
-            .workshop-input-group {
-                min-width: auto;
-            }
-
-            .priority-courses-section {
-                min-width: auto;
-            }
-
-            .priority-dropdown-toggle {
-                min-width: auto;
-                width: 100%;
-            }
-
-            .find-workshops-btn {
-                width: 100%;
-                margin-top: 10px;
-            }
-        }
-
-        /* Help Modal Styles */
-        .help-modal {
-            display: none;
-            position: fixed;
-            z-index: 10000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
-        }
-
-        .help-modal-content {
-            background-color: white;
-            margin: 2% auto;
-            padding: 0;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 800px;
-            max-height: 90vh;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            animation: modalSlideIn 0.3s ease-out;
-        }
-
-        @keyframes modalSlideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .help-modal-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 25px 30px;
-            border-radius: 15px 15px 0 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .help-modal-header h2 {
-            margin: 0;
-            font-size: 1.8em;
-            font-weight: 600;
-        }
-
-        .help-modal-close {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 28px;
-            cursor: pointer;
-            padding: 0;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: background-color 0.3s;
-        }
-
-        .help-modal-close:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .help-modal-body {
-            padding: 30px;
-            max-height: 60vh;
-            overflow-y: auto;
-        }
-
-        .help-section {
-            margin-bottom: 25px;
-        }
-
-        .help-section h3 {
-            color: #00283C;
-            margin-bottom: 15px;
-            font-size: 1.2em;
-            border-bottom: 2px solid #e9ecef;
-            padding-bottom: 8px;
-        }
-
-        .help-section p {
-            margin-bottom: 12px;
-            line-height: 1.6;
-            color: #5B6770;
-        }
-
-        .help-section ul {
-            margin: 15px 0;
-            padding-left: 20px;
-        }
-
-        .help-section li {
-            margin-bottom: 8px;
-            line-height: 1.5;
-            color: #00283C;
-        }
-
-        .help-section code {
-            background: #f8f9fa;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: 'Courier New', monospace;
-            color: #003C71;
-            font-weight: 600;
-        }
-
-        .help-section strong {
-            color: #00283C;
-            font-weight: 600;
-        }
-
-        .help-modal-footer {
-            padding: 20px 30px;
-            background: #f8f9fa;
-            border-top: 1px solid #e9ecef;
-            text-align: center;
-            border-radius: 0 0 15px 15px;
-        }
-
-        .help-modal-close-btn {
-            background: #003C71;
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
-
-        .help-modal-close-btn:hover {
-            background: #00283C;
-            transform: translateY(-1px);
-        }
-
-        /* Responsive design for modal */
-        @media (max-width: 768px) {
-            .help-modal-content {
-                width: 95%;
-                margin: 5% auto;
-                max-height: 95vh;
-            }
-            
-            .help-modal-header {
-                padding: 20px;
-            }
-            
-            .help-modal-header h2 {
-                font-size: 1.5em;
-            }
-            
-            .help-modal-body {
-                padding: 20px;
-            }
-            
-            .help-modal-footer {
-                padding: 15px 20px;
-            }
-        }
-    
-        /* ==========================================================
-           ONTARIO TECH THEME LAYER
-           Palette and type from the Ontario Tech Brand Guidelines
-           (Quick Reference Guide, April 2026). Primary: Future Blue,
-           Simcoe Blue, Tech Tangerine. Secondary: greys + Spirit Navy.
-           Tech Tangerine is used only for accents/large display text
-           (AODA: never body-size text on white).
-           ========================================================== */
+        /* Ontario Tech palette (Brand Guidelines QRG, April 2026).
+           Tech Tangerine is reserved for one job: marking recommended workshop times. */
         :root {
-            --otu-future-blue: #003C71;
-            --otu-simcoe-blue: #0077CA;
-            --otu-tangerine: #E75D2A;
-            --otu-spirit-navy: #00283C;
-            --otu-warm-grey: #ACA39A;
-            --otu-cool-grey: #A7A8AA;
-            --otu-dark-grey: #5B6770;
-            --otu-surface: #F4F6F8;
-            --otu-line: #DCE1E6;
-            --otu-radius: 6px;
+            --future: #003C71;
+            --simcoe: #0077CA;
+            --tangerine: #E75D2A;
+            --navy: #00283C;
+            --warm: #ACA39A;
+            --cool: #A7A8AA;
+            --slate: #5B6770;
+            --bg: #EEF1F4;
+            --panel: #FFFFFF;
+            --line: #DCE2E8;
+            --line-soft: #EBEFF3;
+            --tint: #E8F1FA;
+            --tint-2: #D3E5F5;
+            --r-sm: 4px;
+            --r-md: 8px;
+            --shadow: 0 1px 2px rgba(0,40,60,.06), 0 2px 8px rgba(0,40,60,.05);
         }
-
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { -webkit-text-size-adjust: 100%; }
         body {
             font-family: 'Ubuntu', Arial, sans-serif;
-            background: var(--otu-surface);
-            color: var(--otu-spirit-navy);
-            padding: 24px;
+            font-size: 15px;
+            line-height: 1.5;
+            color: var(--navy);
+            background: var(--bg);
+            min-height: 100vh;
         }
+        button, input, select { font: inherit; color: inherit; }
+        button { cursor: pointer; }
+        :focus-visible { outline: 3px solid var(--simcoe); outline-offset: 2px; }
+        code { font-family: 'Ubuntu Mono', Consolas, monospace; background: var(--tint); color: var(--future); padding: 1px 5px; border-radius: 3px; font-size: .92em; }
+        @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
 
-        button, input, select, textarea { font-family: inherit; }
+        /* ---------- App bar ---------- */
+        .appbar {
+            background: var(--future);
+            color: #fff;
+            border-bottom: 4px solid var(--navy);
+        }
+        .appbar-inner {
+            max-width: 1480px; margin: 0 auto;
+            padding: 18px 28px;
+            display: flex; align-items: center; justify-content: space-between; gap: 16px;
+        }
+        .brandmark { display: flex; align-items: center; gap: 14px; }
+        .brandmark-icon { width: 38px; height: 38px; flex-shrink: 0; }
+        .brandmark-text small { display: block; font-size: 13px; color: #BFD7EE; font-weight: 400; }
+        .brandmark-text h1 { font-size: 22px; font-weight: 500; letter-spacing: -.005em; line-height: 1.2; }
+        .ghost-btn {
+            background: transparent; color: #fff;
+            border: 1px solid rgba(255,255,255,.55);
+            padding: 8px 16px; border-radius: var(--r-sm); font-size: 14px; font-weight: 500;
+        }
+        .ghost-btn:hover { background: #fff; color: var(--future); border-color: #fff; }
 
-        .container {
-            border-radius: var(--otu-radius);
-            box-shadow: 0 1px 3px rgba(0,40,60,0.08), 0 8px 24px rgba(0,40,60,0.06);
-            border-top: 6px solid var(--otu-future-blue);
+        /* ---------- Workspace ---------- */
+        .workspace {
+            max-width: 1480px; margin: 0 auto;
+            padding: 24px 28px 8px;
+            display: grid;
+            grid-template-columns: 320px minmax(0, 1fr);
+            gap: 24px;
+            align-items: start;
         }
+        .sidebar { display: flex; flex-direction: column; gap: 16px; position: sticky; top: 16px; }
+        .panel {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: var(--r-md);
+            box-shadow: var(--shadow);
+        }
+        .step { padding: 20px; }
+        .step-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+        .step-num {
+            width: 26px; height: 26px; border-radius: 50%;
+            background: var(--future); color: #fff;
+            display: grid; place-items: center;
+            font-size: 13px; font-weight: 700; flex-shrink: 0;
+        }
+        .step-head h2 { font-size: 16px; font-weight: 500; }
+        .step-hint { font-size: 13px; color: var(--slate); margin: -6px 0 12px 36px; }
 
-        /* Header */
-        .header {
-            background: var(--otu-future-blue);
-            text-align: left;
-            padding: 36px 40px 32px;
-            position: relative;
-        }
-        .header .eyebrow {
-            font-size: 13px;
-            font-weight: 500;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: #CFE3F5;
-            margin-bottom: 10px;
-        }
-        .header h1 {
-            font-size: 2.4em;
-            font-weight: 700;
-            text-shadow: none;
-            margin-bottom: 8px;
-            letter-spacing: -0.01em;
-        }
-        .header h1::after {
-            content: '';
-            display: block;
-            width: 64px;
-            height: 5px;
-            background: var(--otu-tangerine);
-            margin-top: 14px;
-        }
-        .header p { font-weight: 300; font-size: 1.1em; color: #E6F1FA; }
-
-        .help-btn {
-            background: transparent;
-            border: 2px solid #FFFFFF;
-            border-radius: var(--otu-radius);
-            box-shadow: none;
-            margin-top: 20px;
-        }
-        .help-btn:hover {
-            background: #FFFFFF;
-            color: var(--otu-future-blue);
-            box-shadow: none;
-        }
-
-        /* Controls */
-        .controls { background: #FFFFFF; border-bottom: 1px solid var(--otu-line); }
-
+        /* Upload */
+        .file-input { position: absolute; left: -9999px; }
         .upload-area-wide {
-            border: 2px dashed var(--otu-cool-grey);
-            border-radius: var(--otu-radius);
-            background: var(--otu-surface);
+            border: 1.5px dashed #9FB2C4;
+            border-radius: var(--r-md);
+            background: #F7F9FB;
+            padding: 18px 16px;
+            cursor: pointer;
+            transition: border-color .15s, background .15s;
         }
-        .upload-area-wide:hover,
-        .upload-area-wide.dragover {
-            border-color: var(--otu-simcoe-blue);
-            background: #E6F1FA;
-        }
-        .upload-area-wide.file-loaded {
-            border: 2px solid var(--otu-simcoe-blue);
-            border-left: 6px solid var(--otu-future-blue);
-            background: #E6F1FA;
-        }
-        .upload-area-wide.file-loaded:hover { border-color: var(--otu-future-blue); background: #D9EAF7; }
-        .upload-area-wide.file-loaded .upload-icon-wide,
-        .upload-area-wide.file-loaded .upload-text-wide h3,
-        .upload-area-wide.file-loaded .upload-text-wide p,
-        .upload-area-wide.file-loaded .upload-text-wide p strong { color: var(--otu-future-blue); }
-        .upload-area-wide.file-loaded .upload-text-wide p strong { background: #FFFFFF; border-radius: 4px; }
-        .upload-icon-wide { opacity: 1; color: var(--otu-simcoe-blue); display: flex; }
-        .upload-icon-wide svg { width: 36px; height: 36px; }
-        .upload-text-wide h3 { font-weight: 500; }
-        .clear-file { color: var(--otu-dark-grey); }
-        .clear-file:hover { color: var(--otu-spirit-navy); }
-
-        .course-filter input,
-        .workshop-input-group input,
-        .workshop-input-group select,
-        .score-input-group input,
-        .buffer-input-group input,
-        .time-range-group select,
-        #facultySelect, #programSelect, #yearSelect, #lunchPenalty {
-            border: 1px solid var(--otu-cool-grey) !important;
-            border-radius: var(--otu-radius) !important;
-            background: #FFFFFF;
-            color: var(--otu-spirit-navy);
-        }
-        .course-filter input:focus,
-        .workshop-input-group input:focus,
-        .workshop-input-group select:focus,
-        .score-input-group input:focus,
-        .buffer-input-group input:focus,
-        .time-range-group select:focus {
-            outline: 2px solid var(--otu-simcoe-blue);
-            outline-offset: 1px;
-            border-color: var(--otu-simcoe-blue) !important;
+        .upload-area-wide:hover, .upload-area-wide.dragover { border-color: var(--simcoe); background: var(--tint); }
+        .upload-content-wide { pointer-events: none; display: flex; align-items: center; gap: 14px; }
+        .upload-icon-wide { color: var(--simcoe); display: flex; flex-shrink: 0; }
+        .upload-icon-wide svg { width: 30px; height: 30px; }
+        .upload-text-wide h3 { font-size: 15px; font-weight: 500; }
+        .upload-text-wide p { font-size: 13px; color: var(--slate); line-height: 1.45; }
+        .click-upload { color: var(--simcoe); text-decoration: underline; pointer-events: auto; }
+        .clear-file { color: var(--slate); text-decoration: underline; pointer-events: auto; cursor: pointer; }
+        .clear-file:hover { color: var(--navy); }
+        .upload-area-wide.file-loaded { border: 1px solid var(--tint-2); border-left: 4px solid var(--future); background: var(--tint); }
+        .upload-area-wide.file-loaded .upload-icon-wide { color: var(--future); }
+        .upload-area-wide.file-loaded .upload-text-wide p strong {
+            display: block; color: var(--navy); font-weight: 500; font-size: 14px;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 210px; margin: 2px 0;
         }
 
-        .course-suggestions, .dropdown-menu, .priority-dropdown-menu {
-            border: 1px solid var(--otu-line);
-            border-radius: var(--otu-radius);
-            box-shadow: 0 8px 24px rgba(0,40,60,0.12);
+        /* Course search */
+        .course-filter { position: relative; }
+        .field {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #B9C5D0;
+            border-radius: var(--r-sm);
+            background: #fff;
+            font-size: 15px;
         }
-        .course-suggestions-header { border-radius: var(--otu-radius) var(--otu-radius) 0 0; background: var(--otu-surface); }
-        .course-suggestion-item:first-child,
-        .course-suggestion-item:last-child,
-        .dropdown-item:last-child { border-radius: 0; }
-        .course-suggestion-item:hover, .dropdown-item:hover, .priority-course-item:hover { background: #E6F1FA; }
-        .course-suggestion-code { color: var(--otu-future-blue); }
+        .field:hover { border-color: #8EA2B5; }
+        .field:focus { outline: none; border-color: var(--simcoe); box-shadow: 0 0 0 3px rgba(0,119,202,.18); }
+        .search-wrap { position: relative; }
+        .search-wrap svg { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); width: 17px; height: 17px; color: var(--slate); pointer-events: none; }
+        .search-wrap .field { padding-left: 36px; }
+        .course-suggestions {
+            position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+            background: #fff; border: 1px solid var(--line); border-radius: var(--r-md);
+            box-shadow: 0 10px 30px rgba(0,40,60,.16);
+            z-index: 1000; display: none; max-height: 320px; overflow-y: auto;
+        }
+        .course-suggestions.show { display: block; }
+        .course-suggestions-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 8px 12px; border-bottom: 1px solid var(--line-soft);
+            position: sticky; top: 0; background: #fff;
+        }
+        .course-suggestions-title { font-size: 12px; color: var(--slate); }
+        .course-suggestions-close { background: none; border: 0; width: 24px; height: 24px; border-radius: 50%; color: var(--slate); font-size: 18px; line-height: 1; }
+        .course-suggestions-close:hover { background: var(--line-soft); }
+        .course-suggestion-item { display: flex; flex-direction: column; padding: 8px 12px; cursor: pointer; font-size: 14px; }
+        .course-suggestion-item:hover { background: var(--tint); }
+        .course-suggestion-code { font-weight: 500; color: var(--future); }
+        .course-suggestion-title { font-size: 12px; color: var(--slate); }
 
+        .selected-courses { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+        .no-courses { font-size: 13px; color: var(--slate); margin-top: 10px; }
         .course-bubble {
-            background: var(--otu-future-blue);
-            border-radius: var(--otu-radius);
-            border-left: 4px solid var(--otu-tangerine);
+            display: inline-flex; align-items: center; gap: 4px;
+            background: var(--tint); color: var(--future);
+            border: 1px solid var(--tint-2);
+            padding: 3px 4px 3px 9px; border-radius: 999px;
+            font-size: 13px; font-weight: 500;
+            animation: chipIn .18s ease-out;
         }
-        .course-bubble:hover { box-shadow: 0 4px 12px rgba(0,40,60,0.2); }
+        @keyframes chipIn { from { opacity: 0; transform: scale(.9); } }
+        .course-bubble .remove-btn {
+            width: 20px; height: 20px; border-radius: 50%;
+            border: 0; background: transparent; color: var(--future);
+            display: grid; place-items: center; font-size: 15px; line-height: 1;
+        }
+        .course-bubble .remove-btn:hover { background: var(--future); color: #fff; }
+        .course-bubble.removing { animation: chipOut .2s ease-in forwards; }
+        @keyframes chipOut { to { opacity: 0; transform: scale(.85); } }
 
-        /* Buttons */
-        .dropdown-toggle,
-        .priority-dropdown-toggle,
-        .find-workshops-btn,
-        .export-pdf-btn,
-        .time-block-btn,
-        .help-modal-close-btn,
-        .reset-defaults-btn,
-        .clear-all-btn,
-        .clear-priority-btn {
-            border-radius: var(--otu-radius);
-            box-shadow: none;
-            font-weight: 500;
-        }
-        .dropdown-toggle, .priority-dropdown-toggle,
-        .find-workshops-btn, .export-pdf-btn, .time-block-btn, .help-modal-close-btn {
-            background: var(--otu-future-blue);
-            color: #FFFFFF;
-        }
-        .dropdown-toggle:hover, .priority-dropdown-toggle:hover,
-        .find-workshops-btn:hover, .export-pdf-btn:hover, .time-block-btn:hover, .help-modal-close-btn:hover {
-            background: var(--otu-simcoe-blue);
-            box-shadow: none;
-        }
-        .find-workshops-btn { border-bottom: 3px solid var(--otu-tangerine); }
-        .export-pdf-btn:disabled { background: var(--otu-cool-grey); }
-        .reset-defaults-btn, .clear-all-btn, .clear-priority-btn {
-            background: #FFFFFF;
-            color: var(--otu-dark-grey);
-            border: 1px solid var(--otu-dark-grey);
-        }
-        .reset-defaults-btn:hover, .clear-all-btn:hover, .clear-priority-btn:hover {
-            background: var(--otu-dark-grey);
-            color: #FFFFFF;
-        }
-        button:focus-visible { outline: 3px solid var(--otu-tangerine); outline-offset: 2px; }
+        /* Presets: shown inline, not as a dropdown */
+        .dropdown-toggle, .priority-dropdown-toggle { display: none; }
+        .presets { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line-soft); }
+        .presets-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+        .presets-head h3 { font-size: 14px; font-weight: 500; }
+        .text-btn { background: none; border: 0; color: var(--simcoe); font-size: 13px; text-decoration: underline; padding: 0; }
+        .text-btn:hover { color: var(--future); }
+        .dropdown-menu { display: grid; gap: 8px; }
+        .dropdown-menu label { display: block; font-size: 12px; color: var(--slate); margin-bottom: 3px; }
+        .dropdown-menu select.field { padding: 8px 10px; font-size: 14px; }
+        .dropdown-menu select:disabled { background: #F4F6F8; color: #8A96A0; }
 
-        input:checked + .slider { background-color: var(--otu-simcoe-blue); }
-        .slider { background-color: var(--otu-cool-grey); }
-        .toggle-label { color: var(--otu-spirit-navy); }
-
-        .checkmark, .priority-course-checkbox + .checkmark { border-color: var(--otu-cool-grey); }
-        .preset-checkbox:checked + .checkmark,
-        .priority-course-checkbox:checked + .checkmark {
-            background: var(--otu-future-blue);
-            border-color: var(--otu-future-blue);
+        /* ---------- Timetable card ---------- */
+        .stage { min-width: 0; }
+        .stage-card { overflow: hidden; }
+        .stage-head {
+            display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+            gap: 12px 20px; padding: 16px 20px; border-bottom: 1px solid var(--line);
         }
-
-        /* Legend */
-        .legend-item { border: 1px solid var(--otu-line); border-radius: var(--otu-radius); }
-        .color-dot { border-radius: 3px; }
-        .time-block-status { color: var(--otu-dark-grey); }
-
-        /* Timetable */
-        .timetable {
-            border-radius: var(--otu-radius);
-            box-shadow: 0 1px 3px rgba(0,40,60,0.1);
-            border: 1px solid var(--otu-line);
+        .stage-title h2 { font-size: 18px; font-weight: 500; }
+        .stage-title p { font-size: 13px; color: var(--slate); min-height: 1.2em; }
+        .stage-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; }
+        .legend-key { display: flex; gap: 14px; font-size: 13px; color: var(--slate); }
+        .legend-key span { display: inline-flex; align-items: center; gap: 6px; }
+        .swatch { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+        .swatch.lec { background: var(--future); }
+        .swatch.oth { background: var(--tint-2); border-left: 3px solid var(--simcoe); }
+        .seg { display: inline-flex; border: 1px solid #B9C5D0; border-radius: var(--r-sm); overflow: hidden; }
+        .seg label, .seg button {
+            border: 0; background: #fff; padding: 6px 12px; font-size: 13px; cursor: pointer; color: var(--navy);
+            display: inline-flex; align-items: center;
         }
-        .time-header { background: var(--otu-spirit-navy); }
-        .day-header { background: var(--otu-future-blue); border-bottom: 4px solid var(--otu-tangerine); }
-        .time-slot { background: #F1F0EE; color: var(--otu-spirit-navy); border-right: 2px solid var(--otu-warm-grey); }
-        .schedule-cell { border: 1px solid #E9ECEF; }
+        .seg > * + * { border-left: 1px solid #B9C5D0; }
+        .seg input { position: absolute; opacity: 0; pointer-events: none; }
+        .seg .on { background: var(--future); color: #fff; }
+        .seg label:has(input:focus-visible) { outline: 3px solid var(--simcoe); outline-offset: -3px; }
+        .time-block-btn { border: 1px solid #B9C5D0 !important; border-radius: var(--r-sm); background: #fff; padding: 6px 12px; font-size: 13px; }
+        .time-block-btn:hover { border-color: var(--simcoe) !important; color: var(--simcoe); }
+        .time-block-status { display: none; }
+        .export-controls { display: none !important; }
 
-        .class-block { border-radius: 4px; box-shadow: none; }
-        .class-block.lecture {
-            background: var(--otu-future-blue);
-            color: #FFFFFF;
+        .timetable-container { padding: 0; overflow-x: auto; }
+        .no-data {
+            padding: 72px 24px; text-align: center; color: var(--slate);
+            display: flex; flex-direction: column; align-items: center; gap: 6px;
         }
-        .class-block.tutorial,
-        .class-block.lab,
-        .class-block.seminar,
-        .class-block.practicum {
-            background: var(--otu-warm-grey);
-            color: #000000;
-        }
-        .class-block.continuation { opacity: 0.75; border-top: 2px dashed rgba(255,255,255,0.6); }
-        .class-block.tutorial.continuation,
-        .class-block.lab.continuation,
-        .class-block.seminar.continuation,
-        .class-block.practicum.continuation { border-top-color: rgba(0,0,0,0.35); }
-        .compact-view .class-block { border-radius: 2px; }
+        .no-data svg { width: 64px; height: 64px; color: var(--tint-2); margin-bottom: 8px; }
+        .no-data h3 { color: var(--navy); font-size: 18px; font-weight: 500; }
+        .no-data p { max-width: 46ch; font-size: 14px; }
 
-        .no-data { color: var(--otu-dark-grey); }
-        .no-data h3 { color: var(--otu-future-blue); font-weight: 700; margin-bottom: 8px; }
-
-        .status { border-radius: var(--otu-radius); }
-        .status.success { background: #E6F1FA; color: var(--otu-future-blue); border: 1px solid #C8DDF0; border-left: 5px solid var(--otu-simcoe-blue); }
-        .status.error { background: #FFF1EC; color: #7A2A0C; border: 1px solid #F6C8B6; border-left: 5px solid var(--otu-tangerine); }
-        .csv-preview { border-radius: var(--otu-radius); background: var(--otu-surface); }
-
-        /* Workshop scheduler */
-        .workshop-scheduler {
-            background: var(--otu-surface);
-            border: none;
-            border-top: 1px solid var(--otu-line);
-            border-radius: 0;
-            margin-top: 0;
-            padding: 40px 30px;
+        /* Calendar (standard view) */
+        .cal { min-width: 760px; --ppm: 1.2px; }
+        .cal-head, .cal-body { display: grid; grid-template-columns: 62px repeat(5, minmax(0, 1fr)); }
+        .cal-head {
+            position: sticky; top: 0; z-index: 3;
+            background: #fff; border-bottom: 1px solid var(--line);
         }
-        .workshop-header h2 { color: var(--otu-future-blue); font-weight: 700; }
-        .workshop-header h2::after {
-            content: '';
-            display: block;
-            width: 48px;
-            height: 4px;
-            background: var(--otu-tangerine);
-            margin: 12px auto 0;
+        .cal-head div { padding: 10px 8px; font-size: 13px; font-weight: 500; color: var(--slate); }
+        .cal-head div + div { border-left: 1px solid var(--line-soft); }
+        .cal-head .day-count { display: block; font-weight: 400; font-size: 12px; color: #8A96A0; }
+        .cal-gutter { position: relative; }
+        .cal-gutter span {
+            position: absolute; right: 8px; transform: translateY(-50%);
+            font-size: 11px; color: var(--slate); white-space: nowrap;
         }
-        .workshop-header p { color: var(--otu-dark-grey); }
-        .workshop-controls, .workshop-results {
-            border-radius: var(--otu-radius);
-            box-shadow: 0 1px 3px rgba(0,40,60,0.08);
-            border: 1px solid var(--otu-line);
+        .cal-day {
+            position: relative;
+            border-left: 1px solid var(--line-soft);
+            background-image:
+                linear-gradient(to bottom, var(--line) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--line-soft) 1px, transparent 1px);
+            background-size: 100% calc(60 * var(--ppm)), 100% calc(var(--step) * var(--ppm));
         }
-        .workshop-results h3 { color: var(--otu-future-blue); }
-        .advanced-settings { border: 1px solid var(--otu-line); border-radius: var(--otu-radius); }
-        .advanced-toggle { background: var(--otu-future-blue); border-radius: var(--otu-radius); }
-        .advanced-toggle:hover, .advanced-toggle.active { background: var(--otu-spirit-navy); }
-        .advanced-toggle.active { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
-        .advanced-content { border-radius: 0 0 var(--otu-radius) var(--otu-radius); }
-        .advanced-section { background: var(--otu-surface); border: 1px solid var(--otu-line); border-radius: var(--otu-radius); }
-        .advanced-section h4 { color: var(--otu-future-blue); font-weight: 500; }
-        .day-config { border-radius: var(--otu-radius); border-color: var(--otu-line); }
-        .info-icon { background: var(--otu-simcoe-blue); }
-        .info-tooltip, .workshop-tooltip { background: var(--otu-spirit-navy); border-radius: var(--otu-radius); }
+        .class-block {
+            position: absolute;
+            padding: 3px 6px;
+            border-radius: var(--r-sm);
+            font-size: 11px; line-height: 1.3;
+            overflow: hidden;
+            cursor: default;
+            display: flex; flex-direction: column;
+        }
+        .class-block strong { font-size: 12px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .class-block .ev-line { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; opacity: .92; }
+        .class-block.lecture { background: var(--future); color: #fff; box-shadow: inset 0 0 0 1px rgba(255,255,255,.18); }
+        .class-block.other { background: var(--tint); color: var(--navy); border-left: 3px solid var(--simcoe); box-shadow: inset 0 0 0 1px var(--tint-2); }
+        .class-block:hover { z-index: 2; box-shadow: 0 4px 14px rgba(0,40,60,.28); min-height: fit-content; }
 
+        /* Listed-by-hour layout, used when too many classes overlap */
+        .ag-note { padding: 10px 20px; font-size: 13px; color: var(--slate); background: #F7F9FB; border-bottom: 1px solid var(--line); }
+        .ag-body { display: grid; grid-template-columns: 62px repeat(5, minmax(0, 1fr)); }
+        .ag-time {
+            font-size: 11px; color: var(--slate); text-align: right;
+            padding: 10px 8px 0 0; border-top: 1px solid var(--line);
+            position: sticky; left: 0;
+        }
+        .ag-cell {
+            border-top: 1px solid var(--line); border-left: 1px solid var(--line-soft);
+            padding: 6px 4px; display: flex; flex-direction: column; gap: 4px; min-height: 40px;
+        }
+        .ag-chip { border-radius: var(--r-sm); padding: 4px 7px; font-size: 11px; line-height: 1.3; cursor: default; }
+        .ag-chip.lecture { background: var(--future); color: #fff; }
+        .ag-chip.other { background: var(--tint); color: var(--navy); border-left: 3px solid var(--simcoe); padding-left: 5px; }
+        .ag-top { display: flex; justify-content: space-between; align-items: baseline; gap: 6px; }
+        .ag-top strong { font-size: 12px; font-weight: 700; }
+        .ag-n { font-size: 10px; white-space: nowrap; opacity: .85; }
+        .ag-meta { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; opacity: .92; }
+        .ag-chip:hover { box-shadow: 0 3px 10px rgba(0,40,60,.25); }
+
+        /* Highlight one course when its tag is hovered */
+        .timetable-container [data-course] { transition: opacity .12s; }
+        .timetable-container.hl [data-course] { opacity: .16; }
+        .timetable-container.hl [data-course].hl-on { opacity: 1; box-shadow: 0 0 0 2px var(--simcoe); }
+        .course-bubble { cursor: default; }
+
+        /* Density view (compact) */
+        .heat { min-width: 760px; display: grid; grid-template-columns: 62px repeat(5, minmax(0, 1fr)); }
+        .heat-h { padding: 10px 8px; font-size: 13px; font-weight: 500; color: var(--slate); border-bottom: 1px solid var(--line); background: #fff; position: sticky; top: 0; z-index: 2; }
+        .heat-t { font-size: 11px; color: var(--slate); text-align: right; padding-right: 8px; line-height: 1; transform: translateY(-5px); }
+        .heat-t.first { transform: none; padding-top: 4px; }
+        .heat-c {
+            height: 22px; margin: 1px 2px;
+            border-radius: 3px;
+            font-size: 11px; font-weight: 500;
+            display: flex; align-items: center; justify-content: space-between; padding: 0 7px;
+        }
+        .heat-c.zero { background: #F6F8FA; }
+        .heat-c .lec-note { font-weight: 400; opacity: .85; }
+        .heat-legend { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--slate); padding: 12px 20px; border-top: 1px solid var(--line); }
+        .heat-legend .ramp { width: 140px; height: 10px; border-radius: 3px; background: linear-gradient(to right, #F6F8FA, var(--future)); }
+
+        /* ---------- Toast status ---------- */
+        #status { position: fixed; right: 20px; bottom: 20px; z-index: 5000; display: flex; flex-direction: column; gap: 8px; max-width: 420px; }
+        .status {
+            background: var(--navy); color: #fff;
+            padding: 12px 16px; border-radius: var(--r-md);
+            font-size: 14px; box-shadow: 0 10px 30px rgba(0,40,60,.3);
+            border-left: 4px solid var(--simcoe);
+            animation: toastIn .2s ease-out;
+        }
+        .status.error { border-left-color: var(--tangerine); }
+        @keyframes toastIn { from { opacity: 0; transform: translateY(8px); } }
+        .csv-preview { display: none; }
+
+        /* ---------- Workshop scheduler ---------- */
+        .scheduler-wrap { max-width: 1480px; margin: 0 auto; padding: 16px 28px 32px; }
+        .workshop-scheduler { padding: 0; }
+        .sched-head { padding: 20px 24px 16px; border-bottom: 1px solid var(--line); }
+        .sched-head h2 { font-size: 18px; font-weight: 500; }
+        .sched-head p { font-size: 14px; color: var(--slate); }
+        .sched-grid { display: grid; grid-template-columns: 380px minmax(0, 1fr); }
+        .workshop-controls { padding: 20px 24px 24px; border-right: 1px solid var(--line); display: flex; flex-direction: column; gap: 16px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .workshop-input-group label, .priority-courses-section > label {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 13px; font-weight: 500; margin-bottom: 5px;
+        }
+        .workshop-input-group .field { padding: 8px 10px; font-size: 14px; }
+        .priority-dropdown-menu {
+            display: block !important;
+            border: 1px solid #B9C5D0; border-radius: var(--r-sm);
+            max-height: 176px; overflow-y: auto; background: #fff;
+        }
+        .priority-dropdown-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 7px 10px; font-size: 12px; color: var(--slate);
+            border-bottom: 1px solid var(--line-soft); position: sticky; top: 0; background: #fff; z-index: 1;
+        }
+        .priority-course-item { display: flex; align-items: center; gap: 10px; padding: 7px 10px; font-size: 13px; cursor: pointer; }
+        .priority-course-item:hover { background: var(--tint); }
+        .priority-course-checkbox { position: absolute; opacity: 0; pointer-events: none; }
+        .checkmark {
+            width: 17px; height: 17px; border: 1.5px solid #8EA2B5; border-radius: 3px;
+            flex-shrink: 0; position: relative; background: #fff;
+        }
+        .priority-course-checkbox:checked + .checkmark { background: var(--future); border-color: var(--future); }
+        .priority-course-checkbox:checked + .checkmark::after {
+            content: ''; position: absolute; left: 5px; top: 1px; width: 4px; height: 9px;
+            border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg);
+        }
+        .priority-course-checkbox:focus-visible + .checkmark { outline: 3px solid var(--simcoe); outline-offset: 1px; }
+
+        .primary-btn {
+            background: var(--future); color: #fff; border: 0;
+            padding: 11px 18px; border-radius: var(--r-sm); font-weight: 500; font-size: 15px;
+        }
+        .primary-btn:hover { background: var(--simcoe); }
+        .secondary-btn {
+            background: #fff; color: var(--future); border: 1px solid var(--future);
+            padding: 8px 14px; border-radius: var(--r-sm); font-weight: 500; font-size: 14px;
+        }
+        .secondary-btn:hover { background: var(--tint); }
+
+        .advanced-settings { border: 1px solid var(--line); border-radius: var(--r-sm); }
+        .advanced-toggle {
+            width: 100%; display: flex; justify-content: space-between; align-items: center;
+            background: #F7F9FB; border: 0; padding: 10px 12px; font-size: 14px; font-weight: 500; border-radius: var(--r-sm);
+        }
+        .advanced-toggle.active { border-bottom: 1px solid var(--line); border-radius: var(--r-sm) var(--r-sm) 0 0; }
+        .dropdown-arrow { font-size: 10px; transition: transform .2s; color: var(--slate); }
+        .advanced-content { display: none; padding: 4px 12px 12px; }
+        .advanced-content.show { display: block; }
+        .advanced-section { padding: 12px 0; border-bottom: 1px solid var(--line-soft); }
+        .advanced-section:last-of-type { border-bottom: 0; }
+        .advanced-section h4 { font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
+        .advanced-section .note { font-size: 12px; color: var(--slate); margin-bottom: 8px; }
+        .score-grid, .advanced-section-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 10px; }
+        .score-input-group { display: flex; flex-direction: column; gap: 3px; }
+        .score-input-group label { font-size: 12px; color: var(--slate); }
+        .score-input-group input, .buffer-input-group input, .time-range-group select, .time-range-group input, .day-config select {
+            border: 1px solid #B9C5D0; border-radius: var(--r-sm); padding: 5px 7px; font-size: 13px; background: #fff; width: 100%;
+        }
+        .buffer-input-group { display: flex; flex-direction: column; gap: 3px; font-size: 12px; color: var(--slate); }
+        .checkbox-group { display: flex; align-items: center; gap: 8px; font-size: 13px; margin-bottom: 8px; }
+        .checkbox-group input { width: 16px; height: 16px; accent-color: var(--future); }
+        .time-range-group { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 6px; font-size: 12px; color: var(--slate); }
+        .lunch-penalty { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 12px; color: var(--slate); }
+        .lunch-penalty input { width: 80px; }
+        .day-time-config { display: grid; gap: 6px; }
+        .day-config { display: grid; grid-template-columns: 80px 1fr; align-items: center; gap: 8px; }
+        .day-config h5 { font-size: 12px; font-weight: 500; }
+        .reset-defaults-btn { margin-top: 10px; }
+
+        .info-icon {
+            display: inline-grid; place-items: center;
+            width: 16px; height: 16px; border-radius: 50%;
+            background: var(--tint-2); color: var(--future);
+            font-size: 10px; font-weight: 700; cursor: help; position: relative; flex-shrink: 0;
+        }
+        .info-tooltip, .workshop-tooltip {
+            position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+            background: var(--navy); color: #fff;
+            padding: 9px 11px; border-radius: var(--r-sm);
+            font-size: 12px; font-weight: 400; line-height: 1.45; width: 260px;
+            opacity: 0; visibility: hidden; transition: opacity .15s; z-index: 9999;
+            box-shadow: 0 8px 24px rgba(0,40,60,.3); text-align: left;
+        }
+        .info-icon:hover .info-tooltip, .info-icon:focus .info-tooltip { opacity: 1; visibility: visible; }
+        .info-tooltip.adjust-position { bottom: auto; top: calc(100% + 8px); }
+
+        /* Results */
+        .results-pane { padding: 20px 24px 24px; min-width: 0; }
+        .results-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 6px; color: var(--slate); padding: 48px 12px; font-size: 14px; }
+        .results-empty svg { width: 52px; height: 52px; color: var(--tint-2); }
+        .results-empty h3 { color: var(--navy); font-size: 16px; font-weight: 500; }
+        .workshop-results-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+        .workshop-results-head h3 { font-size: 16px; font-weight: 500; }
+        .results-content { display: flex; flex-direction: column; gap: 6px; }
         .result-item {
-            background: #FFFFFF;
-            border: 1px solid var(--otu-line);
-            border-left: 5px solid var(--otu-simcoe-blue);
-            border-radius: var(--otu-radius);
+            position: relative;
+            display: grid; grid-template-columns: 36px minmax(0, 1fr) 96px; align-items: center; gap: 14px;
+            padding: 10px 14px;
+            border: 1px solid var(--line); border-radius: var(--r-sm);
+            background: #fff;
         }
-        .results-content .result-item:first-child { border-left-color: var(--otu-tangerine); }
-        .result-header { color: var(--otu-future-blue); font-weight: 500; }
-        .result-details { color: var(--otu-dark-grey); }
-        .result-header .conflict-score { background: var(--otu-future-blue); border-radius: 4px; }
-        .workshop-tooltip .conflict-score { background: rgba(255,255,255,0.2); }
+        .result-item:hover { border-color: #9FB2C4; background: #FAFCFD; }
+        .result-item.is-best { border-color: var(--tangerine); box-shadow: inset 4px 0 0 var(--tangerine); }
+        .result-rank { font-size: 15px; font-weight: 700; color: var(--slate); text-align: center; }
+        .result-item.is-best .result-rank { color: var(--tangerine); }
+        .result-header { font-size: 15px; font-weight: 500; }
+        .result-track { position: relative; height: 6px; margin-top: 7px; border-radius: 3px; background: var(--line-soft); }
+        .result-track span { position: absolute; top: -2px; height: 10px; border-radius: 3px; background: var(--future); }
+        .result-item.is-best .result-track span { background: var(--tangerine); }
+        .result-track i { position: absolute; top: 9px; font-size: 10px; font-style: normal; color: #8A96A0; transform: translateX(-50%); }
+        .result-score { text-align: right; }
+        .result-score .conflict-score { font-size: 20px; font-weight: 700; line-height: 1; display: block; }
+        .result-score small { font-size: 12px; color: var(--slate); }
+        .level-none .conflict-score { color: var(--simcoe); }
+        .level-low .conflict-score { color: var(--future); }
+        .level-medium .conflict-score, .level-high .conflict-score { color: var(--navy); }
+        .level-high small { color: var(--navy); font-weight: 500; }
+        .workshop-tooltip { width: 300px; left: auto; right: 0; transform: none; }
+        .result-item:hover .workshop-tooltip { opacity: 1; visibility: visible; }
+        .conflict-list { margin-top: 6px; }
+        .conflict-item { padding: 3px 0; border-top: 1px solid rgba(255,255,255,.15); }
+        .no-conflicts { color: #BFD7EE; }
 
-        .scoring-explanation { background: #FFFFFF; border: 1px solid var(--otu-line); border-radius: var(--otu-radius); }
-        .scoring-explanation h4 { color: var(--otu-future-blue); }
-        .score-badge {
-            display: inline-block;
-            min-width: 34px;
-            text-align: center;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: 700;
+        .scoring-explanation { margin-top: 18px; padding: 14px 16px; background: #F7F9FB; border: 1px solid var(--line-soft); border-radius: var(--r-sm); font-size: 13px; color: var(--slate); }
+        .scoring-explanation h4 { font-size: 13px; font-weight: 500; color: var(--navy); margin-bottom: 6px; }
+        .scoring-details ul { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 4px 16px; margin: 6px 0 8px; }
+        .scoring-details li { display: flex; gap: 8px; align-items: center; }
+        .scoring-details strong { color: var(--navy); font-weight: 500; }
+        .score-badge { min-width: 30px; text-align: center; padding: 1px 6px; border-radius: 3px; font-size: 11px; font-weight: 700; }
+        .score-badge.np-other { background: var(--tint); color: var(--future); }
+        .score-badge.np-lecture { background: var(--tint-2); color: var(--future); }
+        .score-badge.p-other { background: var(--simcoe); color: #fff; }
+        .score-badge.p-lecture { background: var(--future); color: #fff; }
+
+        footer.site-footer { max-width: 1480px; margin: 0 auto; padding: 4px 28px 28px; font-size: 13px; color: var(--slate); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+        /* ---------- Help modal ---------- */
+        .help-modal { display: none; position: fixed; inset: 0; z-index: 10000; background: rgba(0,40,60,.5); padding: 4vh 16px; overflow-y: auto; }
+        .help-modal-content { background: #fff; max-width: 720px; margin: 0 auto; border-radius: var(--r-md); overflow: hidden; box-shadow: 0 24px 60px rgba(0,40,60,.35); animation: toastIn .2s ease-out; }
+        .help-modal-header { background: var(--future); color: #fff; padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; }
+        .help-modal-header h2 { font-size: 19px; font-weight: 500; }
+        .help-modal-close { background: none; border: 0; color: #fff; font-size: 26px; width: 34px; height: 34px; border-radius: 50%; line-height: 1; }
+        .help-modal-close:hover { background: rgba(255,255,255,.15); }
+        .help-modal-body { padding: 8px 24px 16px; max-height: 68vh; overflow-y: auto; }
+        .help-section { padding: 14px 0; border-bottom: 1px solid var(--line-soft); display: grid; grid-template-columns: 30px 1fr; gap: 0 12px; }
+        .help-section:last-child { border-bottom: 0; }
+        .help-section .step-num { margin-top: 1px; }
+        .help-section h3 { font-size: 15px; font-weight: 500; margin-bottom: 4px; }
+        .help-section p, .help-section li { font-size: 14px; color: #33475A; }
+        .help-section ul { padding-left: 18px; margin-top: 4px; }
+        .help-section li + li { margin-top: 3px; }
+        .help-modal-footer { padding: 14px 24px; border-top: 1px solid var(--line); text-align: right; background: #F7F9FB; }
+
+        /* ---------- Responsive ---------- */
+        @media (max-width: 1100px) {
+            .workspace { grid-template-columns: 1fr; }
+            .sidebar { position: static; display: grid; grid-template-columns: 1fr 1fr; }
+            .sched-grid { grid-template-columns: 1fr; }
+            .workshop-controls { border-right: 0; border-bottom: 1px solid var(--line); }
         }
-        .score-badge.np-other { background: #E6F1FA; color: var(--otu-future-blue); border: 1px solid #C8DDF0; }
-        .score-badge.np-lecture { background: var(--otu-simcoe-blue); color: #FFFFFF; }
-        .score-badge.p-other { background: var(--otu-warm-grey); color: #000000; }
-        .score-badge.p-lecture { background: var(--otu-future-blue); color: #FFFFFF; }
-
-        /* Help modal */
-        .help-modal { background-color: rgba(0,40,60,0.55); }
-        .help-modal-content { border-radius: var(--otu-radius); border-top: 6px solid var(--otu-tangerine); }
-        .help-modal-header { background: var(--otu-future-blue); border-radius: 0; }
-        .help-modal-header h2 { font-weight: 500; }
-        .help-section h3 { color: var(--otu-future-blue); font-weight: 500; border-bottom: 2px solid var(--otu-line); }
-        .help-section p { color: var(--otu-dark-grey); }
-        .help-section li { color: var(--otu-spirit-navy); }
-        .help-section code { background: #E6F1FA; color: var(--otu-future-blue); }
-        .help-modal-footer { background: var(--otu-surface); border-radius: 0 0 var(--otu-radius) var(--otu-radius); }
-
-        .site-footer {
-            padding: 18px 30px;
-            border-top: 1px solid var(--otu-line);
-            font-size: 13px;
-            color: var(--otu-dark-grey);
-            display: flex;
-            justify-content: space-between;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        @media (max-width: 768px) {
-            body { padding: 12px; }
-            .header { padding: 28px 20px 24px; }
-            .header h1 { font-size: 1.8em; }
+        @media (max-width: 720px) {
+            .appbar-inner, .workspace, .scheduler-wrap, footer.site-footer { padding-left: 16px; padding-right: 16px; }
+            .sidebar { grid-template-columns: 1fr; }
+            .brandmark-text h1 { font-size: 18px; }
+            .result-item { grid-template-columns: 28px minmax(0,1fr) 72px; gap: 10px; }
+            .scoring-details ul { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="eyebrow">Ontario Tech University</div>
-            <h1>Course Timetable Generator</h1>
-            <p>Upload your CSV course data and create a visual timetable</p>
-            <button type="button" class="help-btn" id="helpBtn">How to Use</button>
-        </div>
-
-        <!-- Help Modal -->
-        <div id="helpModal" class="help-modal">
-            <div class="help-modal-content">
-                <div class="help-modal-header">
-                    <h2>How to Use the Course Timetable Generator</h2>
-                    <button type="button" class="help-modal-close" id="helpModalClose">&times;</button>
-                </div>
-                <div class="help-modal-body">
-                    <div class="help-section">
-                        <h3>Step 1: Prepare Your Data</h3>
-                        <ul>
-                            <li>On receipt of the Scheduling Summary Report, download the Excel (XLSX) file</li>
-                            <li>Press <strong>File > Save As</strong></li>
-                            <li>Under the file selection dropbox, select <strong>"CSV UTF-8 (Comma delimited) (*.csv)"</strong> to save the file as a CSV file</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="help-section">
-                        <h3>Step 2: Select Your Courses</h3>
-                        <p>You can select courses in two ways:</p>
-                        <ul>
-                            <li><strong>Course Presets:</strong> Use the dropdown to select course groups (e.g., First Year Engineering, Computer Science, etc.)</li>
-                            <li><strong>Manual Entry:</strong> Type course codes in the search box</li>
-                        </ul>
-                        <p><strong>Important:</strong> Course codes must be in the format <code>ABCD1234U</code>. For example, for Calculus I, enter <code>MATH1010U</code>, not <code>MATH1010</code> or <code>MATH 1010U</code> (no spaces, include the U)</p>
-                    </div>
-                    
-                    <div class="help-section">
-                        <h3>Step 3: Upload Your CSV File</h3>
-                        <ul>
-                            <li>Click the <strong>"Upload CSV File"</strong> button or drag and drop your CSV file</li>
-                            <li>The system will process your file and display the course data</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="help-section">
-                        <h3>Step 4: View Your Timetable</h3>
-                        <ul>
-                            <li>You'll see a calendar view showing all instances of your selected courses (lectures, tutorials, labs, etc.)</li>
-                            <li>Toggle between <strong>"Compact View"</strong> and regular view using the switch</li>
-                            <li>Use the time block toggle to switch between 30-minute and 15-minute time intervals</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="help-section">
-                        <h3>Step 5: Workshop Scheduler (Optional)</h3>
-                        <p>Scroll down past the calendar to find the <strong>"Workshop Scheduler"</strong> feature:</p>
-                        <ul>
-                            <li><strong>Priority Courses:</strong> Select courses that should be weighted more heavily in the algorithm (these will be more strongly avoided)</li>
-                            <li><strong>Workshop Settings:</strong> Set your workshop duration, earliest and latest times</li>
-                            <li><strong>Advanced Settings:</strong> Configure buffer time, lunch block avoidance, day-specific hours, and enrollment-based scores</li>
-                            <li><strong>Find Times:</strong> Click <strong>"Find Best Workshop Times"</strong> to get recommendations</li>
-                        </ul>
-                        <p><strong>Scoring:</strong> Lower scores mean fewer conflicts. Choose timeslots with the lowest scores for optimal workshop scheduling.</p>
-                    </div>
-                    
-                    <div class="help-section">
-                        <h3>Tips</h3>
-                        <ul>
-                            <li>You can select multiple course presets - they will be combined automatically</li>
-                            <li>Use the course search to find specific courses by code or CRN</li>
-                            <li>The legend shows different colors for lectures vs. other course types</li>
-                            <li>Export your timetable as PDF if needed</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="help-modal-footer">
-                    <button type="button" class="help-modal-close-btn" id="helpModalFooterClose">Got it!</button>
+    <header class="appbar">
+        <div class="appbar-inner">
+            <div class="brandmark">
+                <svg class="brandmark-icon" viewBox="0 0 64 64" aria-hidden="true">
+                    <rect x="6" y="10" width="52" height="46" rx="6" fill="#FFFFFF"/>
+                    <rect x="6" y="10" width="52" height="12" rx="6" fill="#0077CA"/>
+                    <rect x="6" y="16" width="52" height="6" fill="#0077CA"/>
+                    <rect x="17" y="5" width="5" height="11" rx="2.5" fill="#FFFFFF"/>
+                    <rect x="42" y="5" width="5" height="11" rx="2.5" fill="#FFFFFF"/>
+                    <rect x="13" y="28" width="11" height="10" rx="2" fill="#A7A8AA"/>
+                    <rect x="27" y="28" width="11" height="10" rx="2" fill="#A7A8AA"/>
+                    <rect x="41" y="28" width="11" height="10" rx="2" fill="#E75D2A"/>
+                    <rect x="13" y="42" width="11" height="10" rx="2" fill="#A7A8AA"/>
+                    <rect x="27" y="42" width="11" height="10" rx="2" fill="#A7A8AA"/>
+                    <rect x="41" y="42" width="11" height="10" rx="2" fill="#A7A8AA"/>
+                </svg>
+                <div class="brandmark-text">
+                    <small>Ontario Tech University</small>
+                    <h1>Course Timetable Generator</h1>
                 </div>
             </div>
+            <button type="button" class="ghost-btn" id="helpBtn">How to use</button>
         </div>
+    </header>
 
-        <div class="controls">
-            <!-- Upload Section - Wider and Thinner -->
-            <div class="upload-section-wide">
-                <div class="upload-area-wide" id="uploadArea">
+    <!-- Help modal -->
+    <div id="helpModal" class="help-modal" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+        <div class="help-modal-content">
+            <div class="help-modal-header">
+                <h2 id="helpTitle">How to use the timetable generator</h2>
+                <button type="button" class="help-modal-close" id="helpModalClose" aria-label="Close">&times;</button>
+            </div>
+            <div class="help-modal-body">
+                <div class="help-section">
+                    <span class="step-num">1</span>
+                    <div>
+                        <h3>Save the report as a CSV</h3>
+                        <ul>
+                            <li>Open the Scheduling Summary Report (.xlsx).</li>
+                            <li>Choose <strong>File &gt; Save As</strong> and pick <strong>CSV UTF-8 (Comma delimited) (*.csv)</strong>.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="help-section">
+                    <span class="step-num">2</span>
+                    <div>
+                        <h3>Load it</h3>
+                        <p>Drop the CSV on <strong>Load data</strong>, or click it to browse. The file stays on your computer.</p>
+                    </div>
+                </div>
+                <div class="help-section">
+                    <span class="step-num">3</span>
+                    <div>
+                        <h3>Choose courses</h3>
+                        <p>Search by course code or CRN, or add a program year from <strong>Add a program year</strong>. Codes have no spaces and end in the campus letter: <code>MATH1010U</code>.</p>
+                    </div>
+                </div>
+                <div class="help-section">
+                    <span class="step-num">4</span>
+                    <div>
+                        <h3>Read the week</h3>
+                        <p><strong>Classes</strong> shows every section as a block. <strong>Density</strong> shades each time slot by how many courses meet then, so quiet times stand out.</p>
+                    </div>
+                </div>
+                <div class="help-section">
+                    <span class="step-num">5</span>
+                    <div>
+                        <h3>Find workshop times</h3>
+                        <p>In <strong>Workshop scheduler</strong>, tick the courses to avoid most, set the length and time window, then choose <strong>Find workshop times</strong>. Lower scores mean fewer clashes; hover a result to see why.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="help-modal-footer">
+                <button type="button" class="primary-btn" id="helpModalFooterClose">Got it</button>
+            </div>
+        </div>
+    </div>
+
+    <main class="workspace">
+        <aside class="sidebar">
+            <section class="panel step">
+                <div class="step-head"><span class="step-num">1</span><h2>Load data</h2></div>
+                <div class="upload-area-wide" id="uploadArea" role="button" tabindex="0" aria-label="Upload the Scheduling Summary Report CSV">
                     <div class="upload-content-wide">
                         <div class="upload-icon-wide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/><path d="M12 4v11"/><path d="M7 9l5-5 5 5"/></svg></div>
                         <div class="upload-text-wide">
@@ -2340,456 +595,229 @@
                     </div>
                     <input type="file" id="csvFile" class="file-input" accept=".csv" />
                 </div>
-            </div>
+            </section>
 
-            <!-- Course Selection Section -->
-            <div class="course-selection-section">
+            <section class="panel step">
+                <div class="step-head"><span class="step-num">2</span><h2>Choose courses</h2></div>
+                <p class="step-hint">Leave empty to show every course in the file.</p>
                 <div class="course-filter">
-                    <input type="text" id="courseFilter" placeholder="Search for courses..." />
-                    <div class="course-suggestions" id="courseSuggestions">
-                        <!-- Course suggestions will be populated here -->
+                    <div class="search-wrap">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+                        <input type="text" class="field" id="courseFilter" placeholder="Course code or CRN" autocomplete="off" aria-label="Search for a course by code or CRN" />
                     </div>
+                    <div class="course-suggestions" id="courseSuggestions"></div>
                 </div>
-                <div class="preset-dropdown">
-                    <div class="dropdown-container">
-                        <button type="button" class="dropdown-toggle" id="presetToggle">
-                            Course Presets <span class="dropdown-arrow">▼</span>
-                        </button>
-                        <div class="dropdown-menu" id="presetMenu">
-                            <div class="dropdown-header">
-                                <span>Select Course Groups:</span>
-                                <button type="button" class="clear-all-btn" id="clearPresets">Clear All</button>
-                            </div>
-                            <div class="dropdown-item" style="flex-direction: column; align-items: stretch; gap: 8px;">
-                                <label style="font-weight: 600;">Faculty</label>
-                                <select id="facultySelect" style="padding: 8px 10px; border: 2px solid #e9ecef; border-radius: 8px; font-size: 14px;">
-                                    <option value="">Select a faculty...</option>
-                                </select>
-                            </div>
-                            <div class="dropdown-item" style="flex-direction: column; align-items: stretch; gap: 8px;">
-                                <label style="font-weight: 600;">Program</label>
-                                <select id="programSelect" disabled style="padding: 8px 10px; border: 2px solid #e9ecef; border-radius: 8px; font-size: 14px;">
-                                    <option value="">Select a program...</option>
-                                </select>
-                            </div>
-                            <div class="dropdown-item" style="flex-direction: column; align-items: stretch; gap: 8px;">
-                                <label style="font-weight: 600;">Year</label>
-                                <select id="yearSelect" disabled style="padding: 8px 10px; border: 2px solid #e9ecef; border-radius: 8px; font-size: 14px;">
-                                    <option value="">Select a year...</option>
-                                </select>
-                            </div>
+                <div class="selected-courses" id="selectedCourses"></div>
+                <div id="noCoursesMessage" class="no-courses" style="display: none;">No courses chosen yet.</div>
+
+                <div class="presets preset-dropdown">
+                    <div class="presets-head">
+                        <h3>Add a program year</h3>
+                        <button type="button" class="text-btn" id="clearPresets">Clear all courses</button>
+                    </div>
+                    <button type="button" class="dropdown-toggle" id="presetToggle" tabindex="-1" aria-hidden="true">Course Presets <span class="dropdown-arrow">▼</span></button>
+                    <div class="dropdown-menu" id="presetMenu">
+                        <div>
+                            <label for="facultySelect">Faculty</label>
+                            <select id="facultySelect" class="field"><option value="">Select a faculty…</option></select>
+                        </div>
+                        <div>
+                            <label for="programSelect">Program</label>
+                            <select id="programSelect" class="field" disabled><option value="">Select a program…</option></select>
+                        </div>
+                        <div>
+                            <label for="yearSelect">Year</label>
+                            <select id="yearSelect" class="field" disabled><option value="">Select a year…</option></select>
                         </div>
                     </div>
                 </div>
-                <div class="view-toggle">
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="compactToggle">
-                        <span class="slider"></span>
-                        <span class="toggle-label">Compact View</span>
-                    </label>
-                </div>
-                <div class="export-controls" style="display: none;">
-                    <button type="button" class="export-pdf-btn" id="exportPdf">Export as PDF</button>
-                </div>
-            </div>
+            </section>
+        </aside>
 
-            <div class="selected-courses" id="selectedCourses">
-                <!-- Selected course bubbles will appear here -->
-                <div id="noCoursesMessage" style="display: none; color: #5B6770; font-style: italic; text-align: center; width: 100%;">
-                    No courses selected. Search for courses above or use the presets to get started.
-                </div>
-            </div>
-
-            <div class="legend">
-                <div class="legend-item">
-                    <div class="color-dot" style="background: #003C71;"></div>
-                    <span>Lectures</span>
-                </div>
-                <div class="legend-item">
-                    <div class="color-dot" style="background: #ACA39A;"></div>
-                    <span>All Others (Tutorials, Labs, Seminars, etc.)</span>
-                </div>
-                <div class="legend-item">
-                    <div class="time-block-toggle">
-                        <button type="button" id="timeBlockToggleBtn" class="time-block-btn">
-                            Change to 15-min blocks
-                        </button>
-                        <div class="time-block-status">
-                            (Currently 30-min blocks)
+        <section class="stage">
+            <div class="panel stage-card">
+                <div class="stage-head">
+                    <div class="stage-title">
+                        <h2>Week at a glance</h2>
+                        <p id="ttSummary">Load a report to see the week.</p>
+                    </div>
+                    <div class="stage-tools">
+                        <div class="legend-key" id="legendKey">
+                            <span><i class="swatch lec"></i>Lecture</span>
+                            <span><i class="swatch oth"></i>Tutorial, lab or other</span>
                         </div>
+                        <div class="seg view-toggle" role="group" aria-label="View">
+                            <label id="viewClasses" class="on"><input type="radio" name="viewMode" value="classes" checked>Classes</label>
+                            <label id="viewDensity"><input type="radio" name="viewMode" value="density">Density</label>
+                        </div>
+                        <input type="checkbox" id="compactToggle" hidden>
+                        <button type="button" id="timeBlockToggleBtn" class="time-block-btn">30-min rows</button>
+                        <span class="time-block-status"></span>
+                        <div class="export-controls"><button type="button" class="export-pdf-btn" id="exportPdf">Export as PDF</button></div>
+                    </div>
+                </div>
+                <div class="timetable-container">
+                    <div class="no-data" id="noData">
+                        <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="6" y="10" width="52" height="46" rx="6" fill="none" stroke="currentColor" stroke-width="3"/><path d="M6 22h52M20 5v10M44 5v10" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+                        <h3>Your week will appear here</h3>
+                        <p>Load the Scheduling Summary Report CSV on the left, then choose the courses you want to see.</p>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
+    </main>
 
-        <div id="status"></div>
-        
-        <div class="timetable-container">
-            <div class="no-data" id="noData">
-                <h3>Ready to create your timetable</h3>
-                <p>Upload a CSV file with your course data to get started.</p>
-                <br>
-                <p><strong>Expected CSV format (your scheduling system):</strong></p>
-                <p>Headers: Subject, Course Number, Sec, Day, BTime, Duration, Room, Faculty Name</p>
-                <p><em>The tool will automatically combine Subject + Course Number (e.g., MATH + 1010U = MATH1010U)</em></p>
+    <div class="scheduler-wrap">
+        <section class="panel workshop-scheduler" id="workshopScheduler" style="display: none;">
+            <div class="sched-head">
+                <h2>Workshop scheduler</h2>
+                <p>Ranks every possible start time by how many of the selected classes it would clash with.</p>
             </div>
-        </div>
-
-        <div class="workshop-scheduler" id="workshopScheduler" style="display: none;">
-            <div class="workshop-header">
-                <h2>Workshop Scheduler</h2>
-                <p>Find optimal times to schedule workshops with minimal course conflicts</p>
-            </div>
-            
-            <div class="workshop-controls">
-                <div class="workshop-row">
+            <div class="sched-grid">
+                <div class="workshop-controls">
                     <div class="priority-courses-section">
-                        <label>Priority Courses (higher avoidance):
-                            <span class="info-icon">i
-                                <div class="info-tooltip">Courses selected here will have much higher conflict penalties, making the algorithm strongly avoid scheduling workshops during these times. Use for core courses or high-enrollment classes.</div>
-                            </span>
+                        <label>Courses to avoid most
+                            <span class="info-icon" tabindex="0">i<span class="info-tooltip">Clashes with these courses cost more points, so the scheduler steers well clear of them. Tick the course the workshop supports.</span></span>
                         </label>
-                        <div class="priority-dropdown-container">
-                            <button type="button" class="priority-dropdown-toggle" id="priorityToggle">
-                                Select Priority Courses <span class="dropdown-arrow">▼</span>
-                            </button>
-                            <div class="priority-dropdown-menu" id="priorityMenu">
-                                <div class="priority-dropdown-header">
-                                    <span>Select courses to avoid conflicts with:</span>
-                                    <button type="button" class="clear-priority-btn" id="clearPriority">Clear All</button>
-                                </div>
-                                <div id="priorityCoursesList">
-                                    <!-- Dynamically populated -->
-                                </div>
+                        <button type="button" class="priority-dropdown-toggle" id="priorityToggle" tabindex="-1" aria-hidden="true">Select <span class="dropdown-arrow">▼</span></button>
+                        <div class="priority-dropdown-menu" id="priorityMenu">
+                            <div class="priority-dropdown-header">
+                                <span>Selected courses</span>
+                                <button type="button" class="text-btn" id="clearPriority">Untick all</button>
                             </div>
+                            <div id="priorityCoursesList"></div>
                         </div>
                     </div>
-                    
-                    <div class="workshop-input-group">
-                        <label for="workshopDuration">Workshop Duration (minutes):
-                            <span class="info-icon">i
-                                <div class="info-tooltip">Length of your workshop in minutes. The algorithm will find time slots that can accommodate this full duration with minimal conflicts across all time slots.</div>
-                            </span>
-                        </label>
-                        <input type="number" id="workshopDuration" min="15" max="300" step="15" value="60" />
+
+                    <div class="form-row">
+                        <div class="workshop-input-group">
+                            <label for="workshopDuration">Length (minutes)</label>
+                            <input type="number" class="field" id="workshopDuration" min="15" max="300" step="15" value="60" />
+                        </div>
+                        <div></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="workshop-input-group">
+                            <label for="earliestTime">Start no earlier than</label>
+                            <select id="earliestTime" class="field"></select>
+                        </div>
+                        <div class="workshop-input-group">
+                            <label for="latestTime">Finish by</label>
+                            <select id="latestTime" class="field"></select>
+                        </div>
+                    </div>
+
+                    <button type="button" class="primary-btn" id="findWorkshops">Find workshop times</button>
+
+                    <div class="advanced-settings">
+                        <button type="button" class="advanced-toggle" id="advancedToggle">Advanced settings <span class="dropdown-arrow">▼</span></button>
+                        <div class="advanced-content" id="advancedContent">
+                            <div class="advanced-section">
+                                <h4>Points per clash
+                                    <span class="info-icon" tabindex="0">i<span class="info-tooltip">Each class section a workshop overlaps adds these points. Lower totals are better.</span></span>
+                                </h4>
+                                <div class="score-grid">
+                                    <div class="score-input-group"><label for="scoreNonPriorityOther">Tutorial or lab</label><input type="number" id="scoreNonPriorityOther" min="0" max="100" value="1" /></div>
+                                    <div class="score-input-group"><label for="scoreNonPriorityLecture">Lecture</label><input type="number" id="scoreNonPriorityLecture" min="0" max="100" value="5" /></div>
+                                    <div class="score-input-group"><label for="scorePriorityOther">Avoid-most tutorial or lab</label><input type="number" id="scorePriorityOther" min="0" max="100" value="3" /></div>
+                                    <div class="score-input-group"><label for="scorePriorityLecture">Avoid-most lecture</label><input type="number" id="scorePriorityLecture" min="0" max="100" value="20" /></div>
+                                </div>
+                            </div>
+
+                            <div class="advanced-section">
+                                <h4>Lunch</h4>
+                                <div class="checkbox-group"><input type="checkbox" id="avoidLunch"><label for="avoidLunch">Add a penalty for overlapping lunch</label></div>
+                                <div class="time-range-group">
+                                    <select id="lunchStartTime" aria-label="Lunch starts"></select>
+                                    <span>to</span>
+                                    <select id="lunchEndTime" aria-label="Lunch ends"></select>
+                                </div>
+                                <div class="lunch-penalty"><label for="lunchPenalty">Penalty</label><input type="number" id="lunchPenalty" min="0" max="1000" value="50" /></div>
+                            </div>
+
+                            <div class="advanced-section">
+                                <h4>Different hours each day</h4>
+                                <div class="checkbox-group"><input type="checkbox" id="enableDaySpecific"><label for="enableDaySpecific">Set a window for each weekday</label></div>
+                                <div class="day-time-config" id="dayTimeConfig" style="display: none;">
+                                    <div class="day-config"><h5>Monday</h5><div class="time-range-group"><select id="mondayStart"></select><span>to</span><select id="mondayEnd"></select></div></div>
+                                    <div class="day-config"><h5>Tuesday</h5><div class="time-range-group"><select id="tuesdayStart"></select><span>to</span><select id="tuesdayEnd"></select></div></div>
+                                    <div class="day-config"><h5>Wednesday</h5><div class="time-range-group"><select id="wednesdayStart"></select><span>to</span><select id="wednesdayEnd"></select></div></div>
+                                    <div class="day-config"><h5>Thursday</h5><div class="time-range-group"><select id="thursdayStart"></select><span>to</span><select id="thursdayEnd"></select></div></div>
+                                    <div class="day-config"><h5>Friday</h5><div class="time-range-group"><select id="fridayStart"></select><span>to</span><select id="fridayEnd"></select></div></div>
+                                </div>
+                            </div>
+
+                            <div class="advanced-section">
+                                <h4>Travel buffers
+                                    <span class="info-icon" tabindex="0">i<span class="info-tooltip">Treats the minutes just before and after a class as busy, so students aren't rushed between rooms.</span></span>
+                                </h4>
+                                <div class="checkbox-group"><input type="checkbox" id="enableBuffer"><label for="enableBuffer">Use buffers</label></div>
+                                <div class="advanced-section-grid">
+                                    <div class="buffer-input-group"><label for="bufferBeforeLecture">Before lectures (min)</label><input type="number" id="bufferBeforeLecture" min="0" max="120" step="15" value="0" /></div>
+                                    <div class="buffer-input-group"><label for="bufferAfterLecture">After lectures (min)</label><input type="number" id="bufferAfterLecture" min="0" max="120" step="15" value="0" /></div>
+                                    <div class="buffer-input-group"><label for="bufferBeforeOther">Before other classes (min)</label><input type="number" id="bufferBeforeOther" min="0" max="120" step="15" value="0" /></div>
+                                    <div class="buffer-input-group"><label for="bufferAfterOther">After other classes (min)</label><input type="number" id="bufferAfterOther" min="0" max="120" step="15" value="0" /></div>
+                                </div>
+                            </div>
+
+                            <div class="advanced-section">
+                                <h4>Weight by enrolment
+                                    <span class="info-icon" tabindex="0">i<span class="info-tooltip">Multiplies each clash by the section's enrolment (Act) ÷ 50, so bigger sections count for more.</span></span>
+                                </h4>
+                                <div class="checkbox-group"><input type="checkbox" id="enableEnrollmentWeighting"><label for="enableEnrollmentWeighting">Use enrolment from the report</label></div>
+                                <div class="advanced-section-grid" hidden>
+                                    <div class="score-input-group"><label for="baseEnrollmentFirst">Fallback, 1st year</label><input type="number" id="baseEnrollmentFirst" min="10" max="500" value="200" /></div>
+                                    <div class="score-input-group"><label for="baseEnrollmentUpper">Fallback, upper year</label><input type="number" id="baseEnrollmentUpper" min="10" max="500" value="100" /></div>
+                                    <div class="score-input-group"><label for="lectureEnrollmentMultiplier">Lecture multiplier</label><input type="number" id="lectureEnrollmentMultiplier" min="0.1" max="5" step="0.1" value="1.0" /></div>
+                                    <div class="score-input-group"><label for="tutorialEnrollmentFraction">Tutorial fraction</label><input type="number" id="tutorialEnrollmentFraction" min="0.1" max="1" step="0.1" value="0.3" /></div>
+                                </div>
+                            </div>
+
+                            <div class="advanced-section">
+                                <h4>Results</h4>
+                                <div class="score-input-group"><label for="numRecommendations">Times to list</label><input type="number" id="numRecommendations" min="1" max="50" value="10" /></div>
+                            </div>
+                            <button type="button" class="secondary-btn reset-defaults-btn" id="resetDefaults">Reset to defaults</button>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="workshop-row">
-                    <div class="workshop-input-group">
-                        <label for="earliestTime">Earliest Start Time:
-                            <span class="info-icon">i
-                                <div class="info-tooltip">The earliest time workshops can start. Use this to respect student schedules and avoid times when attendance would be poor.</div>
-                            </span>
-                        </label>
-                        <select id="earliestTime">
-                            <option value="08:00">8:00 AM</option>
-                            <option value="08:30">8:30 AM</option>
-                            <option value="09:00">9:00 AM</option>
-                            <option value="09:30">9:30 AM</option>
-                            <option value="10:00">10:00 AM</option>
-                            <option value="10:30">10:30 AM</option>
-                            <option value="11:00">11:00 AM</option>
-                            <option value="11:30">11:30 AM</option>
-                            <option value="12:00">12:00 PM</option>
-                            <option value="12:30">12:30 PM</option>
-                            <option value="13:00">1:00 PM</option>
-                            <option value="13:30">1:30 PM</option>
-                            <option value="14:00">2:00 PM</option>
-                            <option value="14:30">2:30 PM</option>
-                            <option value="15:00">3:00 PM</option>
-                            <option value="15:30">3:30 PM</option>
-                            <option value="16:00">4:00 PM</option>
-                            <option value="16:30">4:30 PM</option>
-                            <option value="17:00">5:00 PM</option>
-                            <option value="17:30">5:30 PM</option>
-                            <option value="18:00">6:00 PM</option>
-                        </select>
+
+                <div class="results-pane">
+                    <div class="results-empty" id="resultsEmpty">
+                        <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="24" fill="none" stroke="currentColor" stroke-width="3"/><path d="M32 18v14l9 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+                        <h3>No times yet</h3>
+                        <p>Set the length and window, then choose Find workshop times.</p>
                     </div>
-                    
-                    <div class="workshop-input-group">
-                        <label for="latestTime">Latest End Time:
-                            <span class="info-icon">i
-                                <div class="info-tooltip">The latest time workshops can start. Note that your workshop must fit entirely before this time (duration is considered automatically).</div>
-                            </span>
-                        </label>
-                        <select id="latestTime">
-                            <option value="10:00">10:00 AM</option>
-                            <option value="10:30">10:30 AM</option>
-                            <option value="11:00">11:00 AM</option>
-                            <option value="11:30">11:30 AM</option>
-                            <option value="12:00">12:00 PM</option>
-                            <option value="12:30">12:30 PM</option>
-                            <option value="13:00">1:00 PM</option>
-                            <option value="13:30">1:30 PM</option>
-                            <option value="14:00">2:00 PM</option>
-                            <option value="14:30">2:30 PM</option>
-                            <option value="15:00">3:00 PM</option>
-                            <option value="15:30">3:30 PM</option>
-                            <option value="16:00">4:00 PM</option>
-                            <option value="16:30">4:30 PM</option>
-                            <option value="17:00">5:00 PM</option>
-                            <option value="17:30">5:30 PM</option>
-                            <option value="18:00">6:00 PM</option>
-                            <option value="18:30">6:30 PM</option>
-                            <option value="19:00">7:00 PM</option>
-                            <option value="19:30">7:30 PM</option>
-                            <option value="20:00" selected>8:00 PM</option>
-                        </select>
+                    <div class="workshop-results" id="workshopResults" style="display: none;">
+                        <div class="workshop-results-head">
+                            <h3>Best times</h3>
+                            <button type="button" class="secondary-btn" id="downloadCsvRecommendations" style="display: none;">Download all times (CSV)</button>
+                        </div>
+                        <div class="results-content" id="resultsContent"></div>
                     </div>
-                    
-                    <div class="workshop-input-group">
-                        <button type="button" class="find-workshops-btn" id="findWorkshops">Find Best Workshop Times</button>
-                    </div>
-                </div>
-                
-                <div class="advanced-settings">
-                    <button type="button" class="advanced-toggle" id="advancedToggle">
-                        Advanced Settings <span class="dropdown-arrow">▼</span>
-                    </button>
-                    <div class="advanced-content" id="advancedContent">
-
-
-                        <!-- Conflict Score Settings -->
-                        <div class="advanced-section">
-                            <h4>Conflict Score Values
-                                <span class="info-icon">i
-                                    <div class="info-tooltip">Lower scores are better. These values are added together for each conflicting course during your workshop time. Customize these to reflect the importance of avoiding different types of conflicts.</div>
-                                </span>
-                            </h4>
-                            <div class="score-grid">
-                                <div class="score-input-group">
-                                    <label>Non-priority Tutorial/Lab/Other:</label>
-                                    <input type="number" id="scoreNonPriorityOther" min="0" max="100" value="1" />
-                                </div>
-                                <div class="score-input-group">
-                                    <label>Non-priority Lecture:</label>
-                                    <input type="number" id="scoreNonPriorityLecture" min="0" max="100" value="5" />
-                                </div>
-                                <div class="score-input-group">
-                                    <label>Priority Tutorial/Lab/Other:</label>
-                                    <input type="number" id="scorePriorityOther" min="0" max="100" value="3" />
-                                </div>
-                                <div class="score-input-group">
-                                    <label>Priority Lecture:</label>
-                                    <input type="number" id="scorePriorityLecture" min="0" max="100" value="20" />
-                                </div>
-                            </div>
+                    <div class="scoring-explanation" id="scoringExplanation" style="display: none;">
+                        <h4>How scores add up</h4>
+                        <div class="scoring-details">
+                            <ul>
+                                <li><span class="score-badge np-other">+1</span> Tutorial or lab</li>
+                                <li><span class="score-badge np-lecture">+5</span> Lecture</li>
+                                <li><span class="score-badge p-other">+3</span> Avoid-most tutorial or lab</li>
+                                <li><span class="score-badge p-lecture">+20</span> Avoid-most lecture</li>
+                            </ul>
+                            <p>Each overlapping section counts once. Two tutorials and one avoid-most lecture score 1 + 1 + 20 = <strong>22</strong>. Defaults shown; change them in Advanced settings.</p>
                         </div>
-
-                        <!-- Lunch Avoidance -->
-                        <div class="advanced-section">
-                            <h4>Lunch Time Avoidance
-                                <span class="info-icon">i
-                                    <div class="info-tooltip">Adds penalty points for workshop times that overlap with typical lunch hours. Even online students often prefer to maintain regular meal schedules.</div>
-                                </span>
-                            </h4>
-                            <div class="checkbox-group">
-                                <input type="checkbox" id="avoidLunch">
-                                <label for="avoidLunch">Avoid scheduling during lunch hours</label>
-                            </div>
-                            <div class="time-range-group">
-                                <label>Lunch period:</label>
-                                <select id="lunchStartTime">
-                                    <option value="11:15">11:15 AM</option>
-                                    <option value="11:30">11:30 AM</option>
-                                    <option value="11:45">11:45 AM</option>
-                                    <option value="12:00" selected>12:00 PM</option>
-                                    <option value="12:15">12:15 PM</option>
-                                    <option value="12:30">12:30 PM</option>
-                                    <option value="12:45">12:45 PM</option>
-                                    <option value="13:00">1:00 PM</option>
-                                </select>
-                                <label>to</label>
-                                <select id="lunchEndTime">
-                                    <option value="12:45">12:45 PM</option>
-                                    <option value="13:00">1:00 PM</option>
-                                    <option value="13:15">1:15 PM</option>
-                                    <option value="13:30" selected>1:30 PM</option>
-                                    <option value="13:45">1:45 PM</option>
-                                    <option value="14:00">2:00 PM</option>
-                                    <option value="14:15">2:15 PM</option>
-                                    <option value="14:30">2:30 PM</option>
-                                </select>
-                                <label>Lunch penalty score:</label>
-                                <input type="number" id="lunchPenalty" min="0" max="1000" value="50" style="width: 80px; padding: 6px 8px; border: 2px solid #e9ecef; border-radius: 6px; font-size: 13px;" />
-                            </div>
-                        </div>
-
-                        <!-- Per-Day Time Settings -->
-                        <div class="advanced-section">
-                            <h4>Day-Specific Time Ranges
-                                <span class="info-icon">i
-                                    <div class="info-tooltip">Set different available time windows for each day of the week. Useful if certain days have different course loads or student availability patterns.</div>
-                                </span>
-                            </h4>
-                            <div class="checkbox-group">
-                                <input type="checkbox" id="enableDaySpecific">
-                                <label for="enableDaySpecific">Use different time ranges for each day</label>
-                            </div>
-                            <div class="day-time-config" id="dayTimeConfig" style="display: none;">
-                                <div class="day-config">
-                                    <h5>Monday</h5>
-                                    <div class="time-range-group">
-                                        <select id="mondayStart">
-                                            <!-- Options will be populated by JS -->
-                                        </select>
-                                        <label>to</label>
-                                        <select id="mondayEnd">
-                                            <!-- Options will be populated by JS -->
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="day-config">
-                                    <h5>Tuesday</h5>
-                                    <div class="time-range-group">
-                                        <select id="tuesdayStart"></select>
-                                        <label>to</label>
-                                        <select id="tuesdayEnd"></select>
-                                    </div>
-                                </div>
-                                <div class="day-config">
-                                    <h5>Wednesday</h5>
-                                    <div class="time-range-group">
-                                        <select id="wednesdayStart"></select>
-                                        <label>to</label>
-                                        <select id="wednesdayEnd"></select>
-                                    </div>
-                                </div>
-                                <div class="day-config">
-                                    <h5>Thursday</h5>
-                                    <div class="time-range-group">
-                                        <select id="thursdayStart"></select>
-                                        <label>to</label>
-                                        <select id="thursdayEnd"></select>
-                                    </div>
-                                </div>
-                                <div class="day-config">
-                                    <h5>Friday</h5>
-                                    <div class="time-range-group">
-                                        <select id="fridayStart"></select>
-                                        <label>to</label>
-                                        <select id="fridayEnd"></select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Extended Conflict Buffer -->
-                        <div class="advanced-section">
-                            <h4>Conflict Buffers
-                                <span class="info-icon">i
-                                    <div class="info-tooltip">Adds time buffers before and after existing courses to prevent back-to-back scheduling. Helps students transition between activities and reduces stress from tight schedules.</div>
-                                </span>
-                            </h4>
-                            <p style="color: #5B6770; font-size: 13px; margin-bottom: 15px;">Add buffer time before/after existing classes to avoid back-to-back scheduling conflicts.</p>
-                            <div class="checkbox-group">
-                                <input type="checkbox" id="enableBuffer">
-                                <label for="enableBuffer">Enable conflict buffers</label>
-                            </div>
-                            <div class="advanced-section-grid">
-                                <div class="buffer-input-group">
-                                    <label>Before lectures:</label>
-                                    <input type="number" id="bufferBeforeLecture" min="0" max="120" step="15" value="0" />
-                                    <label>minutes</label>
-                                </div>
-                                <div class="buffer-input-group">
-                                    <label>After lectures:</label>
-                                    <input type="number" id="bufferAfterLecture" min="0" max="120" step="15" value="0" />
-                                    <label>minutes</label>
-                                </div>
-                                <div class="buffer-input-group">
-                                    <label>Before other classes:</label>
-                                    <input type="number" id="bufferBeforeOther" min="0" max="120" step="15" value="0" />
-                                    <label>minutes</label>
-                                </div>
-                                <div class="buffer-input-group">
-                                    <label>After other classes:</label>
-                                    <input type="number" id="bufferAfterOther" min="0" max="120" step="15" value="0" />
-                                    <label>minutes</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Enrollment-Based Weighting -->
-                        <div class="advanced-section">
-                            <h4>Enrollment-Based Scoring
-                                <span class="info-icon">i
-                                    <div class="info-tooltip">Multiplies conflict scores by actual enrollment numbers from your CSV data. Higher enrollment courses get higher penalties, helping minimize impact on the most students.</div>
-                                </span>
-                            </h4>
-                            <p style="color: #5B6770; font-size: 13px; margin-bottom: 15px;">Weight conflicts based on actual student enrollment from CSV data to minimize impact on the most students.</p>
-                            <div class="checkbox-group">
-                                <input type="checkbox" id="enableEnrollmentWeighting">
-                                <label for="enableEnrollmentWeighting">Apply enrollment-based weighting</label>
-                            </div>
-                            <div class="advanced-section-grid">
-                                <div class="score-input-group">
-                                    <label>Fallback enrollment (1st year courses):</label>
-                                    <input type="number" id="baseEnrollmentFirst" min="10" max="500" value="200" />
-                                </div>
-                                <div class="score-input-group">
-                                    <label>Fallback enrollment (2nd+ year courses):</label>
-                                    <input type="number" id="baseEnrollmentUpper" min="10" max="500" value="100" />
-                                </div>
-                                <div class="score-input-group">
-                                    <label>Lecture enrollment multiplier (fallback):</label>
-                                    <input type="number" id="lectureEnrollmentMultiplier" min="0.1" max="5" step="0.1" value="1.0" />
-                                </div>
-                                <div class="score-input-group">
-                                    <label>Tutorial/Lab enrollment fraction (fallback):</label>
-                                    <input type="number" id="tutorialEnrollmentFraction" min="0.1" max="1" step="0.1" value="0.3" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Results Display Settings -->
-                        <div class="advanced-section">
-                            <h4>Results Display</h4>
-                            <div class="score-input-group">
-                                <label>Number of recommended time slots:</label>
-                                <input type="number" id="numRecommendations" min="1" max="50" value="10" />
-                            </div>
-                        </div>
-
-                        <button type="button" class="reset-defaults-btn" id="resetDefaults">
-                            Reset to Default Settings
-                        </button>
                     </div>
                 </div>
             </div>
-            
-            <div class="workshop-results" id="workshopResults" style="display: none;">
-                <h3>Recommended Workshop Times</h3>
-                <div style="margin: 10px 0 15px 0;">
-                    <button type="button" class="find-workshops-btn" id="downloadCsvRecommendations" style="display: none;">Download Recommended Times (CSV)</button>
-                </div>
-                <div class="results-content" id="resultsContent">
-                    <!-- Results will be populated here -->
-                </div>
-            </div>
-            
-            <div class="scoring-explanation" id="scoringExplanation" style="display: none;">
-                <h4>How Conflict Scores Are Calculated</h4>
-                <div class="scoring-details">
-                    <p><strong>Lower scores = better workshop times!</strong> Each course running during a potential workshop time adds points:</p>
-                    <ul>
-                        <li><span class="score-badge np-other">+1</span> <strong>Non-priority Tutorial/Lab/Other</strong></li>
-                        <li><span class="score-badge np-lecture">+5</span> <strong>Non-priority Lecture</strong></li>
-                        <li><span class="score-badge p-other">+3</span> <strong>Priority Tutorial/Lab/Other</strong></li>
-                        <li><span class="score-badge p-lecture">+20</span> <strong>Priority Lecture</strong></li>
-                    </ul>
-                    <p><em><strong>Priority courses</strong> are those you've specifically selected above. The algorithm finds workshop times that minimize total conflict points across your entire workshop duration.</em></p>
-                    <p><em><strong>Example:</strong> A time slot with 2 non-priority tutorials (2 points) + 1 priority lecture (20 points) = 22 total points.</em></p>
-                </div>
-            </div>
-        </div>
-        <footer class="site-footer">
-            <span>Ontario Tech University</span>
-            <span>All processing happens in your browser; no course data is uploaded.</span>
-        </footer>
+        </section>
     </div>
 
+    <footer class="site-footer">
+        <span>Ontario Tech University</span>
+        <span>Your file is read in this browser and never uploaded.</span>
+    </footer>
+
+    <div id="status" role="status" aria-live="polite"></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js?v=2"></script>
     <script>
         let courseData = [];
@@ -2845,9 +873,9 @@
             uploadArea.classList.remove('dragover');
             
             const files = e.dataTransfer.files;
-            if (files.length > 0 && files[0].type === 'text/csv') {
+            if (files.length > 0 && files[0].name.toLowerCase().endsWith('.csv')) {
                 csvFileInput.files = files;
-                handleFileUpload();
+                handleFileUpload({ target: csvFileInput });
             }
         });
 
@@ -2897,16 +925,8 @@
             // Clear the timetable
             const container = document.querySelector('.timetable-container');
             if (container) {
-                container.innerHTML = `
-                    <div class="no-data" id="noData">
-                        <h3>Ready to create your timetable</h3>
-                        <p>Upload a CSV file with your course data to get started.</p>
-                        <br>
-                        <p><strong>Expected CSV format (your scheduling system):</strong></p>
-                        <p>Headers: Subject, Course Number, Sec, Day, BTime, Duration, Room, Faculty Name</p>
-                        <p><em>The tool will automatically combine Subject + Course Number (e.g., MATH + 1010U = MATH1010U)</em></p>
-                    </div>
-                `;
+                container.innerHTML = emptyStateHTML('Your week will appear here', 'Load the Scheduling Summary Report CSV on the left, then choose the courses you want to see.');
+                const sum = document.getElementById('ttSummary'); if (sum) sum.textContent = 'Load a report to see the week.';
             }
             
             // Hide workshop scheduler
@@ -3824,15 +1844,8 @@
         
         function updateTimeBlockButtonUI() {
             const button = document.getElementById('timeBlockToggleBtn');
-            const status = document.querySelector('.time-block-status');
-            
-            if (use30MinBlocks) {
-                button.textContent = 'Change to 15-min blocks';
-                status.textContent = '(Currently 30-min blocks)';
-            } else {
-                button.textContent = 'Change to 30-min blocks';
-                status.textContent = '(Currently 15-min blocks)';
-            }
+            button.textContent = use30MinBlocks ? '30-min rows' : '15-min rows';
+            button.title = use30MinBlocks ? 'Switch to 15-minute rows' : 'Switch to 30-minute rows';
         }
 
         function handleAdvancedToggle() {
@@ -4443,7 +2456,8 @@
             const explanationDiv = document.getElementById('scoringExplanation');
 
             if (opportunities.length === 0) {
-                contentDiv.innerHTML = '<div style="text-align: center; color: #5B6770; padding: 20px;">No suitable time slots found. Try adjusting your parameters.</div>';
+                contentDiv.innerHTML = '<div class="results-empty"><h3>No times fit</h3><p>The window is shorter than the workshop, or the earliest start is after the finish time. Widen the window or shorten the workshop.</p></div>';
+                const emptyEl = document.getElementById('resultsEmpty'); if (emptyEl) emptyEl.style.display = 'none';
                 resultsDiv.style.display = 'block';
                 explanationDiv.style.display = 'block';
                 return;
@@ -4489,21 +2503,26 @@
 
                 tooltipContent += '</div>';
                 
+                const level = opp.totalScore === 0 ? 'none' : opp.totalScore < 5 ? 'low' : opp.totalScore < 15 ? 'medium' : 'high';
+                const levelLabel = { none: 'No clashes', low: 'Low', medium: 'Medium', high: 'High' }[level];
+                const sMin = minutesOf(opp.startTime);
+                const left = Math.max(0, (sMin - 480) / 720 * 100);
+                const width = Math.min(100 - left, duration / 720 * 100);
                 html += `
-                    <div class="result-item">
+                    <div class="result-item${index === 0 ? ' is-best' : ''}" tabindex="0">
                         ${tooltipContent}
-                        <div class="result-header">
-                            #${ranking} - ${opp.day}, ${startTimeFormatted} - ${endTimeFormatted}
-                            <span class="conflict-score">Score: ${opp.totalScore}</span>
+                        <div class="result-rank">${ranking}</div>
+                        <div class="result-main">
+                            <div class="result-header">${opp.day}, ${clockOf(sMin)} – ${clockOf(sMin + duration)}</div>
+                            <div class="result-track" aria-hidden="true"><span style="left:${left}%;width:${width}%"></span></div>
                         </div>
-                        <div class="result-details">
-                            Duration: ${duration} minutes | Conflict Level: ${opp.totalScore === 0 ? 'None' : opp.totalScore < 5 ? 'Low' : opp.totalScore < 15 ? 'Medium' : 'High'}
-                        </div>
+                        <div class="result-score level-${level}"><span class="conflict-score">${opp.totalScore}</span><small>${levelLabel}</small></div>
                     </div>
                 `;
             });
 
             contentDiv.innerHTML = html;
+            const emptyEl = document.getElementById('resultsEmpty'); if (emptyEl) emptyEl.style.display = 'none';
             resultsDiv.style.display = 'block';
             explanationDiv.style.display = 'block';
         }
@@ -5701,200 +3720,222 @@
             }
         }
 
+        function escHTML(s) {
+            return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        }
+
+        function emptyStateHTML(title, body) {
+            return `<div class="no-data" id="noData">
+                <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="6" y="10" width="52" height="46" rx="6" fill="none" stroke="currentColor" stroke-width="3"/><path d="M6 22h52M20 5v10M44 5v10" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+                <h3>${title}</h3><p>${body}</p></div>`;
+        }
+
+        function minutesOf(t) { const [h, m] = t.split(':').map(Number); return h * 60 + m; }
+        function clockOf(min) {
+            return formatDisplayTime(`${String(Math.floor(min / 60)).padStart(2, '0')}:${String(min % 60).padStart(2, '0')}`);
+        }
+        function shortClock(min) {
+            const h = Math.floor(min / 60), m = min % 60;
+            const h12 = h > 12 ? h - 12 : h;
+            return m ? `${h12}:${String(m).padStart(2, '0')}` : `${h12}`;
+        }
+        function typeLabel(t) { return t.charAt(0).toUpperCase() + t.slice(1); }
+        // The report's start times are stored 10 minutes early (aligned to the grid);
+        // the real class runs from start + 10 to start + duration.
+        function realInterval(entry) {
+            const s = minutesOf(entry.startTime);
+            return [s + 10, s + entry.duration];
+        }
+
         function renderTimetable(data) {
-            console.log('Rendering timetable with data length:', data.length);
-            
             const container = document.querySelector('.timetable-container');
-            const noDataDiv = document.getElementById('noData');
+            const summary = document.getElementById('ttSummary');
+            const legend = document.getElementById('legendKey');
 
             if (data.length === 0) {
-                console.log('No data to render');
-                container.innerHTML = '<div class="no-data"><h3>No courses match your filter</h3><p>Try adjusting your course filter or upload a different CSV file.</p></div>';
+                container.innerHTML = emptyStateHTML('No classes match your selection',
+                    'Check the course codes, or clear the selection to show every course in the file.');
+                if (summary) summary.textContent = 'No classes to show.';
                 return;
             }
 
-            if (noDataDiv) noDataDiv.style.display = 'none';
+            const isCompact = document.getElementById('compactToggle').checked;
+            const step = use30MinBlocks ? 30 : 15;
+            let minS = 8 * 60, maxF = 17 * 60;
+            data.forEach(e => { const [s0, f0] = realInterval(e); minS = Math.min(minS, s0); maxF = Math.max(maxF, f0); });
+            const DAY_START = Math.max(6 * 60, Math.floor(minS / 60) * 60);
+            const DAY_END = Math.min(22 * 60, Math.ceil(maxF / 60) * 60);
+            const courseCount = new Set(data.map(d => d.course)).size;
+            if (summary) {
+                summary.textContent = `${courseCount} course${courseCount === 1 ? '' : 's'}, ${data.length} weekly class meeting${data.length === 1 ? '' : 's'}`;
+            }
+            if (legend) legend.style.visibility = isCompact ? 'hidden' : 'visible';
 
-            console.log('Building schedule grid...');
-
-            // Create timetable structure
-            let html = '<table class="timetable"><thead><tr>';
-            html += '<th class="time-header">Time</th>';
-            
-            days.forEach(day => {
-                html += `<th class="day-header">${day}</th>`;
-            });
-            
-            html += '</tr></thead><tbody>';
-
-            // Create schedule grid
-            const schedule = {};
-            days.forEach(day => {
-                schedule[day] = {};
-                timeSlots.forEach(time => {
-                    schedule[day][time] = [];
-                });
+            const byDay = {};
+            days.forEach(d => byDay[d] = []);
+            data.forEach(e => {
+                if (!byDay[e.day]) return;
+                const [s, f] = realInterval(e);
+                if (f <= DAY_START || s >= DAY_END) return;
+                byDay[e.day].push({ e, s: Math.max(s, DAY_START), f: Math.min(f, DAY_END), rs: s, rf: f });
             });
 
-            // Populate schedule with course data
-            let placedCourses = 0;
-            data.forEach(entry => {
-                console.log('Processing entry:', entry);
-                
-                if (schedule[entry.day]) {
-                    const startSlot = findTimeSlot(entry.startTime);
-                    console.log(`Looking for time slot for ${entry.startTime}, found slot index: ${startSlot}`);
-                    
-                    if (startSlot !== -1) {
-                        // Calculate how many time slots this class spans based on current time block setting
-                        const timeBlockMinutes = use30MinBlocks ? 30 : 15;
-                        const durationSlots = Math.ceil(entry.duration / timeBlockMinutes);
-                        console.log(`Class duration: ${entry.duration} minutes = ${durationSlots} ${timeBlockMinutes}-minute slots`);
-                        
-                        // Place the class in all time slots it spans
-                        for (let i = 0; i < durationSlots && (startSlot + i) < timeSlots.length; i++) {
-                            const timeKey = timeSlots[startSlot + i];
-                            console.log(`Placing ${entry.course} in ${entry.day} at ${timeKey} (slot ${i + 1} of ${durationSlots})`);
-                            
-                            if (schedule[entry.day][timeKey]) {
-                                // Create a copy of the entry with span info for styling
-                                const entryWithSpan = {
-                                    ...entry,
-                                    isFirstSlot: i === 0,
-                                    totalSlots: durationSlots,
-                                    slotIndex: i
-                                };
-                                schedule[entry.day][timeKey].push(entryWithSpan);
-                                if (i === 0) placedCourses++; // Only count once per class
-                            }
-                        }
-                    } else {
-                        console.log(`Could not find time slot for ${entry.startTime}`);
-                    }
-                } else {
-                    console.log(`Day ${entry.day} not found in schedule`);
-                }
-            });
-
-            console.log(`Placed ${placedCourses} courses in schedule`);
-
-            // Generate table rows
-            timeSlots.forEach(time => {
-                html += '<tr>';
-                html += `<td class="time-slot">${formatDisplayTime(time)}</td>`;
-                
-                days.forEach(day => {
-                    const classes = schedule[day][time] || [];
-                    html += '<td class="schedule-cell">';
-                    
-                    const isCompact = document.getElementById('compactToggle').checked;
-                    
-                    if (isCompact) {
-                        // In compact mode, count unique courses running during this time slot
-                        const lectureCoursesSet = new Set();
-                        const nonLectureCoursesSet = new Set();
-                        
-                        classes.forEach(cls => {
-                            // Count unique courses running at this time
-                            if (cls.type === 'lecture') {
-                                lectureCoursesSet.add(cls.course);
-                            } else {
-                                nonLectureCoursesSet.add(cls.course);
-                            }
+            if (isCompact) {
+                // Density view: distinct courses meeting in each slot
+                const slots = [];
+                for (let t = DAY_START; t < DAY_END; t += step) slots.push(t);
+                const counts = {};
+                let max = 1;
+                days.forEach(d => {
+                    counts[d] = slots.map(t => {
+                        const lec = new Set(), oth = new Set();
+                        byDay[d].forEach(ev => {
+                            if (ev.s < t + step && ev.f > t) (ev.e.type === 'lecture' ? lec : oth).add(ev.e.course);
                         });
-                        
-                        const lectureCount = lectureCoursesSet.size;
-                        const nonLectureCount = nonLectureCoursesSet.size;
-                        
-                        // Render lecture group (red) - only if there are lectures
-                        if (lectureCount > 0) {
-                            const displayText = lectureCount > 1 ? `(${lectureCount})` : '';
-                            const tooltipCourses = Array.from(lectureCoursesSet).join(', ');
-                            
-                            html += `<div class="class-block lecture" title="Lectures: ${tooltipCourses}">`;
-                            html += displayText;
-                            html += '</div>';
-                        }
-                        
-                        // Render ALL non-lectures as one group (yellow) - only if there are non-lectures
-                        if (nonLectureCount > 0) {
-                            const displayText = nonLectureCount > 1 ? `(${nonLectureCount})` : '';
-                            const tooltipCourses = Array.from(nonLectureCoursesSet).join(', ');
-                            
-                            html += `<div class="class-block tutorial" title="Non-lectures: ${tooltipCourses}">`;
-                            html += displayText;
-                            html += '</div>';
-                        }
-                        
-                    } else {
-                        // Normal mode - show individual courses
-                        classes.forEach(cls => {
-                            const typeClass = cls.type;
-                            
-                            // Only show the full block for the first slot of multi-slot classes
-                            if (!cls.isFirstSlot) {
-                                // For continuation slots, show a subtle continuation indicator
-                                html += `<div class="class-block ${typeClass} continuation">`;
-                                html += `<span class="class-info">↑ ${cls.course}</span>`;
-                            } else {
-                                // For the first slot, show full info WITHOUT adjusting height for spanning
-                                html += `<div class="class-block ${typeClass}" title="${cls.course} - ${cls.type}${cls.sectionTitle ? ': ' + cls.sectionTitle : ''}${cls.location ? ' at ' + cls.location : ''}${cls.instructor ? ' with ' + cls.instructor : ''}">`;
-                                html += `<div>${cls.course}</div>`;
-                                html += `<span class="class-info">${cls.type.toUpperCase()}</span>`;
-                                
-                                if (cls.location) {
-                                    html += `<span class="class-info">${cls.location}</span>`;
-                                }
-                                // Always show duration, subtract 10 minutes for display
-                                const displayDuration = Math.max(cls.duration - 10, 0);
-                                html += `<span class="class-info">${displayDuration}min</span>`;
-                                
-                                // Only show instructor for lectures (red boxes)
-                                if (cls.type === 'lecture') {
-                                    // Format instructor name as "F LAST" or "NO INSTR"
-                                    // Handle "LAST, FIRST" format from CSV
-                                    let instructorDisplay = "NO INSTR";
-                                    if (cls.instructor && cls.instructor.trim()) {
-                                        const instructorStr = cls.instructor.trim();
-                                        if (instructorStr.includes(',')) {
-                                            // Handle "LAST, FIRST" format
-                                            const parts = instructorStr.split(',').map(p => p.trim());
-                                            if (parts.length >= 2 && parts[1]) {
-                                                const lastName = parts[0];
-                                                const firstNameInitial = parts[1].charAt(0);
-                                                instructorDisplay = `${firstNameInitial} ${lastName}`.toUpperCase();
-                                            } else {
-                                                instructorDisplay = parts[0].toUpperCase();
-                                            }
-                                        } else {
-                                            // Handle single name or "FIRST LAST" format
-                                            const nameParts = instructorStr.split(/\s+/);
-                                            if (nameParts.length >= 2) {
-                                                const firstNameInitial = nameParts[0].charAt(0);
-                                                const lastName = nameParts[nameParts.length - 1];
-                                                instructorDisplay = `${firstNameInitial} ${lastName}`.toUpperCase();
-                                            } else {
-                                                instructorDisplay = nameParts[0].toUpperCase();
-                                            }
-                                        }
-                                    }
-                                    html += `<span class="class-info">${instructorDisplay}</span>`;
-                                }
-                            }
-                            html += '</div>';
-                        });
-                    }
-                    
-                    html += '</td>';
+                        const all = new Set([...lec, ...oth]);
+                        max = Math.max(max, all.size);
+                        return { lec, oth, all };
+                    });
                 });
-                
-                html += '</tr>';
+                let html = '<div class="heat"><div class="heat-h"></div>';
+                days.forEach(d => html += `<div class="heat-h">${d}</div>`);
+                slots.forEach((t, i) => {
+                    html += `<div class="heat-t${i === 0 ? ' first' : ''}">${t % 60 === 0 ? clockOf(t) : ''}</div>`;
+                    days.forEach(d => {
+                        const c = counts[d][i];
+                        const n = c.all.size;
+                        if (n === 0) { html += `<div class="heat-c zero" title="${d} ${clockOf(t)}: free"></div>`; return; }
+                        const r = n / max;
+                        const alpha = (0.12 + 0.88 * r).toFixed(2);
+                        const fg = r > 0.45 ? '#FFFFFF' : '#00283C';
+                        const tip = `${d} ${clockOf(t)}\nLectures: ${[...c.lec].join(', ') || 'none'}\nOther: ${[...c.oth].join(', ') || 'none'}`;
+                        const note = c.lec.size ? `<span class="lec-note">${c.lec.size} lec</span>` : '<span></span>';
+                        html += `<div class="heat-c" style="background:rgba(0,60,113,${alpha});color:${fg}" title="${escHTML(tip)}"><span>${n}</span>${note}</div>`;
+                    });
+                });
+                html += '</div><div class="heat-legend"><span>Fewer courses</span><span class="ramp"></span><span>More courses (busiest: ' + max + ')</span></div>';
+                container.innerHTML = html;
+                return;
+            }
+
+            // Merge parallel sections: same course, type and times on the same day
+            const groupsByDay = {};
+            let maxLanes = 1;
+            days.forEach(d => {
+                const m = new Map();
+                byDay[d].forEach(ev => {
+                    const k = `${ev.e.course}|${ev.e.type}|${ev.rs}|${ev.rf}`;
+                    if (!m.has(k)) m.set(k, { e: ev.e, s: ev.s, f: ev.f, rs: ev.rs, rf: ev.rf, secs: [] });
+                    m.get(k).secs.push(ev.e);
+                });
+                const evs = [...m.values()].sort((a, b) => a.s - b.s || b.f - a.f || a.e.course.localeCompare(b.e.course));
+                let cur = null, curEnd = -1;
+                const clusters = [];
+                evs.forEach(ev => {
+                    if (!cur || ev.s >= curEnd) { cur = []; clusters.push(cur); curEnd = ev.f; }
+                    else curEnd = Math.max(curEnd, ev.f);
+                    cur.push(ev);
+                });
+                clusters.forEach(cl => {
+                    const laneEnds = [];
+                    cl.forEach(ev => {
+                        let lane = laneEnds.findIndex(f => f <= ev.s);
+                        if (lane === -1) { lane = laneEnds.length; laneEnds.push(ev.f); } else laneEnds[lane] = ev.f;
+                        ev.lane = lane;
+                    });
+                    cl.forEach(ev => ev.lanes = laneEnds.length);
+                    maxLanes = Math.max(maxLanes, laneEnds.length);
+                });
+                groupsByDay[d] = evs;
             });
 
-            html += '</tbody></table>';
-            container.innerHTML = html;
-            
-            console.log('Timetable rendered successfully');
+            const sectionWord = n => `${n} section${n === 1 ? '' : 's'}`;
+            const tipFor = (d, g) => {
+                const e = g.e;
+                const lines = [`${e.course} ${typeLabel(e.type)}${g.secs.length > 1 ? ', ' + sectionWord(g.secs.length) : ''}`, e.sectionTitle, `${d} ${clockOf(g.rs)} – ${clockOf(g.rf)}`];
+                g.secs.slice(0, 10).forEach(x => {
+                    const bits = [x.crn && `CRN ${x.crn}`, x.location && `room ${x.location}`, x.instructor].filter(Boolean);
+                    if (bits.length) lines.push(bits.join(', '));
+                });
+                if (g.secs.length > 10) lines.push(`and ${g.secs.length - 10} more`);
+                return lines.filter(Boolean).join('\n');
+            };
+            const shortName = name => {
+                const parts = String(name || '').split(',').map(p => p.trim());
+                return parts.length >= 2 && parts[1] ? `${parts[1].charAt(0)}. ${parts[0]}` : (name || '');
+            };
+            const detailLine = g => {
+                if (g.secs.length > 1) return `${typeLabel(g.e.type)}, ${sectionWord(g.secs.length)}`;
+                return `${typeLabel(g.e.type)}${g.e.location ? ' in ' + g.e.location : ''}`;
+            };
+
+            let head = '<div class="cal-head"><div></div>';
+            days.forEach(d => {
+                const n = byDay[d].length;
+                head += `<div class="day-header">${d}<span class="day-count">${n} meeting${n === 1 ? '' : 's'}</span></div>`;
+            });
+            head += '</div>';
+
+            // Will the busiest moment fit side by side? If not, list classes by start hour.
+            const avail = (container.clientWidth || 1000) - 62;
+            const colW = Math.max(avail, 760 - 62) / 5;
+            const fits = (colW - 4) / maxLanes >= 84;
+
+            if (!fits) {
+                const hours = new Set();
+                days.forEach(d => groupsByDay[d].forEach(g => hours.add(Math.floor(g.rs / 60))));
+                const sorted = [...hours].sort((a, b) => a - b);
+                let body = '';
+                sorted.forEach(h => {
+                    body += `<div class="ag-time">${clockOf(h * 60)}</div>`;
+                    days.forEach(d => {
+                        const items = groupsByDay[d].filter(g => Math.floor(g.rs / 60) === h)
+                            .sort((a, b) => a.rs - b.rs || (a.e.type === 'lecture' ? -1 : 1) - (b.e.type === 'lecture' ? -1 : 1) || a.e.course.localeCompare(b.e.course));
+                        let cell = '';
+                        items.forEach(g => {
+                            const isLec = g.e.type === 'lecture';
+                            const n = g.secs.length;
+                            cell += `<div class="ag-chip ${isLec ? 'lecture' : 'other'}" data-course="${escHTML(g.e.course)}" title="${escHTML(tipFor(d, g))}">`
+                                + `<div class="ag-top"><strong>${escHTML(g.e.course)}</strong>${n > 1 ? `<span class="ag-n">${n} sections</span>` : ''}</div>`
+                                + `<div class="ag-meta">${escHTML(typeLabel(g.e.type))}, ${shortClock(g.rs)}–${shortClock(g.rf)}</div>`
+                                + '</div>';
+                        });
+                        body += `<div class="ag-cell">${cell}</div>`;
+                    });
+                });
+                container.innerHTML = `<div class="ag-note">Too many classes overlap to draw to scale, so they're listed by the hour they start. Hover over a class for its sections, rooms and instructors.</div>`
+                    + `<div class="cal agenda">${head}<div class="ag-body">${body}</div></div>`;
+                return;
+            }
+
+            const ppm = use30MinBlocks ? 1.25 : 1.9;
+            const height = (DAY_END - DAY_START) * ppm;
+            let gutter = `<div class="cal-gutter" style="height:${height}px">`;
+            for (let t = DAY_START + 60; t < DAY_END; t += 60) {
+                gutter += `<span style="top:${(t - DAY_START) * ppm}px">${clockOf(t)}</span>`;
+            }
+            gutter += '</div>';
+
+            let cols = '';
+            days.forEach(d => {
+                let blocks = '';
+                groupsByDay[d].forEach(g => {
+                    const e = g.e;
+                    const isLec = e.type === 'lecture';
+                    const top = (g.s - DAY_START) * ppm;
+                    const h = Math.max((g.f - g.s) * ppm - 2, 16);
+                    const inst = isLec && g.secs.length === 1 ? shortName(e.instructor) : '';
+                    blocks += `<div class="class-block ${isLec ? 'lecture' : 'other'}" data-course="${escHTML(e.course)}" style="top:${top}px;height:${h}px;left:calc(${g.lane} * (100% - 4px) / ${g.lanes} + 2px);width:calc((100% - 4px) / ${g.lanes} - 2px)" title="${escHTML(tipFor(d, g))}">`
+                        + `<strong>${escHTML(e.course)}</strong>`
+                        + `<span class="ev-line">${escHTML(detailLine(g))}</span>`
+                        + `<span class="ev-line">${shortClock(g.rs)}–${shortClock(g.rf)}</span>`
+                        + (inst ? `<span class="ev-line">${escHTML(inst)}</span>` : '')
+                        + '</div>';
+                });
+                cols += `<div class="cal-day" style="height:${height}px;--step:${step}">${blocks}</div>`;
+            });
+
+            container.innerHTML = `<div class="cal" style="--ppm:${ppm}px">${head}<div class="cal-body">${gutter}${cols}</div></div>`;
         }
 
         function findTimeSlot(time) {
@@ -5907,6 +3948,47 @@
             const displayHours = hours > 12 ? hours - 12 : (hours === 0 ? 12 : hours);
             return `${displayHours}:${minutes.toString().padStart(2, '0')} ${period}`;
         }
+
+        // View switch (Classes / Density) drives the existing compact toggle
+        document.querySelectorAll('input[name="viewMode"]').forEach(r => {
+            r.addEventListener('change', () => {
+                const dense = r.value === 'density' && r.checked;
+                document.getElementById('compactToggle').checked = dense;
+                document.getElementById('viewClasses').classList.toggle('on', !dense);
+                document.getElementById('viewDensity').classList.toggle('on', dense);
+                handleCompactToggle();
+            });
+        });
+        // Hovering a course tag highlights that course in the timetable
+        (function () {
+            const tags = document.getElementById('selectedCourses');
+            const tt = document.querySelector('.timetable-container');
+            const on = code => {
+                tt.classList.add('hl');
+                tt.querySelectorAll('[data-course]').forEach(el => el.classList.toggle('hl-on', el.dataset.course === code));
+            };
+            const off = () => { tt.classList.remove('hl'); tt.querySelectorAll('.hl-on').forEach(el => el.classList.remove('hl-on')); };
+            tags.addEventListener('mouseover', e => { const b = e.target.closest('.course-bubble'); if (b) on(b.dataset.course); });
+            tags.addEventListener('mouseleave', off);
+            tags.addEventListener('focusin', e => { const b = e.target.closest('.course-bubble'); if (b) on(b.dataset.course); });
+            tags.addEventListener('focusout', off);
+        })();
+        // Re-check whether classes fit side by side when the window changes size
+        (function () {
+            let t = null, lastW = window.innerWidth;
+            window.addEventListener('resize', () => {
+                clearTimeout(t);
+                t = setTimeout(() => {
+                    if (Math.abs(window.innerWidth - lastW) < 40) return;
+                    lastW = window.innerWidth;
+                    if (typeof courseData !== 'undefined' && courseData.length) filterAndRenderTimetable();
+                }, 200);
+            });
+        })();
+        // Keyboard access for the upload box
+        uploadArea.addEventListener('keydown', e => {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); csvFileInput.click(); }
+        });
     </script>
 </body>
 </html>
