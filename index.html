@@ -119,6 +119,8 @@
         .clear-file:hover { color: var(--navy); }
         .upload-area-wide.file-loaded { border: 1px solid var(--tint-2); border-left: 4px solid var(--future); background: var(--tint); }
         .upload-area-wide.file-loaded .upload-icon-wide { color: var(--future); }
+        .upload-area-wide.file-loaded .upload-text-wide h3 { font-size: 17px; font-weight: 700; color: var(--future); }
+        .upload-area-wide.file-loaded .term-code { font-size: 12px; color: var(--slate); margin-top: -1px; }
         .upload-area-wide.file-loaded .upload-text-wide p strong {
             display: block; color: var(--navy); font-weight: 500; font-size: 14px;
             overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 210px; margin: 2px 0;
@@ -429,7 +431,7 @@
         .results-content { display: flex; flex-direction: column; gap: 6px; }
         .result-item {
             position: relative;
-            display: grid; grid-template-columns: 36px minmax(0, 1fr) 96px; align-items: center; gap: 14px;
+            display: grid; grid-template-columns: 22px 28px minmax(0, 1fr) 112px; align-items: center; gap: 12px;
             padding: 10px 14px;
             border: 1px solid var(--line); border-radius: var(--r-sm);
             background: #fff;
@@ -455,6 +457,29 @@
         .conflict-list { margin-top: 6px; }
         .conflict-item { padding: 3px 0; border-top: 1px solid rgba(255,255,255,.15); }
         .no-conflicts { color: #BFD7EE; }
+
+        .pick-box { display: grid; place-items: center; cursor: pointer; width: 22px; height: 22px; position: relative; }
+        .pick-input { position: absolute; inset: 0; z-index: 1; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+        .pick-input:checked + .checkmark { background: var(--future); border-color: var(--future); }
+        .pick-input:checked + .checkmark::after {
+            content: ''; position: absolute; left: 5px; top: 1px; width: 4px; height: 9px;
+            border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg);
+        }
+        .pick-input:focus-visible + .checkmark { outline: 3px solid var(--simcoe); outline-offset: 1px; }
+        .result-item.is-picked { background: var(--tint); border-color: var(--tint-2); box-shadow: inset 4px 0 0 var(--future); }
+        .result-item.is-picked .conflict-score { color: var(--future); font-size: 17px; }
+        .picks { display: flex; flex-direction: column; gap: 6px; margin-bottom: 18px; }
+        .picks-note { font-size: 13px; color: var(--slate); margin-top: 4px; }
+        .picks-note .text-btn { margin-left: 4px; }
+        .results-subhead { font-size: 14px; font-weight: 500; margin: 0 0 8px; }
+        .repeat-tag {
+            display: inline-block; margin-left: 10px; vertical-align: 2px;
+            font-size: 11px; font-weight: 500; color: var(--future);
+            background: var(--tint); border: 1px solid var(--tint-2);
+            padding: 0 7px; border-radius: 999px;
+        }
+        .conflict-course.is-repeat { color: #FFD3C2; }
+        .scoring-explanation p + p { margin-top: 6px; }
 
         .scoring-explanation { margin-top: 18px; padding: 14px 16px; background: #F7F9FB; border: 1px solid var(--line-soft); border-radius: var(--r-sm); font-size: 13px; color: var(--slate); }
         .scoring-explanation h4 { font-size: 13px; font-weight: 500; color: var(--navy); margin-bottom: 6px; }
@@ -497,7 +522,7 @@
             .appbar-inner, .workspace, .scheduler-wrap, footer.site-footer { padding-left: 16px; padding-right: 16px; }
             .sidebar { grid-template-columns: 1fr; }
             .brandmark-text h1 { font-size: 18px; }
-            .result-item { grid-template-columns: 28px minmax(0,1fr) 72px; gap: 10px; }
+            .result-item { grid-template-columns: 22px 22px minmax(0,1fr) 84px; gap: 8px; }
             .scoring-details ul { grid-template-columns: 1fr; }
         }
     </style>
@@ -774,6 +799,13 @@
                             </div>
 
                             <div class="advanced-section">
+                                <h4>Repeat clashes
+                                    <span class="info-icon" tabindex="0">i<span class="info-tooltip">Once you tick a workshop, every section it clashes with has its points multiplied by this number at other times. Higher values push your next workshop toward times those students are free. 1 turns it off.</span></span>
+                                </h4>
+                                <div class="score-input-group"><label for="repeatMultiplier">Multiplier for sections that miss a ticked workshop</label><input type="number" id="repeatMultiplier" min="1" max="20" step="0.5" value="3" /></div>
+                            </div>
+
+                            <div class="advanced-section">
                                 <h4>Results</h4>
                                 <div class="score-input-group"><label for="numRecommendations">Times to list</label><input type="number" id="numRecommendations" min="1" max="50" value="10" /></div>
                             </div>
@@ -805,6 +837,7 @@
                                 <li><span class="score-badge p-lecture">+20</span> Avoid-most lecture</li>
                             </ul>
                             <p>Each overlapping section counts once. Two tutorials and one avoid-most lecture score 1 + 1 + 20 = <strong>22</strong>. Defaults shown; change them in Advanced settings.</p>
+                            <p>Tick a time to plan a workshop there. Sections that can't attend it then count 3× (by default) at every other time, so the list re-ranks toward a second time those students can make.</p>
                         </div>
                     </div>
                 </div>
@@ -880,6 +913,18 @@
         });
 
         // Function to update upload area appearance when file is loaded
+        let currentTerm = null;
+        // Ontario Tech term codes: YYYY01 Winter, YYYY05 Spring/Summer, YYYY09 Fall
+        function detectTerm(text) {
+            let m = text.match(/Term:\s*(\d{6})/i);
+            if (!m) m = text.match(/^\s*"?(20\d{2}(?:01|05|09))(?=[-",])/m);
+            if (!m) return null;
+            const code = m[1];
+            const names = { '01': 'Winter', '05': 'Spring/Summer', '09': 'Fall' };
+            const season = names[code.slice(4)];
+            return { code, label: season ? `${season} ${code.slice(0, 4)}` : `Term ${code}` };
+        }
+
         function updateUploadAreaAppearance(fileName) {
             const uploadContent = uploadArea.querySelector('.upload-content-wide');
             if (fileName) {
@@ -887,8 +932,9 @@
                 uploadContent.innerHTML = `
                     <div class="upload-icon-wide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5"/><path d="M9 14l2 2 4-4"/></svg></div>
                     <div class="upload-text-wide">
-                        <h3>CSV File Loaded</h3>
-                        <p><strong>${fileName}</strong></p>
+                        <h3>${currentTerm ? escHTML(currentTerm.label) : 'CSV File Loaded'}</h3>
+                        ${currentTerm ? `<p class="term-code">Term ${escHTML(currentTerm.code)}</p>` : ''}
+                        <p><strong>${escHTML(fileName)}</strong></p>
                         <p><span class="click-upload">Click to replace file</span> or <span class="clear-file">clear file</span></p>
                     </div>
                 `;
@@ -915,6 +961,8 @@
 
         // Function to clear the uploaded file
         function clearUploadedFile() {
+            pickedWorkshops = [];
+            currentTerm = null;
             csvFileInput.value = '';
             courseData = [];
             allCourses = [];
@@ -983,6 +1031,44 @@
 
         // Store all ranked opportunities for CSV export
         let lastRankedOpportunities = [];
+        // Workshops the user has ticked: [{ day, startTime, duration }]
+        let pickedWorkshops = [];
+
+        // A section is the same group of students on every day it meets, so match by CRN
+        function sectionIdentity(entry) {
+            return entry.crn ? `crn:${entry.crn}` : `${entry.course}|${entry.type}|${entry.instructor}|${entry.location}`;
+        }
+        function pickId(p) { return `${p.day}|${p.startTime}|${p.duration}`; }
+        function isPicked(day, startTime, duration) {
+            return pickedWorkshops.some(p => p.day === day && p.startTime === startTime && p.duration === duration);
+        }
+        let pickedKeysCache = null;
+        function getPickedSectionKeys() {
+            if (pickedKeysCache) return pickedKeysCache;
+            const keys = new Set();
+            pickedWorkshops.forEach(p => {
+                getWorkshopConflictDetailsForDisplay(p.day, p.startTime, p.duration, true)
+                    .conflicts.forEach(c => keys.add(c.sectionKey));
+            });
+            pickedKeysCache = keys;
+            return keys;
+        }
+        function overlapsPick(day, startTime, duration) {
+            const s = minutesOf(startTime), f = s + duration;
+            return pickedWorkshops.some(p => {
+                if (p.day !== day) return false;
+                const ps = minutesOf(p.startTime), pf = ps + p.duration;
+                return s < pf && f > ps;
+            });
+        }
+        function togglePick(day, startTime, duration) {
+            if (isPicked(day, startTime, duration)) {
+                pickedWorkshops = pickedWorkshops.filter(p => !(p.day === day && p.startTime === startTime && p.duration === duration));
+            } else {
+                pickedWorkshops.push({ day, startTime, duration });
+            }
+            findOptimalWorkshopTimes(true);
+        }
 
         // Initialize cascading preset selects (moved to after presets are defined)
 
@@ -1015,8 +1101,8 @@
             FSc: {
                 'Computer Science': {
                     '1st year': [
-                        'CSCI1030U', 'CSCI1060U', 'CSCI1061U', 'CSCI2050U', 'MATH1020U',
-                        'PHY1020U', 'CSCI2050U', 'CSCI1062U', 'CSCI1063U', 'MATH1000U',
+                        'CSCI1030U', 'CSCI1060U', 'CSCI1061U', 'CSCI1050U', 'MATH1020U',
+                        'PHY1020U', 'CSCI1062U', 'CSCI1063U', 'MATH1000U',
                         'MATH1010U', 'PHY1010U', 'PHY1030U'
                     ],
                     '2nd year': [
@@ -1881,6 +1967,8 @@
             // Reset results settings
             const numRecs = document.getElementById('numRecommendations');
             if (numRecs) numRecs.value = '10';
+            const repeatEl = document.getElementById('repeatMultiplier');
+            if (repeatEl) repeatEl.value = '3';
             
             // Reset lunch settings
             document.getElementById('avoidLunch').checked = false;
@@ -1957,6 +2045,12 @@
                 },
                 results: {
                     numRecommendations: Math.max(1, Math.min(50, parseInt(document.getElementById('numRecommendations').value) || 10))
+                },
+                picks: {
+                    multiplier: (() => {
+                        const v = parseFloat(document.getElementById('repeatMultiplier').value);
+                        return isNaN(v) ? 3 : Math.max(1, Math.min(20, v));
+                    })()
                 },
                 lunch: {
                     avoid: document.getElementById('avoidLunch').checked,
@@ -2233,6 +2327,10 @@
 
         // Fixed version - counts each conflicting course only once per workshop
         function calculateWorkshopConflictScore(day, startTime, duration) {
+            return getWorkshopConflictDetailsForDisplay(day, startTime, duration).totalScore;
+        }
+
+        function calculateWorkshopConflictScoreLegacy(day, startTime, duration) {
             const settings = getAdvancedSettings();
             const timeBlockMinutes = use30MinBlocks ? 30 : 15;
             const slotsNeeded = Math.ceil(duration / timeBlockMinutes);
@@ -2340,7 +2438,8 @@
         }
 
         // Updated findOptimalWorkshopTimes function
-        function findOptimalWorkshopTimes() {
+        function findOptimalWorkshopTimes(keepSettingsOpen) {
+            pickedKeysCache = null;
             const duration = parseInt(document.getElementById('workshopDuration').value) || 60;
             const settings = getAdvancedSettings();
             const timeBlockMinutes = use30MinBlocks ? 30 : 15;
@@ -2370,6 +2469,7 @@
                 for (let startIndex = earliestIndex; startIndex <= latestIndex - slotsNeeded; startIndex++) {
                     const startTime = timeSlots[startIndex];
                     const endTime = addMinutes(startTime, duration);
+                    if (overlapsPick(day, startTime, duration)) continue;
                     
                     // Use the new single-calculation method
                     const totalScore = calculateWorkshopConflictScore(day, startTime, duration);
@@ -2394,7 +2494,7 @@
             // Auto-collapse Advanced Settings after search
             const advContent = document.getElementById('advancedContent');
             const advToggle = document.getElementById('advancedToggle');
-            if (advContent && advToggle) {
+            if (advContent && advToggle && !keepSettingsOpen) {
                 advContent.classList.remove('show');
                 advToggle.classList.remove('active');
                 const arrow = advToggle.querySelector('.dropdown-arrow');
@@ -2406,12 +2506,12 @@
             // Show CSV download button if we have results
             const dlBtn = document.getElementById('downloadCsvRecommendations');
             if (dlBtn) {
-                dlBtn.style.display = opportunities.length > 0 ? 'inline-block' : 'none';
+                dlBtn.style.display = (opportunities.length > 0 || pickedWorkshops.length > 0) ? 'inline-block' : 'none';
             }
         }
 
         function downloadRecommendationsCsv() {
-            if (!Array.isArray(lastRankedOpportunities) || lastRankedOpportunities.length === 0) {
+            if ((!Array.isArray(lastRankedOpportunities) || lastRankedOpportunities.length === 0) && pickedWorkshops.length === 0) {
                 alert('No recommendations to export yet. Please run a search first.');
                 return;
             }
@@ -2421,13 +2521,17 @@
 
             // Build CSV lines
             const lines = [];
-            lines.push(['Day of week', 'Start Time', 'End Time', 'Score'].join(','));
+            lines.push(['Day of week', 'Start Time', 'End Time', 'Score', 'Picked'].join(','));
+            pickedWorkshops.forEach(p => {
+                const sc = getWorkshopConflictDetailsForDisplay(p.day, p.startTime, p.duration, true).totalScore;
+                lines.push([dayAbbrev[p.day] || p.day, formatDisplayTime(p.startTime), formatDisplayTime(addMinutes(p.startTime, p.duration)), sc, 'Yes'].join(','));
+            });
             lastRankedOpportunities.forEach(opp => {
                 const day = dayAbbrev[opp.day] || opp.day;
                 const start = formatDisplayTime(opp.startTime);
                 const end = formatDisplayTime(opp.endTime);
                 const score = opp.totalScore;
-                lines.push([day, start, end, score].join(','));
+                lines.push([day, start, end, score, 'No'].join(','));
             });
 
             const csvContent = lines.join('\n');
@@ -2449,14 +2553,57 @@
             return /^\d{5}$/.test(input.trim());
         }
 
+        function renderPickedWorkshops() {
+            const head = document.querySelector('.workshop-results-head h3');
+            if (head) head.textContent = pickedWorkshops.length ? 'Your workshops' : 'Best times';
+            if (!pickedWorkshops.length) return '';
+            const mult = getAdvancedSettings().picks.multiplier;
+            const keys = getPickedSectionKeys();
+            const sorted = pickedWorkshops.slice().sort((a, b) => days.indexOf(a.day) - days.indexOf(b.day) || minutesOf(a.startTime) - minutesOf(b.startTime));
+            let rows = '';
+            sorted.forEach(p => {
+                const det = getWorkshopConflictDetailsForDisplay(p.day, p.startTime, p.duration, true);
+                const s = minutesOf(p.startTime);
+                const left = Math.max(0, (s - 480) / 720 * 100);
+                const width = Math.min(100 - left, p.duration / 720 * 100);
+                const n = new Set(det.conflicts.map(c => c.sectionKey)).size;
+                let tip = '<div class="workshop-tooltip">';
+                if (!det.conflicts.length && !det.lunchConflict) tip += '<div class="no-conflicts">No conflicts detected!</div>';
+                else {
+                    tip += '<strong>Clashes with:</strong><div class="conflict-list">';
+                    det.conflicts.forEach(c => tip += `<div class="conflict-item">${c.course} ${c.type}${c.crn ? ' (CRN ' + c.crn + ')' : ''}</div>`);
+                    tip += '</div>';
+                }
+                tip += '</div>';
+                rows += `
+                    <div class="result-item is-picked">
+                        ${tip}
+                        <label class="pick-box" title="Untick to remove this workshop">
+                            <input type="checkbox" class="pick-input" checked data-day="${p.day}" data-start="${p.startTime}" data-duration="${p.duration}" aria-label="Remove the workshop ${p.day}, ${clockOf(s)} to ${clockOf(s + p.duration)}">
+                            <span class="checkmark"></span>
+                        </label>
+                        <div class="result-rank" aria-hidden="true"></div>
+                        <div class="result-main">
+                            <div class="result-header">${p.day}, ${clockOf(s)} – ${clockOf(s + p.duration)}</div>
+                            <div class="result-track" aria-hidden="true"><span style="left:${left}%;width:${width}%"></span></div>
+                        </div>
+                        <div class="result-score"><span class="conflict-score">${det.totalScore}</span><small>${n} section${n === 1 ? '' : 's'} miss it</small></div>
+                    </div>`;
+            });
+            return `<div class="picks">${rows}
+                <p class="picks-note">Sections that can't attend ${pickedWorkshops.length === 1 ? 'this workshop' : 'these workshops'} (${keys.size} in all) now count ${mult}× below, so the next picks favour times they're free. Times that overlap a ticked workshop are left out.
+                <button type="button" class="text-btn" id="clearPicks">Untick all</button></p></div>`;
+        }
+
         // Updated displayWorkshopResults function - replace the tooltip generation part
         function displayWorkshopResults(opportunities, duration) {
             const resultsDiv = document.getElementById('workshopResults');
             const contentDiv = document.getElementById('resultsContent');
             const explanationDiv = document.getElementById('scoringExplanation');
 
+            const picksHTML = renderPickedWorkshops();
             if (opportunities.length === 0) {
-                contentDiv.innerHTML = '<div class="results-empty"><h3>No times fit</h3><p>The window is shorter than the workshop, or the earliest start is after the finish time. Widen the window or shorten the workshop.</p></div>';
+                contentDiv.innerHTML = picksHTML + '<div class="results-empty"><h3>No times fit</h3><p>The window is shorter than the workshop, or the earliest start is after the finish time. Widen the window or shorten the workshop.</p></div>';
                 const emptyEl = document.getElementById('resultsEmpty'); if (emptyEl) emptyEl.style.display = 'none';
                 resultsDiv.style.display = 'block';
                 explanationDiv.style.display = 'block';
@@ -2471,6 +2618,7 @@
                 
                 // Get conflict details using the new function
                 const conflictDetails = getWorkshopConflictDetailsForDisplay(opp.day, opp.startTime, duration);
+                const repeatCount = conflictDetails.conflicts.filter(c => c.isRepeat).length;
 
                 // Build tooltip content
                 let tooltipContent = '<div class="workshop-tooltip">';
@@ -2493,8 +2641,8 @@
                         tooltipContent += '<div class="conflict-item">';
                         const enrollmentText = conflictDetails.settings.enrollment.enabled && conflict.enrollment > 0 
                             ? ` (${conflict.enrollment} students)` : '';
-                        tooltipContent += '<span class="conflict-course" style="font-size: 11px; max-width: 300px; word-wrap: break-word;">' + 
-                            conflict.course + ' ' + conflict.type + ': +' + conflict.finalScore + enrollmentText + '</span>';
+                        tooltipContent += '<span class="conflict-course" style="font-size: 11px; max-width: 300px; word-wrap: break-word;' + (conflict.isRepeat ? ' color: #FFD3C2;' : '') + '">' + 
+                            conflict.course + ' ' + conflict.type + (conflict.crn ? ' (CRN ' + conflict.crn + ')' : '') + ': +' + conflict.finalScore + enrollmentText + (conflict.isRepeat ? ` (${conflictDetails.settings.picks.multiplier}×, can't attend a ticked workshop)` : '') + '</span>';
                         tooltipContent += '</div>';
                     });
                     
@@ -2509,11 +2657,15 @@
                 const left = Math.max(0, (sMin - 480) / 720 * 100);
                 const width = Math.min(100 - left, duration / 720 * 100);
                 html += `
-                    <div class="result-item${index === 0 ? ' is-best' : ''}" tabindex="0">
+                    <div class="result-item${index === 0 ? ' is-best' : ''}">
                         ${tooltipContent}
+                        <label class="pick-box" title="Tick if you'll run a workshop at this time">
+                            <input type="checkbox" class="pick-input" data-day="${opp.day}" data-start="${opp.startTime}" data-duration="${duration}" aria-label="Run a workshop ${opp.day}, ${clockOf(sMin)} to ${clockOf(sMin + duration)}">
+                            <span class="checkmark"></span>
+                        </label>
                         <div class="result-rank">${ranking}</div>
                         <div class="result-main">
-                            <div class="result-header">${opp.day}, ${clockOf(sMin)} – ${clockOf(sMin + duration)}</div>
+                            <div class="result-header">${opp.day}, ${clockOf(sMin)} – ${clockOf(sMin + duration)}${repeatCount ? `<span class="repeat-tag">${repeatCount} repeat clash${repeatCount === 1 ? '' : 'es'}</span>` : ''}</div>
                             <div class="result-track" aria-hidden="true"><span style="left:${left}%;width:${width}%"></span></div>
                         </div>
                         <div class="result-score level-${level}"><span class="conflict-score">${opp.totalScore}</span><small>${levelLabel}</small></div>
@@ -2521,15 +2673,18 @@
                 `;
             });
 
-            contentDiv.innerHTML = html;
+            const listHead = pickedWorkshops.length
+                ? '<h4 class="results-subhead">Best times for your next workshop</h4>' : '';
+            contentDiv.innerHTML = picksHTML + listHead + html;
             const emptyEl = document.getElementById('resultsEmpty'); if (emptyEl) emptyEl.style.display = 'none';
             resultsDiv.style.display = 'block';
             explanationDiv.style.display = 'block';
         }
 
         // Replace the conflict details generation in displayWorkshopResults
-        function getWorkshopConflictDetailsForDisplay(day, startTime, duration) {
+        function getWorkshopConflictDetailsForDisplay(day, startTime, duration, ignorePicks) {
             const settings = getAdvancedSettings();
+            const repeatKeys = ignorePicks ? new Set() : getPickedSectionKeys();
             const timeBlockMinutes = use30MinBlocks ? 30 : 15;
             const slotsNeeded = Math.ceil(duration / timeBlockMinutes);
             const startIndex = timeSlots.indexOf(startTime);
@@ -2631,6 +2786,12 @@
                             }
                         }
 
+                        const repeatKey = sectionIdentity(entry);
+                        const isRepeat = repeatKeys.has(repeatKey);
+                        if (isRepeat) {
+                            finalScore = Math.round(finalScore * settings.picks.multiplier * 10) / 10;
+                        }
+
                         totalScore += finalScore;
                         
                         // Add to conflicts list for display
@@ -2640,6 +2801,9 @@
                         conflicts.push({
                             course: entry.course,
                             type: entry.type,
+                            crn: entry.crn,
+                            sectionKey: repeatKey,
+                            isRepeat,
                             startTime: entry.startTime,
                             endTime: entry.endTime,
                             isPriority,
@@ -2655,6 +2819,7 @@
                 }
             });
             
+            totalScore = Math.round(totalScore * 10) / 10;
             return {
                 conflicts,
                 lunchConflict,
@@ -3344,6 +3509,7 @@
             }
 
             // Update upload area to show file is being processed
+            currentTerm = null;
             updateUploadAreaAppearance(file.name);
             showStatus('Reading file...', false);
 
@@ -3351,6 +3517,8 @@
             reader.onload = function(e) {
                 console.log('File loaded, content length:', e.target.result.length);
                 try {
+                    currentTerm = detectTerm(e.target.result);
+                    updateUploadAreaAppearance(file.name);
                     parseCSV(e.target.result);
                 } catch (error) {
                     console.error('Parse error:', error);
@@ -3959,6 +4127,20 @@
                 handleCompactToggle();
             });
         });
+        // Tick boxes on workshop results
+        document.getElementById('resultsContent').addEventListener('change', e => {
+            const box = e.target.closest('.pick-input');
+            if (!box) return;
+            togglePick(box.dataset.day, box.dataset.start, parseInt(box.dataset.duration, 10));
+        });
+        document.getElementById('resultsContent').addEventListener('click', e => {
+            if (e.target.id === 'clearPicks') { pickedWorkshops = []; findOptimalWorkshopTimes(true); }
+        });
+        // Changing the multiplier re-ranks straight away when workshops are ticked
+        document.getElementById('repeatMultiplier').addEventListener('change', () => {
+            if (pickedWorkshops.length) findOptimalWorkshopTimes(true);
+        });
+
         // Hovering a course tag highlights that course in the timetable
         (function () {
             const tags = document.getElementById('selectedCourses');
